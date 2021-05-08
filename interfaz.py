@@ -28,7 +28,6 @@ Radiobutton(root, text="9. Caso especial", variable=opcion,
             value=9, command=seleccionar).pack()
 monitor = Label(root)
 monitor.pack()
-
-Button(root, text="Reiniciar", command=reset).pack()
+print(root)
 # Finalmente bucle de la aplicación
 root.mainloop()
