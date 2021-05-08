@@ -92,31 +92,30 @@ def validarPeso(peso):
     return True
 
 #Falta meter en función que reciba fecha de nacimiento CORREGIR
-
 from datetime import *
-fechaNacimiento = '08/05/2003'
-fecha_dt = str(datetime.strptime(fechaNacimiento, '%d/%m/%Y'))#cambia fecha a tipo date.
-annoNacimiento=int(fecha_dt[0:4])#pasa el año a int para restarlo.
-today = str(date.today())#pasa la fecha actual a str.
-annoActual=int(today[0:4])#pasa el año actual a int para restar.
-if annoActual-annoNacimiento==18:#esta el año de nacimiento al actual para saber si este año cumple los 18. falta el mes.
-    mesNacimiento=int(str(fecha_dt[5:7]))#saca el mes de nacimiento
-    mesActual=int(today[5:7])#saca el mes actual
-    print(mesNacimiento,mesActual)
-    if mesNacimiento==mesActual:
-        diaNacimiento=int(str(fecha_dt[8:11]))#saca el dia de nacimiento y lo pasa a int
-        diaActual=int(str(today[8:11]))#saca el dia actual y los pasa a int.
-        print("dia",diaNacimiento,"dia",diaActual)
-        if diaNacimiento<=diaActual:#si el dia actual es menor o igual al actual si es mayor.
-            print("Si es mayor de edad")
+def validarMayorEdad(fechaNacimiento):
+    fecha_dt = str(datetime.strptime(fechaNacimiento, '%d/%m/%Y'))#cambia fecha a tipo date.
+    annoNacimiento=int(fecha_dt[0:4])#pasa el año a int para restarlo.
+    today = str(date.today())#pasa la fecha actual a str.
+    annoActual=int(today[0:4])#pasa el año actual a int para restar.
+    if annoActual-annoNacimiento==18:#esta el año de nacimiento al actual para saber si este año cumple los 18. falta el mes.
+        mesNacimiento=int(str(fecha_dt[5:7]))#saca el mes de nacimiento
+        mesActual=int(today[5:7])#saca el mes actual
+        if mesNacimiento==mesActual:
+            diaNacimiento=int(str(fecha_dt[8:11]))#saca el dia de nacimiento y lo pasa a int
+            diaActual=int(str(today[8:11]))#saca el dia actual y los pasa a int.
+            if diaNacimiento<=diaActual:#si el dia actual es menor o igual al actual si es mayor.
+                return True
+            else:
+                return False
+        elif mesNacimiento<mesActual:
+            return True
         else:
-            print("Aún no ha cumplido años por el dia.")
-    elif mesNacimiento<mesActual:
-        print("Si es mayor de edad.")
+            return False
+        pass
+    elif annoActual-annoNacimiento>18: 
+        return True
     else:
-        print("Aún no ha cumplido años por el mes.")
-    pass
-elif annoActual-annoNacimiento>18: 
-    print("Si es mayor de edad")
-else:
-    print("No es mayor de edad")
+        return False
+#07/05/2021 / 1 hora.
+print(validarMayorEdad("07/04/2003"))
