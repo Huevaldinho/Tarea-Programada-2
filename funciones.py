@@ -18,7 +18,7 @@ def validarCedula(cedula):
     """
     Función: Validar número de cédula con formato #-####-####.
     Entrada:
-    -cedula(int): Número de cédula costarricense.
+    -cedula(str): Número de cédula costarricense.
     Salida:
     -True: Si la cédula es válida.
     -False: La cédula no es válida.
@@ -158,14 +158,13 @@ def graba(nombreArchivo,listaDic):
     return
 #Función que lee un archivo con una lista de estudiantes
 def lee (nomArchLeer):
-    dicc={}
     try:
         f=open(nomArchLeer,"rb")
-        dicc = pickle.load(f)
+        lista = pickle.load(f)
         f.close()
     except:
         print("Error al leer el archivo: ", nomArchLeer)
-    return dicc
+    return lista
 
 
 #######################
@@ -173,50 +172,32 @@ def lee (nomArchLeer):
 #4.ELIMINAR DONADOR
 #######################
 #######################
-def eliminarDonador(listaDic):
+def eliminarDonador(donadores):
     """
     Función: Eliminar donador.
     Entrada:
-    -listaDic(dic): Lista con diccionarios de cada usuario.
+    -listaDic(dic): Diccionario: con diccionarios de cada dato del usuario
     Salida: N/A.
     """
     while True:
         cedula=solicitarCedula()#manda a pedir la cédula
         if validarCedula(cedula):#manda a validar la cédula
-            for persona in range(len(listaDic)):#para revisar la cédula esta en lista.
-                usuarioCedula=listaDic[persona]#saca el usuario(diccionario)
-                if usuarioCedula["cedula"]==cedula:#si la cédula del usuario está registrada.
-                    posicion=persona
-                    if usuarioCedula["estado"]==0:#si la persona ya está inactiva.
-                        print("Este usuario ya se encuentra inactivo")
-                        return #se sale porque ya está inactivo.
-                    break#salgase, ya encontró la cédula
-                if usuarioCedula["cedula"]!=cedula and persona==len(listaDic)-1:
-                    print("Esa cédula aún no se ha registrada.")
-                    return ""
-            justi="ALGO"#parte de la interfaz
-            usuarioCedula=listaDic[posicion]#saca la posición de la persona en la lista
-            usuarioCedula["estado"]=0#cambia el estado a inactivo
-            usuarioCedula["justificaion"]=justi#le agrega la justificación.
-            graba("donadores",listaDic)
-            print("Usuario eliminado safisfactoriamente.")#debe mostrarse en la interfaz
-            #debe regresar al menu
+            if cedula in donadores:#si la persona no está registrada
+                #pedir justificación en interfaz gráfica.
+                justi="algo"#solo para ver como actualizamos datos.
+                donadores[cedula]["estado"]=0#cambia el estado a inactivo.
+                donadores[cedula]["justificacion"]=justi#pone la justificación seleccionada en la interfaz gráfica.
+            else:#no está en la base de datos.
+                # esto se debe mostar en interfaz gráfica.
+                print("La persona con el número de cédula:",cedula, "no está registrado en la base de datos del Banco de Sangre aún")
             break
-        else:
-            print("Cédula inválida")
-            continue
+    graba("donadores",donadores)
+    print("Usuario eliminado safisfactoriamente.")#debe mostrarse en la interfaz
+    #debe regresar al menu
     return ""
-#print("Lista en disco duro:",lee("donadores"))
-#listaDonadores=[{"cedula": "9-0139-0105", "estado": 0},{"cedula": "2-5432-2222", "estado": 0},
-#{"cedula": "8-6456-5454", "estado": 0},{"cedula": "5-0246-0545", "estado": 1},
-#{"cedula": "1-2311-3412", "estado": 1},{"cedula": "3-0125-5745", "estado": 1}]
-#print("Lista en RAM, creada: ",listaDonadores)
-#eliminarDonador(listaDonadores)
-#print(lee("donadores"))
-#print(provinciaYlugarDeDonacion(923))
 #USAR DICCIONARIOS ES MAS FACIL, NO NECESITAMOS CICLOS PARA SACAR LOS DATOS.
-personas={"9-0139-010-":{"nombre":"Felipe Obando Arrieta","telefono":"7013-0686","edad":"19",},
-"1-1234-5678":{"nombre":"Pepito Mamador","telefono":"911","edad":"100"}}#lista de personas.
-print(personas["1-1234-5678"]["telefono"])#así seleccionamos algo en particular de un usuario.
-personas["1-1234-5678"]["telefono"]="pene"#así actualizamos datos.
-print(personas)
+#formato para trabajar debe ser 
+personas={"9-0139-0105":{"nombre":"Felipe Obando Arrieta","telefono":"7013-0686","edad":"19","estado":1,"justificacion":""},
+          "1-2345-6789":{"nombre":"Bryan Ganoza","telefono":"1234-5678","edad":"40","estado":1,"justificacion":""}}
+eliminarDonador(personas)
+print(lee("donadores"))
