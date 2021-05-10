@@ -176,28 +176,29 @@ def eliminarDonador(donadores):
     """
     Función: Eliminar donador.
     Entrada:
-    -listaDic(dic): Diccionario: con diccionarios de cada dato del usuario
+    -listaDic(dic): Lista con diccionarios de cada usuario.
     Salida: N/A.
     """
     while True:
-        cedula=solicitarCedula()#manda a pedir la cédula
+        cedula=solicitarCedula()#manda a pedir la cédula en interfaz gráfica
         if validarCedula(cedula):#manda a validar la cédula
             if cedula in donadores:#si la persona no está registrada
                 #pedir justificación en interfaz gráfica.
+                if donadores[cedula]["estado"]==0:
+                    print("El usuario ya está inactivo")
+                    return ""
                 justi="algo"#solo para ver como actualizamos datos.
                 donadores[cedula]["estado"]=0#cambia el estado a inactivo.
                 donadores[cedula]["justificacion"]=justi#pone la justificación seleccionada en la interfaz gráfica.
             else:#no está en la base de datos.
                 # esto se debe mostar en interfaz gráfica.
                 print("La persona con el número de cédula:",cedula, "no está registrado en la base de datos del Banco de Sangre aún")
+                return ""
             break
+    print(donadores)
     graba("donadores",donadores)
     print("Usuario eliminado safisfactoriamente.")#debe mostrarse en la interfaz
     #debe regresar al menu
     return ""
-#USAR DICCIONARIOS ES MAS FACIL, NO NECESITAMOS CICLOS PARA SACAR LOS DATOS.
-#formato para trabajar debe ser 
-personas={"9-0139-0105":{"nombre":"Felipe Obando Arrieta","telefono":"7013-0686","edad":"19","estado":1,"justificacion":""},
-          "1-2345-6789":{"nombre":"Bryan Ganoza","telefono":"1234-5678","edad":"40","estado":1,"justificacion":""}}
-eliminarDonador(personas)
-print(lee("donadores"))
+personas=lee("donadores")#trae el diccionario de personas
+eliminarDonador(personas)#llama a eliminar con el diccionario de personas
