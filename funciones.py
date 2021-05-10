@@ -21,7 +21,7 @@ def validarCedula(cedula):
     """
     Función: Validar número de cédula con formato #-####-####.
     Entrada:
-    -cedula(int): Número de cédula costarricense.
+    -cedula(str): Número de cédula costarricense.
     Salida:
     -True: Si la cédula es válida.
     -False: La cédula no es válida.
@@ -161,14 +161,13 @@ def graba(nombreArchivo,listaDic):
     return
 #Función que lee un archivo con una lista de estudiantes
 def lee (nomArchLeer):
-    dicc={}
     try:
         f=open(nomArchLeer,"rb")
-        dicc = pickle.load(f)
+        lista = pickle.load(f)
         f.close()
     except:
         print("Error al leer el archivo: ", nomArchLeer)
-    return dicc
+    return lista
 #######################
 #######################
 #2. Generar Donador
@@ -212,13 +211,15 @@ def generarDonadores(cantidad):
         persona.append(primeroCorreo+random.choice(extensionCorreo)) #mete correo
         matriz.append(persona)
     return matriz
+    return lista
+
 
 #######################
 #######################
 #4.ELIMINAR DONADOR
 #######################
 #######################
-def eliminarDonador(listaDic):
+def eliminarDonador(donadores):
     """
     Función: Eliminar donador.
     Entrada:
@@ -226,30 +227,25 @@ def eliminarDonador(listaDic):
     Salida: N/A.
     """
     while True:
-        cedula=solicitarCedula()#manda a pedir la cédula
+        cedula=solicitarCedula()#manda a pedir la cédula en interfaz gráfica
         if validarCedula(cedula):#manda a validar la cédula
-            for persona in range(len(listaDic)):#para revisar la cédula esta en lista.
-                usuarioCedula=listaDic[persona]#saca el usuario(diccionario)
-                if usuarioCedula["cedula"]==cedula:#si la cédula del usuario está registrada.
-                    posicion=persona
-                    if usuarioCedula["estado"]==0:#si la persona ya está inactiva.
-                        print("Este usuario ya se encuentra inactivo")
-                        return #se sale porque ya está inactivo.
-                    break#salgase, ya encontró la cédula
-                if usuarioCedula["cedula"]!=cedula and persona==len(listaDic)-1:
-                    print("Esa cédula aún no se ha registrada.")
+            if cedula in donadores:#si la persona no está registrada
+                #pedir justificación en interfaz gráfica.
+                if donadores[cedula]["estado"]==0:
+                    print("El usuario ya está inactivo")
                     return ""
-            justi="ALGO"#parte de la interfaz
-            usuarioCedula=listaDic[posicion]#saca la posición de la persona en la lista
-            usuarioCedula["estado"]=0#cambia el estado a inactivo
-            usuarioCedula["justificaion"]=justi#le agrega la justificación.
-            graba("donadores",listaDic)
-            print("Usuario eliminado safisfactoriamente.")#debe mostrarse en la interfaz
-            #debe regresar al menu
+                justi="algo"#solo para ver como actualizamos datos.
+                donadores[cedula]["estado"]=0#cambia el estado a inactivo.
+                donadores[cedula]["justificacion"]=justi#pone la justificación seleccionada en la interfaz gráfica.
+            else:#no está en la base de datos.
+                # esto se debe mostar en interfaz gráfica.
+                print("La persona con el número de cédula:",cedula, "no está registrado en la base de datos del Banco de Sangre aún")
+                return ""
             break
-        else:
-            print("Cédula inválida")
-            continue
+    print(donadores)
+    graba("donadores",donadores)
+    print("Usuario eliminado safisfactoriamente.")#debe mostrarse en la interfaz
+    #debe regresar al menu
     return ""
 #print("Lista en disco duro:",lee("donadores"))
 #listaDonadores=[{"cedula": "9-0139-0105", "estado": 0},{"cedula": "2-5432-2222", "estado": 0},
@@ -258,4 +254,6 @@ def eliminarDonador(listaDic):
 #print("Lista en RAM, creada: ",listaDonadores)
 #eliminarDonador(listaDonadores)
 #print(lee("donadores"))
-generarDonadores(3)
+#generarDonadores(3)
+#personas=lee("donadores")#trae el diccionario de personas
+#eliminarDonador(personas)#llama a eliminar con el diccionario de personas
