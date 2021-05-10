@@ -9,8 +9,11 @@
 #VALIDACIONES
 ####################
 import re
-from datetime import date
-from datetime import datetime
+from datetime import *
+import pickle
+import random
+import names
+import string
 def solicitarCedula():
     cedula=input("Ingrese número de cédula: ")
     return cedula
@@ -42,7 +45,7 @@ def validarFecha(fecha):
     -False: Si no está bien.
     """
     try:
-        datetime.strptime(fecha, '%d/%m/%Y')#valida usando libreria. además sabe los años bisiestos
+        strptime(fecha, '%d/%m/%Y')#valida usando libreria. además sabe los años bisiestos
         print("Fecha válida")
         return True
     except ValueError:
@@ -99,7 +102,7 @@ def validarPeso(peso):
     return True
 
 #Falta meter en función que reciba fecha de nacimiento CORREGIR
-from datetime import *
+
 def validarMayorEdad(fechaNacimiento):
     """
     Función: Determinar si una persona es mayor de edad según su fecha de nacimiento (dd/mm/aaaa).
@@ -109,7 +112,7 @@ def validarMayorEdad(fechaNacimiento):
     -True(bool): Si es mayor de edad.
     -False(bool): Si no es mayor de edad.
     """
-    fecha_dt = str(datetime.strptime(fechaNacimiento, '%d/%m/%Y'))#cambia fecha a tipo date.
+    fecha_dt = str(strptime(fechaNacimiento, '%d/%m/%Y'))#cambia fecha a tipo date.
     annoNacimiento=int(fecha_dt[0:4])#pasa el año a int para restarlo.
     today = str(date.today())#pasa la fecha actual a str.
     annoActual=int(today[0:4])#pasa el año actual a int para restar.
@@ -147,7 +150,7 @@ Guápiles"]}
     return "Dado que usted nació en la provincia de: "+lugarAsignado+" usted podría donar en: \n"+"\n".join(lugares[lugarAsignado])
     
 #07/05/2021 / 1 hora.
-import pickle
+
 def graba(nombreArchivo,listaDic):
     try:
         f=open(nombreArchivo,"wb")
@@ -166,7 +169,49 @@ def lee (nomArchLeer):
     except:
         print("Error al leer el archivo: ", nomArchLeer)
     return dicc
-
+#######################
+#######################
+#2. Generar Donador
+#######################
+#######################
+def generarDonadores(cantidad):
+    matriz=[] #base de datos donde se guarda la info de cada persona
+    tipoSangre=["O+","O-", "A+", "A-", "B+", "B-", "AB+", "AB-"]
+    sexo=["Masculino", "Femenino"]
+    extensionCorreo=["@costarricense.cr","@racsa.go.cr","@ccss.sa.cr","@gmail.com"]
+    for i in range(cantidad):
+        persona=[] #lista de cada persona
+        provincia=random.randint(1,9) #inicia cedula
+        tomo=""
+        asiento=""
+        numero1=""
+        numero2=""
+        for j in range (4):
+            tomo+=str(random.randint(0,9))
+            asiento+=str(random.randint(0,9))
+            numero1+=str(random.randint(0,9)) #para el numero de telefono
+            numero2+=str(random.randint(0,9)) #para el numero de telefono
+        persona.append(f"{provincia}-{tomo}-{asiento}") #termina cedula
+        sexoEleccion=random.choice(sexo)#elige el sexo pero solo para evaluar, si es mujer nombre de mujer o viceversa con hombre
+        if sexoEleccion=="Femenino":
+            persona.append(names.get_first_name(gender='female')+" "+names.get_last_name()+" "+names.get_last_name()) #mete nombre mujer
+        elif sexoEleccion=="Masculino":
+            persona.append(names.get_first_name(gender='male')+" "+names.get_last_name()+" "+names.get_last_name()) #mete nombre mujer
+        start_date = date(1950, 1, 1) #inica fecha de nacimiento
+        end_date = date(2020, 5, 25)
+        time_between_dates = end_date - start_date
+        random_number_of_days = random.randrange(time_between_dates.days)
+        fechaFinal=str(start_date + timedelta(days=random_number_of_days)).split("-")
+        persona.append(fechaFinal[2]+"/"+fechaFinal[1]+"/"+fechaFinal[0]) #termina fecha de nacimiento
+        persona.append(random.choice(tipoSangre)) #mete tipo de sangre
+        persona.append(sexoEleccion) #mete sexo
+        persona.append(str(random.randint(50,120))+" kg") #mete peso
+        primerNumero=random.randint(6,8) #primer numero de telefono
+        persona.append(f"{primerNumero}{numero1}-{numero2}") #mete numero de telefono
+        primeroCorreo = ''.join(random.choice(string.ascii_letters+string.digits+".") for i in range(random.randint(6,30))) #inicia correo
+        persona.append(primeroCorreo+random.choice(extensionCorreo)) #mete correo
+        matriz.append(persona)
+    return matriz
 
 #######################
 #######################
@@ -213,4 +258,4 @@ def eliminarDonador(listaDic):
 #print("Lista en RAM, creada: ",listaDonadores)
 #eliminarDonador(listaDonadores)
 #print(lee("donadores"))
-print(provinciaYlugarDeDonacion(923))
+generarDonadores(3)
