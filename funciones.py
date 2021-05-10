@@ -1,5 +1,5 @@
 #prueba conexión con base de datos local.
-import mysql.connector
+#import mysql.connector
 #cnn=mysql.connector.connect(host="localhost",user="root",passwd="",database="prueba")
 #print(cnn)#se conecta a la base de datos.
 
@@ -28,6 +28,10 @@ def validarCedula(cedula):
     else:
         return False
 #07/05/2021 2:00 pm / 5 minutos haciendose.
+def validarNombreCompleto(nombre): #NO HAY QUE HACER FUNCION DE ENTRADA, ENTRA EN TKINTER
+    if re.match('[A-Za-z]{2,25}( [A-Za-z]{2,25}){2}',nombre):
+        return True
+    return False
 def validarFecha(fecha):
     """
     Función: Validar fecha y formato.
@@ -128,6 +132,20 @@ def validarMayorEdad(fechaNacimiento):
         return True
     else:
         return False
+def provinciaYlugarDeDonacion(cedula): #Punto 1.1
+    provincia=[["1","San José"],["2","Alajuela"],["3","Cartago"],["4","Heredia"],["5","Guanacaste"],["6","Puntarenas"],["7","Limón"]]
+    lugares={"San José":["El Banco Nacional de sangre", "Hospital México","Hospital San Juan de Dios"],"Alajuela":["Hospital San Rafael de Alajuela","Hospital de \
+San Ramón", "Hospital del Cantón Norteño"],"Cartago":["Hospital Max Peralta"],"Heredia":["Hospital San Vicente de Paúl"],"Guanacaste":["Hospital La \
+Anexión en Nicoya", "Hospital Enrique Baltodano de Liberia."],"Puntarenas":["Hospital Monseñor Sanabria"],"Limón":["Hospital Tony Facio","Hospital de \
+Guápiles"]}
+    lugarAsignado=None #para los que son cedula 8 y 9
+    for sublista in provincia: #recorre la lista
+        if str(cedula)[0]==sublista[0]:
+            lugarAsignado=sublista[1]
+    if lugarAsignado==None:
+        lugarAsignado="San José"
+    return "Dado que usted nació en la provincia de: "+lugarAsignado+" usted podría donar en: \n"+"\n".join(lugares[lugarAsignado])
+    
 #07/05/2021 / 1 hora.
 import pickle
 def graba(nombreArchivo,listaDic):
@@ -188,10 +206,11 @@ def eliminarDonador(listaDic):
             print("Cédula inválida")
             continue
     return ""
-print("Lista en disco duro:",lee("donadores"))
-listaDonadores=[{"cedula": "9-0139-0105", "estado": 0},{"cedula": "2-5432-2222", "estado": 0},
-{"cedula": "8-6456-5454", "estado": 0},{"cedula": "5-0246-0545", "estado": 1},
-{"cedula": "1-2311-3412", "estado": 1},{"cedula": "3-0125-5745", "estado": 1}]
-print("Lista en RAM, creada: ",listaDonadores)
-eliminarDonador(listaDonadores)
+#print("Lista en disco duro:",lee("donadores"))
+#listaDonadores=[{"cedula": "9-0139-0105", "estado": 0},{"cedula": "2-5432-2222", "estado": 0},
+#{"cedula": "8-6456-5454", "estado": 0},{"cedula": "5-0246-0545", "estado": 1},
+#{"cedula": "1-2311-3412", "estado": 1},{"cedula": "3-0125-5745", "estado": 1}]
+#print("Lista en RAM, creada: ",listaDonadores)
+#eliminarDonador(listaDonadores)
 #print(lee("donadores"))
+print(provinciaYlugarDeDonacion(923))
