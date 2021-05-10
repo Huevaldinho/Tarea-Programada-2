@@ -213,4 +213,10 @@ def eliminarDonador(listaDic):
 #print("Lista en RAM, creada: ",listaDonadores)
 #eliminarDonador(listaDonadores)
 #print(lee("donadores"))
-print(provinciaYlugarDeDonacion(923))
+#print(provinciaYlugarDeDonacion(923))
+#USAR DICCIONARIOS ES MAS FACIL, NO NECESITAMOS CICLOS PARA SACAR LOS DATOS.
+personas={"9-0139-010-":{"nombre":"Felipe Obando Arrieta","telefono":"7013-0686","edad":"19",},
+"1-1234-5678":{"nombre":"Pepito Mamador","telefono":"911","edad":"100"}}#lista de personas.
+print(personas["1-1234-5678"]["telefono"])#así seleccionamos algo en particular de un usuario.
+personas["1-1234-5678"]["telefono"]="pene"#así actualizamos datos.
+print(personas)
