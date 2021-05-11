@@ -8,6 +8,7 @@
 ####################
 #VALIDACIONES
 ####################
+from datetime import datetime
 import enum
 import re
 from datetime import *
@@ -16,6 +17,12 @@ import random
 import names
 import string
 def solicitarCedula():
+    """
+    Función: Solicitar un string que contenga el número de cédula.
+    Entrada: N/A.
+    Salida: 
+    -cedula(str): Cedula ingresada.
+    """
     cedula=input("Ingrese número de cédula: ")
     return cedula
 def validarCedula(cedula):
@@ -33,6 +40,14 @@ def validarCedula(cedula):
         return False
 #07/05/2021 2:00 pm / 5 minutos haciendose.
 def validarNombreCompleto(nombre): #NO HAY QUE HACER FUNCION DE ENTRADA, ENTRA EN TKINTER
+    """
+    Función: Validar nombre completo.
+    Entrada:
+    -nombre(str): Nombre.
+    Salida:
+    -True(bool): Si está bien.
+    -False(bool): Si no está bien
+    """
     if re.match('[A-Za-z]{2,25}( [A-Za-z]{2,25}){2}',nombre):
         return True
     return False
@@ -101,9 +116,7 @@ def validarPeso(peso):
         return False
     print("Peso ingresado correctamente.")
     return True
-
 #Falta meter en función que reciba fecha de nacimiento CORREGIR
-
 def validarMayorEdad(fechaNacimiento):
     """
     Función: Determinar si una persona es mayor de edad según su fecha de nacimiento (dd/mm/aaaa).
@@ -113,7 +126,7 @@ def validarMayorEdad(fechaNacimiento):
     -True(bool): Si es mayor de edad.
     -False(bool): Si no es mayor de edad.
     """
-    fecha_dt = str(strptime(fechaNacimiento, '%d/%m/%Y'))#cambia fecha a tipo date.
+    fecha_dt = str(datetime.strptime(fechaNacimiento, '%d/%m/%Y'))#cambia fecha a tipo date.
     annoNacimiento=int(fecha_dt[0:4])#pasa el año a int para restarlo.
     today = str(date.today())#pasa la fecha actual a str.
     annoActual=int(today[0:4])#pasa el año actual a int para restar.
@@ -137,6 +150,13 @@ def validarMayorEdad(fechaNacimiento):
     else:
         return False
 def provinciaYlugarDeDonacion(cedula): #Punto 1.1
+    """
+    Función: Lugares donde se puede donar según su provicia de nacimiento.
+    Entrada:
+    -cedula(str): Cédula de persona.
+    Salida:
+    -lugarAsignado(str): Lugar de votación según provincia de nacimiento.
+    """
     provincia=[["1","San José"],["2","Alajuela"],["3","Cartago"],["4","Heredia"],["5","Guanacaste"],["6","Puntarenas"],["7","Limón"]]
     lugares={"San José":["El Banco Nacional de sangre", "Hospital México","Hospital San Juan de Dios"],"Alajuela":["Hospital San Rafael de Alajuela","Hospital de \
 San Ramón", "Hospital del Cantón Norteño"],"Cartago":["Hospital Max Peralta"],"Heredia":["Hospital San Vicente de Paúl"],"Guanacaste":["Hospital La \
@@ -149,19 +169,31 @@ Guápiles"]}
     if lugarAsignado==None:
         lugarAsignado="San José"
     return "Dado que usted nació en la provincia de: "+lugarAsignado+" usted podría donar en: \n"+"\n".join(lugares[lugarAsignado])
-    
 #07/05/2021 / 1 hora.
-
-def graba(nombreArchivo,listaDic):
+def graba(nombreArchivo,lista):
+    """
+    Función: Grabar/crear un archivo(base de datos).
+    Entradas:
+    -nombreArchivo(str): Nombre del archivo en el que se va a grabar/crear.
+    -lista(list): Lista que se va a guardar en el archivo.
+    Salida: N/A.
+    """
     try:
         f=open(nombreArchivo,"wb")
-        pickle.dump(listaDic,f)
+        pickle.dump(lista,f)
         f.close()
     except:
         print("Error al grabar el archivo: ", nombreArchivo)
     return
 #Función que lee un archivo con una lista de estudiantes
 def lee (nomArchLeer):
+    """
+    Función: Grabar/crear un archivo(base de datos).
+    Entradas:
+    -nombreArchivo(str): Nombre del archivo que se va a cargar en la RAM.
+    Salida: 
+    -lista(list): Lista de donadores.
+    """
     try:
         f=open(nomArchLeer,"rb")
         lista = pickle.load(f)
@@ -175,6 +207,13 @@ def lee (nomArchLeer):
 #######################
 #######################
 def generarDonadores(cantidad):
+    """
+    Función: Generar donadores aleatorios.
+    Entrada:
+    -cantidad(int): Cantidad de personas que se tienen que crear.
+    Salida:
+    -matriz(list): Matriz con personas creadas.
+    """
     matriz=[] #base de datos donde se guarda la info de cada persona
     tipoSangre=["O+","O-", "A+", "A-", "B+", "B-", "AB+", "AB-"]
     sexo=["Masculino", "Femenino"]
@@ -212,38 +251,48 @@ def generarDonadores(cantidad):
         persona.append(primeroCorreo+random.choice(extensionCorreo)) #mete correo
         matriz.append(persona)
     return matriz
-
-
-#######################
+def revisarLista(lista,usuario):
+    """
+    Función: Validar que un usuario esté registrado.
+    Entradas:
+    -lista(list): Lista de personas registradas.
+    -usuario(str): Cédula de persona que se busca en la lista.
+    Salida:
+    -True(bool): Si el usuario está en la lista.
+    -False(bool): Si el usuario NO está en la lista.
+    """
+    for i,filas in enumerate(lista):
+        for j,columna in enumerate(filas):
+            if usuario==columna:
+                return filas,i
+            else:
+                break
+    return False
 #######################
 #4.ELIMINAR DONADOR
-#######################
 #######################
 def eliminarDonador(donadores,eliminar):#cambiar a listas.
 # formato: lista=[['cedula','nombreCompleto','fechaNacimiento','sangre','sexo','peso','telefono', 'correo']]
     """
-    Función: Eliminar donador.
+    Función: Eliminar donador de una lista(cambiar estado a 0).
     Entrada:
-    -listaDic(dic): Lista con diccionarios de cada usuario.
+    -donadores(list): Lista con información de cada persona.
+    -eliminar(str): Persona que se eliminará.
     Salida: N/A.
     """
+    print("Donadores sin cambios:",donadores,"\n")
     if revisarLista(donadores,eliminar)==False:
-        print("El usuario no se encuentra en la lista")
+        print("El usuario no se encuentra en la lista")#se muestra en inferfaz gráfica
         return ""
-    print("Lista donadores actualizada:",donadores)
-    #graba("donadores",donadores)#manda a grabar lista
+    confirmar=1#se hace en interfaz gráfica
+    eliminado=revisarLista(donadores,eliminar)#devuelve tupla con lista de persona y posición.
+    posicion=eliminado[1]#posición de la persona en la lista.
+    if eliminado[0][6]==0:
+        #mostar en interfaz gráfica
+        print("Este usuario ya se encuentra inactivo")
+        return ""
+    eliminado[0][6]=0#cambia el estado a 0.
+    graba("donadores",donadores)#manda a grabar lista
     print("Usuario eliminado safisfactoriamente.")#debe mostrarse en la interfaz
     #debe regresar al menu
     return ""
-def revisarLista(lista,usuario):
-    for i,filas in enumerate(lista):
-        for j,columna in enumerate(filas):
-            if usuario==columna:
-                return True
-            else:
-                break
-    return False
-
-listaDonadores=[['7-7775-4349','Jacinto Lohr Vega','24/10/1989','B+','Masculino','73 kg','28931-5016', 'L1jBTVOdpraEa@gmail.com'],['4-6221-2308','Sara Murray Fekete','02/10/2017','AB-','Femenino','106 kg','75168-5115','uhwno0T5@costarricense.cr'],['8-2815-4250', 'Maxine Glover Rapp', '05/04/2007', 'B+', 'Femenino', '93 kg', '26288-9340', 'HPPswwBcOWCxOedBNMrqs8@gmail.com']]
-eliminar="7-7775-4349"
-eliminarDonador(listaDonadores,eliminar)
