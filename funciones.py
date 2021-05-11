@@ -218,7 +218,8 @@ def generarDonadores(cantidad):
 #4.ELIMINAR DONADOR
 #######################
 #######################
-def eliminarDonador(donadores):
+def eliminarDonador(donadores):#cambiar a listas.
+# formato: lista=[['cedula','nombreCompleto','fechaNacimiento','sangre','sexo','peso','telefono', 'correo']]
     """
     Función: Eliminar donador.
     Entrada:
@@ -244,22 +245,12 @@ def eliminarDonador(donadores):
     print(donadores)
     graba("donadores",donadores)
     print("Usuario eliminado safisfactoriamente.")#debe mostrarse en la interfaz
+    #mandar a grabar
     #debe regresar al menu
     return ""
-#Función mensaje de error.
-#BORRADOR DICCIONARIO, DEBE TENER ESTE FORMATO.
-nombreDic={"insertar cedula":{"nombre":"se le asigna nombre","sangre":"se le asigna tipo de sangre",
-"sexo":"se le asigna sexo(bool)","fechaNacimiento":"se le asigna fecha nacimiento","peso":"se le asigna peso(int)",
-"correo":"se le asigna correo","telefono":"se le asigna telefono","estado":"se le asigna estado(int)",
-"justificacion":"se le asgina justifacación(int)"}}
-
-#print("Lista en disco duro:",lee("donadores"))
-#listaDonadores=[{"cedula": "9-0139-0105", "estado": 0},{"cedula": "2-5432-2222", "estado": 0},
-#{"cedula": "8-6456-5454", "estado": 0},{"cedula": "5-0246-0545", "estado": 1},
-#{"cedula": "1-2311-3412", "estado": 1},{"cedula": "3-0125-5745", "estado": 1}]
-#print("Lista en RAM, creada: ",listaDonadores)
-#eliminarDonador(listaDonadores)
-#print(lee("donadores"))
+listaDonadores=[['7-7775-4349','Jacinto Lohr Vega','24/10/1989','B+','Masculino','73 kg','28931-5016', 'L1jBTVOdpraEa@gmail.com'],
+['4-6221-2308','Sara Murray Fekete','02/10/2017','AB-','Femenino','106 kg','75168-5115','uhwno0T5@costarricense.cr'],
+['8-2815-4250', 'Maxine Glover Rapp', '05/04/2007', 'B+', 'Femenino', '93 kg', '26288-9340', 'HPPswwBcOWCxOedBNMrqs8@gmail.com']]
 print(generarDonadores(3))
-#personas=lee("donadores")#trae el diccionario de personas
-#eliminarDonador(personas)#llama a eliminar con el diccionario de personas
+eliminar="4-6221-2308"
+eliminarDonador(listaDonadores,eliminar)
