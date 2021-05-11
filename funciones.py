@@ -8,6 +8,7 @@
 ####################
 #VALIDACIONES
 ####################
+import enum
 import re
 from datetime import *
 import pickle
@@ -218,7 +219,7 @@ def generarDonadores(cantidad):
 #4.ELIMINAR DONADOR
 #######################
 #######################
-def eliminarDonador(donadores):#cambiar a listas.
+def eliminarDonador(donadores,eliminar):#cambiar a listas.
 # formato: lista=[['cedula','nombreCompleto','fechaNacimiento','sangre','sexo','peso','telefono', 'correo']]
     """
     Función: Eliminar donador.
@@ -226,31 +227,23 @@ def eliminarDonador(donadores):#cambiar a listas.
     -listaDic(dic): Lista con diccionarios de cada usuario.
     Salida: N/A.
     """
-    while True:
-        cedula=solicitarCedula()#manda a pedir la cédula en interfaz gráfica
-        if validarCedula(cedula):#manda a validar la cédula
-            if cedula in donadores:#si la persona no está registrada
-                #pedir justificación en interfaz gráfica.
-                if donadores[cedula]["estado"]==0:
-                    print("El usuario ya está inactivo")
-                    return ""
-                justi="algo"#solo para ver como actualizamos datos.
-                donadores[cedula]["estado"]=0#cambia el estado a inactivo.
-                donadores[cedula]["justificacion"]=justi#pone la justificación seleccionada en la interfaz gráfica.
-            else:#no está en la base de datos.
-                # esto se debe mostar en interfaz gráfica.
-                print("La persona con el número de cédula:",cedula, "no está registrado en la base de datos del Banco de Sangre aún")
-                return ""
-            break
-    print(donadores)
-    graba("donadores",donadores)
+    if revisarLista(donadores,eliminar)==False:
+        print("El usuario no se encuentra en la lista")
+        return ""
+    print("Lista donadores actualizada:",donadores)
+    #graba("donadores",donadores)#manda a grabar lista
     print("Usuario eliminado safisfactoriamente.")#debe mostrarse en la interfaz
-    #mandar a grabar
     #debe regresar al menu
     return ""
-listaDonadores=[['7-7775-4349','Jacinto Lohr Vega','24/10/1989','B+','Masculino','73 kg','28931-5016', 'L1jBTVOdpraEa@gmail.com'],
-['4-6221-2308','Sara Murray Fekete','02/10/2017','AB-','Femenino','106 kg','75168-5115','uhwno0T5@costarricense.cr'],
-['8-2815-4250', 'Maxine Glover Rapp', '05/04/2007', 'B+', 'Femenino', '93 kg', '26288-9340', 'HPPswwBcOWCxOedBNMrqs8@gmail.com']]
-print(generarDonadores(3))
-eliminar="4-6221-2308"
+def revisarLista(lista,usuario):
+    for i,filas in enumerate(lista):
+        for j,columna in enumerate(filas):
+            if usuario==columna:
+                return True
+            else:
+                break
+    return False
+
+listaDonadores=[['7-7775-4349','Jacinto Lohr Vega','24/10/1989','B+','Masculino','73 kg','28931-5016', 'L1jBTVOdpraEa@gmail.com'],['4-6221-2308','Sara Murray Fekete','02/10/2017','AB-','Femenino','106 kg','75168-5115','uhwno0T5@costarricense.cr'],['8-2815-4250', 'Maxine Glover Rapp', '05/04/2007', 'B+', 'Femenino', '93 kg', '26288-9340', 'HPPswwBcOWCxOedBNMrqs8@gmail.com']]
+eliminar="7-7775-4349"
 eliminarDonador(listaDonadores,eliminar)
