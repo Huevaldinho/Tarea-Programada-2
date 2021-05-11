@@ -218,6 +218,8 @@ def generarDonadores(cantidad):
     tipoSangre=["O+","O-", "A+", "A-", "B+", "B-", "AB+", "AB-"]
     sexo=["Masculino", "Femenino"]
     extensionCorreo=["@costarricense.cr","@racsa.go.cr","@ccss.sa.cr","@gmail.com"]
+#lista=[['cedula','nombreCompleto','fechaNacimiento','sangre','sexo',
+# 'peso','telefono', 'correo',"estado","justificación"]]
     for i in range(cantidad):
         persona=[] #lista de cada persona
         provincia=random.randint(1,9) #inicia cedula
@@ -249,6 +251,8 @@ def generarDonadores(cantidad):
         persona.append(f"{primerNumero}{numero1}-{numero2}") #mete numero de telefono
         primeroCorreo = ''.join(random.choice(string.ascii_letters+string.digits+".") for i in range(random.randint(6,30))) #inicia correo
         persona.append(primeroCorreo+random.choice(extensionCorreo)) #mete correo
+        persona.append(1)#estado predeterminado(activo)
+        persona.append(0)#justificación para activos.
         matriz.append(persona)
     return matriz
 def revisarLista(lista,usuario):
@@ -268,11 +272,18 @@ def revisarLista(lista,usuario):
             else:
                 break
     return False
+def confirmarEliminacion():
+    #boton en interfaz gráfica
+    boton=int(input("Ingrese 1 para confirmar: "))
+    if boton==1:
+        return True
+    return False
 #######################
 #4.ELIMINAR DONADOR
 #######################
 def eliminarDonador(donadores,eliminar):#cambiar a listas.
-# formato: lista=[['cedula','nombreCompleto','fechaNacimiento','sangre','sexo','peso','telefono', 'correo']]
+# formato: lista=[['cedula','nombreCompleto','fechaNacimiento','sangre','sexo',
+# 'peso',"estado",'telefono', 'correo',"justificación"]]
     """
     Función: Eliminar donador de una lista(cambiar estado a 0).
     Entrada:
@@ -280,19 +291,25 @@ def eliminarDonador(donadores,eliminar):#cambiar a listas.
     -eliminar(str): Persona que se eliminará.
     Salida: N/A.
     """
-    print("Donadores sin cambios:",donadores,"\n")
     if revisarLista(donadores,eliminar)==False:
         print("El usuario no se encuentra en la lista")#se muestra en inferfaz gráfica
         return ""
     confirmar=1#se hace en interfaz gráfica
     eliminado=revisarLista(donadores,eliminar)#devuelve tupla con lista de persona y posición.
     posicion=eliminado[1]#posición de la persona en la lista.
-    if eliminado[0][6]==0:
+    if eliminado[0][8]==0:
         #mostar en interfaz gráfica
         print("Este usuario ya se encuentra inactivo")
         return ""
-    eliminado[0][6]=0#cambia el estado a 0.
+    confirmar=confirmarEliminacion()
+    if confirmar==False:
+        #en interfaz gráfica
+        print("Donador NO eliminado")
+        return ""
+    eliminado[0][8]=0#cambia el estado a 0.
+    eliminado[0][9]="traer texto de interfaz gráfica"
     graba("donadores",donadores)#manda a grabar lista
     print("Usuario eliminado safisfactoriamente.")#debe mostrarse en la interfaz
     #debe regresar al menu
     return ""
+eliminarDonador(lee("donadores"),'3-2198-7309')

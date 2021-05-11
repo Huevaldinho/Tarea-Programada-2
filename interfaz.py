@@ -82,3 +82,5 @@ passw_entry.grid(row=2,column=1)
 sub_btn=Button(root,text = 'Ingresar', command = submit)
 sub_btn.grid(row=3,column=1)
 root.mainloop()#muestra la ventana haciendo un ciclo infinito
+
+
