@@ -216,7 +216,7 @@ def generarDonadores(cantidad):
     """
     matriz=[] #base de datos donde se guarda la info de cada persona
     tipoSangre=["O+","O-", "A+", "A-", "B+", "B-", "AB+", "AB-"]
-    sexo=["Masculino", "Femenino"]
+    sexo=[True, False]
     extensionCorreo=["@costarricense.cr","@racsa.go.cr","@ccss.sa.cr","@gmail.com"]
 #lista=[['cedula','nombreCompleto','fechaNacimiento','sangre','sexo',
 # 'peso','telefono', 'correo',"estado","justificación"]]
@@ -234,19 +234,19 @@ def generarDonadores(cantidad):
             numero2+=str(random.randint(0,9)) #para el numero de telefono
         persona.append(f"{provincia}-{tomo}-{asiento}") #termina cedula
         sexoEleccion=random.choice(sexo)#elige el sexo pero solo para evaluar, si es mujer nombre de mujer o viceversa con hombre
-        if sexoEleccion=="Femenino":
+        if sexoEleccion==False:
             persona.append(names.get_first_name(gender='female')+" "+names.get_last_name()+" "+names.get_last_name()) #mete nombre mujer
-        elif sexoEleccion=="Masculino":
+        elif sexoEleccion==True:
             persona.append(names.get_first_name(gender='male')+" "+names.get_last_name()+" "+names.get_last_name()) #mete nombre mujer
-        start_date = date(1980, 1, 1) #inica fecha de nacimiento
-        end_date = date(2020, 5, 25)
+        start_date = date(1961, 1, 1) #inica fecha de nacimiento
+        end_date = date(2003, 5, 25)
         time_between_dates = end_date - start_date
         random_number_of_days = random.randrange(time_between_dates.days)
         fechaFinal=str(start_date + timedelta(days=random_number_of_days)).split("-")
         persona.append(fechaFinal[2]+"/"+fechaFinal[1]+"/"+fechaFinal[0]) #termina fecha de nacimiento
         persona.append(random.choice(tipoSangre)) #mete tipo de sangre
         persona.append(sexoEleccion) #mete sexo
-        persona.append(str(random.randint(50,120))+" kg") #mete peso
+        persona.append(random.randint(50,120)) #mete peso
         primerNumero=random.choice([2,4,6,7,8,9]) #primer numero de telefono
         persona.append(f"{primerNumero}{numero1}-{numero2}") #mete numero de telefono
         primeroCorreo = ''.join(random.choice(string.ascii_letters+string.digits+".") for i in range(random.randint(6,30))) #inicia correo
@@ -312,4 +312,6 @@ def eliminarDonador(donadores,eliminar):#cambiar a listas.
     print("Usuario eliminado safisfactoriamente.")#debe mostrarse en la interfaz
     #debe regresar al menu
     return ""
-eliminarDonador(lee("donadores"),'3-2198-7309')
+
+
+print(generarDonadores(5))
