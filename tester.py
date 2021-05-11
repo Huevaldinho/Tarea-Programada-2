@@ -12,7 +12,8 @@
 #PROGRAMA PRUEBA
 #CREADO POR DIOSBEJUCO
 #HUMILDAD B)
-
+#diversión ante todo :=====D
+"""
 from tkinter import *
 
 ventana=Tk()
@@ -28,9 +29,9 @@ def saludo():
     messageVar = Message(ventana, text = 'Bienvenido al programa, su nombre es '+listaTexto[0]+' de primer apellido '+listaTexto[1]+'. \
 Su segundo apellido es '+listaTexto[2]+'\n\n'+texto,font="Arial 16",bg='lightblue')
     messageVar.grid(row=3, column=0,columnspan=4)
-botonOpcion=Button(ventana,text="Siguiente",bg='blue',command=lambda:saludo())
+botonOpcion=Button(ventana,text="Siguiente",bg='beige',command=lambda:saludo())
 botonOpcion.grid(row=2, column=0,columnspan=4)
-
+"""#
 
 #
 #
@@ -41,10 +42,7 @@ botonOpcion.grid(row=2, column=0,columnspan=4)
 #
 #
 #"""
-ventana.mainloop()
-
-
-
+#ventana.mainloop()
 #############
 """
 cajaTexto=Entry(ventana,font="Arial 30")
@@ -103,7 +101,6 @@ var1 = IntVar()
 Checkbutton(master, text='Male', variable=var1).grid(row=0, sticky=W)
 var2 = IntVar()
 Checkbutton(master, text='Female', variable=var2).grid(row=1, sticky=W)
-
 def myclick():
     label=Label(master,text="Hello, happy to have you!",font='Arial 25')
     label.grid(row=5,column=0)
@@ -113,32 +110,22 @@ boton1.grid(row=3,column=0)
 mainloop()
 """
 #############
-
-
-
 #INICIO DE LAS POSIBILIDADES DE MANEJO DE TKINTER
 #OBVIO EXISTEN MUCHAS MÁS, ESTAS SON SOLO ALGUNAS QUE NOS PODRÁN SERVIR
 #FALTA INVESTIGAR
 
-
-
 #Matar programa
-
 """
 import tkinter as tk
-
 r = tk.Tk()
 r.title('Counting Seconds')
 button = tk.Button(r, text='Stop', width=25, command=r.destroy)
 button.pack()
 r.mainloop()
 """
-
 #INTRODUCIR TEXTO
-
 """
 from tkinter import *
-
 master = Tk()
 Label(master, text='First Name').grid(row=0)
 Label(master, text='Last Name').grid(row=1)
@@ -148,14 +135,10 @@ e1.grid(row=0, column=1)
 e2.grid(row=1, column=1)
 mainloop()
 """
-
-
 #CAJA DE OPCIONES
     #LISTBOX
-
 """
 from tkinter import *
-
 top = Tk()
 Lb = Listbox(top)
 Lb.insert(1, 'Python')
@@ -165,39 +148,30 @@ Lb.insert(4, 'Any other')
 Lb.pack()
 top.mainloop()
 """
-
-
 #MOSTRAR UN MENSAJE
     #MESSAGE
 #funciona como el label
-
 """
 from tkinter import *
-
 main = Tk()
 messageVar = Message(main, text = 'This is our Message')
 messageVar.config(bg='lightblue')
 messageVar.pack( )
 main.mainloop( )
 """
-
 #BOTON RADIO
 #es una disyuncion excluyente, o sea solo uno se escoge
-
 """
 from tkinter import *
-
 root = Tk()
-Radiobutton(root, text='Masculino', variable=IntVar(), value=1).pack(anchor=W)#la variable significa lo que va a significar esa elección en el código, value
-Radiobutton(root, text='Femenino', variable=IntVar(), value=2).pack(anchor=W) # value es pues el valor que se le da. Por esoo es IntVar(): integer variable
-mainloop()"""
-
-
+v = IntVar()
+Radiobutton(root, text='GfG', variable=v, value=1).pack(anchor=W)
+Radiobutton(root, text='MIT', variable=v, value=2).pack(anchor=W)
+mainloop()
+"""
 #SCROLLBAR
-
 """
 from tkinter import *
-
 root = Tk()
 scrollbar = Scrollbar(root)
 scrollbar.pack( side = LEFT, fill = Y )
@@ -206,20 +180,15 @@ for line in range(25):
     mylist.insert(END, 'This is line number ' + str(line))
 mylist.pack( side = LEFT, fill = BOTH )
 scrollbar.config( command = mylist.yview )
-mainloop()"""
-
-
+mainloop()
+"""
 #SPINBOX
     #rango de opciones (integers)
-
 """
 from tkinter import *
 
 master = Tk()
 w = Spinbox(master, from_ = 0, to = 5)
 w.pack()
-mainloop()"""
-
-
-
-
+mainloop()
+"""

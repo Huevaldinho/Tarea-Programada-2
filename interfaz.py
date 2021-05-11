@@ -51,11 +51,12 @@ def submit():#función que se llama cuando se le da el boton submit.
     password=passw_var.get()#toma lo que se ignrese en el cuadro de contraseña.
     cedula=cedula_var.get()
     if validarCedula(cedula):
-        print("The name is : " + name)
-        print("The password is : " + password)
+        #print("The name is : " + name)
+        #print("The password is : " + password)
         print("La cédula es:",cedula)
     else:
         messagebox.showerror("Error", "Cédula inválida")
+    cedula_var.set("")
     name_var.set("")#reinicia el contenido del cuadro
     passw_var.set("")#reinicia el contenido del cuadro
 #Etiqueta del username

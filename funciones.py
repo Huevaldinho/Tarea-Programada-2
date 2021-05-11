@@ -247,6 +247,11 @@ def eliminarDonador(donadores):
     #debe regresar al menu
     return ""
 #Función mensaje de error.
+#BORRADOR DICCIONARIO, DEBE TENER ESTE FORMATO.
+nombreDic={"insertar cedula":{"nombre":"se le asigna nombre","sangre":"se le asigna tipo de sangre",
+"sexo":"se le asigna sexo(bool)","fechaNacimiento":"se le asigna fecha nacimiento","peso":"se le asigna peso(int)",
+"correo":"se le asigna correo","telefono":"se le asigna telefono","estado":"se le asigna estado(int)",
+"justificacion":"se le asgina justifacación(int)"}}
 
 #print("Lista en disco duro:",lee("donadores"))
 #listaDonadores=[{"cedula": "9-0139-0105", "estado": 0},{"cedula": "2-5432-2222", "estado": 0},
