@@ -246,6 +246,8 @@ def eliminarDonador(donadores):
     print("Usuario eliminado safisfactoriamente.")#debe mostrarse en la interfaz
     #debe regresar al menu
     return ""
+#Función mensaje de error.
+
 #print("Lista en disco duro:",lee("donadores"))
 #listaDonadores=[{"cedula": "9-0139-0105", "estado": 0},{"cedula": "2-5432-2222", "estado": 0},
 #{"cedula": "8-6456-5454", "estado": 0},{"cedula": "5-0246-0545", "estado": 1},
