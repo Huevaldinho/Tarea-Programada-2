@@ -196,7 +196,7 @@ def generarDonadores(cantidad):
             persona.append(names.get_first_name(gender='female')+" "+names.get_last_name()+" "+names.get_last_name()) #mete nombre mujer
         elif sexoEleccion=="Masculino":
             persona.append(names.get_first_name(gender='male')+" "+names.get_last_name()+" "+names.get_last_name()) #mete nombre mujer
-        start_date = date(1950, 1, 1) #inica fecha de nacimiento
+        start_date = date(1980, 1, 1) #inica fecha de nacimiento
         end_date = date(2020, 5, 25)
         time_between_dates = end_date - start_date
         random_number_of_days = random.randrange(time_between_dates.days)
@@ -205,13 +205,12 @@ def generarDonadores(cantidad):
         persona.append(random.choice(tipoSangre)) #mete tipo de sangre
         persona.append(sexoEleccion) #mete sexo
         persona.append(str(random.randint(50,120))+" kg") #mete peso
-        primerNumero=random.randint(6,8) #primer numero de telefono
+        primerNumero=random.choice([2,4,6,7,8,9]) #primer numero de telefono
         persona.append(f"{primerNumero}{numero1}-{numero2}") #mete numero de telefono
         primeroCorreo = ''.join(random.choice(string.ascii_letters+string.digits+".") for i in range(random.randint(6,30))) #inicia correo
         persona.append(primeroCorreo+random.choice(extensionCorreo)) #mete correo
         matriz.append(persona)
     return matriz
-    return lista
 
 
 #######################
@@ -254,6 +253,6 @@ def eliminarDonador(donadores):
 #print("Lista en RAM, creada: ",listaDonadores)
 #eliminarDonador(listaDonadores)
 #print(lee("donadores"))
-#generarDonadores(3)
+print(generarDonadores(3))
 #personas=lee("donadores")#trae el diccionario de personas
 #eliminarDonador(personas)#llama a eliminar con el diccionario de personas
