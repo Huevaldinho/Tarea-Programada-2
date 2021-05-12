@@ -10,7 +10,7 @@ def seleccionar():
 def reset():
     opcion.set(None)
     monitor.config(text="")
-# Configuración de la raíz
+#Selecctor de provincias
 root = Tk()
 opcion = IntVar()
 Radiobutton(root, text="1. San José", variable=opcion, 
@@ -36,9 +36,6 @@ monitor.pack()
 print(root)
 # Finalmente bucle de la aplicación
 root.mainloop()
-
-
-
 ###################################################################################################################
 #
 root=Tk()#ventana principal
@@ -82,5 +79,3 @@ passw_entry.grid(row=2,column=1)
 sub_btn=Button(root,text = 'Ingresar', command = submit)
 sub_btn.grid(row=3,column=1)
 root.mainloop()#muestra la ventana haciendo un ciclo infinito
-
-

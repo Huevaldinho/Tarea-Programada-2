@@ -312,6 +312,3 @@ def eliminarDonador(donadores,eliminar):#cambiar a listas.
     print("Usuario eliminado safisfactoriamente.")#debe mostrarse en la interfaz
     #debe regresar al menu
     return ""
-
-
-print(generarDonadores(5))

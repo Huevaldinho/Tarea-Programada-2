@@ -192,32 +192,126 @@ w = Spinbox(master, from_ = 0, to = 5)
 w.pack()
 mainloop()
 """
-#combobox
+"""
+#COMBOBOX OBTIENE VALOR SELECCIONADO
 import tkinter as tk
-from tkinter import ttk
+from tkinter import StringVar, ttk
+from tkinter.constants import COMMAND
+def pruebaCombobox():
+    app = tk.Tk() #ventana
+    app.geometry('400x200')#tamaño ventana
+    prueba=StringVar()#manda a pedir el valor seleccionado en el combobox
+    def funcion(a):
+        x=prueba.get()#manda a pedir el valor seleccionado que está en prueba.
+        print(x)#solo para ver que sirve
+    labelTop = tk.Label(app,text = "Seleccione el mes")
+    labelTop.grid(column=0, row=0,padx=10,pady=10)#ubicación de etiqueta
 
-def callbackFunc(event):
-     print("New Element Selected")
-     
-app = tk.Tk() 
-app.geometry('200x100')
+    comboExample = ttk.Combobox(app,textvariable=prueba,values=["January","February","March","April"])#
+    comboExample.grid(column=0, row=1,padx=10,pady=10)
+    comboExample.current(1)
+    comboExample.bind("<<ComboboxSelected>>", funcion)
 
-labelTop = tk.Label(app,
-                    text = "Choose your favourite month")
-labelTop.grid(column=0, row=0)
+    app.mainloop()
 
-comboExample = ttk.Combobox(app, 
-                            values=[
-                                    "January", 
-                                    "February",
-                                    "March",
-                                    "April"])
+pruebaCombobox()
+"""
+"""
+1.Insertar donador
+2.Generardonadores. 
+3.Actualizar datosdel donador
+4.Eliminar donador
+5.Insertar lugar de donación según provincia. 
+6.Reportes
+7.Salir
+"""
+from os import pardir
+from tkinter import *
+from tkinter import StringVar, ttk
+from tkinter.constants import COMMAND
+#def cerrar():
+    #nombreVentana.destoy()
+def insertar():
+    #usar toplevel() en secundarias en vez de Tk, para no consumir tanto recurso o algo así XD.
+    ventanaInsertar=Toplevel()
 
+    ventanaInsertar.geometry("280x350")#le da tamaño a la ventana principal
+    #ventanaInsertar.resizable(width=False, height=False)
+    botonSalirVentanaInsertar=Button(ventanaInsertar,text="Salir",command=ventanaInsertar.destroy)#sale de la ventana insertar
+    botonSalirVentanaInsertar.grid(row=5,column=5,padx=10,pady=10)
 
-comboExample.grid(column=0, row=1)
-comboExample.current(1)
+def generar():
+    ventanaGenerar=Toplevel()
 
-comboExample.bind("<<ComboboxSelected>>", callbackFunc)
+    etiquetaGenerar=Label(ventanaGenerar,text="GENERAR USUARIOS")
+    etiquetaGenerar.grid(row=1,column=5,padx=10,pady=10)
 
+    botonSalirVentanaGenerar=Button(ventanaGenerar,text="Salir",command=ventanaGenerar.destroy)#sale de la ventana insertar
+    botonSalirVentanaGenerar.grid(row=5,column=5,padx=10,pady=10)
+def actualizar():
+    ventanaActualizar=Toplevel()
+    
+    etiquetaActualizar=Label(ventanaActualizar,text="ACTUALIZAR")
+    etiquetaActualizar.grid(row=1,column=5,padx=10,pady=10)
 
-app.mainloop()
+    botonSalirVentanaActualizar=Button(ventanaActualizar,text="Salir",command=ventanaActualizar.destroy)
+    botonSalirVentanaActualizar.grid(row=5,column=5,padx=10,pady=10)
+
+def eliminar():
+    ventanaEliminar=Toplevel()
+
+    etiquetaEliminar=Label(ventanaEliminar,text="ELIMINAR")
+    etiquetaEliminar.grid(row=1,column=5,padx=10,pady=10)
+
+    botonSalirVentanaEliminar=Button(ventanaEliminar,text="Salir",command=ventanaEliminar.destroy)
+    botonSalirVentanaEliminar.grid(row=5,column=5,padx=10,pady=10)
+
+def insertarLugar():
+    ventanaInsertarLugar=Toplevel()
+
+    etiquetaInsertarLugar=Label(ventanaInsertarLugar,text="INSERTAR LUGAR")
+    etiquetaInsertarLugar.grid(row=1,column=5,padx=10,pady=10)
+
+    botonSalirVentanaInsertarLugar=Button(ventanaInsertarLugar,text="Salir",command=ventanaInsertarLugar.destroy)
+    botonSalirVentanaInsertarLugar.grid(row=5,column=5,padx=10,pady=10)
+
+def reportes():
+    ventanaReportes=Toplevel()
+
+    etiquetaReportes=Label(ventanaReportes,text="REPORTES")
+    etiquetaReportes.grid(row=1,column=5,padx=10,pady=10)
+
+    botonSalirReportes=Button(ventanaReportes,text="Salir",command=ventanaReportes.destroy)
+    botonSalirReportes.grid(row=5,column=5,padx=10,pady=10)
+
+def menu():#NO TOCAR, YA ESTÁ LISTO.
+    principal=Tk()#menu principal
+    principal.title("Donadores de Sangre Costa Rica")
+    principal.geometry("280x350")#le da tamaño a la ventana principal
+    principal.resizable(width=False, height=False)#NO QUITAR PARA QUE NO ESTEN TOCANDO EL TAMAÑO.
+    #principal.minsize(300, 200)#tamaño mínimo que se puede mofificar
+    #principal.maxsize(500,250)#tamaño máximo que se puede mofificar
+    
+    #Llama a la función insertar.
+    botonInsertar=Button(principal,text="Insertar",command=insertar)
+    botonInsertar.grid(row=0,column=1,padx=10,pady=10)
+    #Llama a la función generar.
+    botonGenerar=Button(principal,text="Generar donadores",command=generar)
+    botonGenerar.grid(row=1,column=1,padx=10,pady=10)
+    #Llama a la función actualizar.
+    botonActualizar=Button(principal,text="Actualizar datos del donador",command=actualizar)
+    botonActualizar.grid(row=2,column=1,padx=10,pady=10)
+    #Llama a la función eliminar.
+    botonEliminar=Button(principal,text="Eliminar donador",command=eliminar)
+    botonEliminar.grid(row=3,column=1,padx=10,pady=10)
+    #Llama a la función insertar lugar.
+    botonInsertarLugar=Button(principal,text="Insertar lugar de donación según provincia",command=insertarLugar)
+    botonInsertarLugar.grid(row=4,column=1,padx=10,pady=10)
+    #Llama a la función reporte.
+    botonReportes=Button(principal,text="Reportes",command=reportes)
+    botonReportes.grid(row=5,column=1,padx=10,pady=10)
+    #Llama a la función salir
+    botonSalir=Button(principal,text="Salir",command=quit)
+    botonSalir.grid(row=7,column=1,padx=10,pady=10)#termina la ventana
+    principal.mainloop()
+menu()
