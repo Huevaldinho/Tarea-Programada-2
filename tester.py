@@ -201,19 +201,19 @@ def pruebaCombobox():
     app = tk.Tk() #ventana
     app.geometry('400x200')#tamaño ventana
     prueba=StringVar()#manda a pedir el valor seleccionado en el combobox
-    def funcion(a):
+    def funcion(recibe):
         x=prueba.get()#manda a pedir el valor seleccionado que está en prueba.
         print(x)#solo para ver que sirve
-    labelTop = tk.Label(app,text = "Seleccione el mes")
+    labelTop = tk.Label(app,text = "Seleccione provincia")
     labelTop.grid(column=0, row=0,padx=10,pady=10)#ubicación de etiqueta
 
-    comboExample = ttk.Combobox(app,textvariable=prueba,values=["January","February","March","April"])#
+    comboExample = ttk.Combobox(app,textvariable=prueba,values=["San José"
+    ,"Alajuela","Cartago","Heredia","Guanacaste","Puntarenas","Limón"
+    ,"Nacionalizado o naturalizados","Casos especiales"])#
     comboExample.grid(column=0, row=1,padx=10,pady=10)
-    comboExample.current(1)
+    #comboExample.current(0)#pone como determinado alguno de la lista.
     comboExample.bind("<<ComboboxSelected>>", funcion)
-
     app.mainloop()
-
 pruebaCombobox()
 """
 """
@@ -225,6 +225,7 @@ pruebaCombobox()
 6.Reportes
 7.Salir
 """
+
 from os import pardir
 from tkinter import *
 from tkinter import StringVar, ttk
