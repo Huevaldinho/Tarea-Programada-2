@@ -255,7 +255,7 @@ def generarDonadores(cantidad):
         persona.append(0)#justificación para activos.
         matriz.append(persona)
     return matriz
-def revisarLista(lista,usuario):
+def revisarLista(usuario):
     """
     Función: Validar que un usuario esté registrado.
     Entradas:
@@ -265,6 +265,7 @@ def revisarLista(lista,usuario):
     -True(bool): Si el usuario está en la lista.
     -False(bool): Si el usuario NO está en la lista.
     """
+    lista=lee("donadores")
     for i,filas in enumerate(lista):
         for j,columna in enumerate(filas):
             if usuario==columna:
@@ -272,16 +273,18 @@ def revisarLista(lista,usuario):
             else:
                 break
     return False
+
 def confirmarEliminacion():
     #boton en interfaz gráfica
     boton=int(input("Ingrese 1 para confirmar: "))
     if boton==1:
         return True
     return False
+
 #######################
 #4.ELIMINAR DONADOR
 #######################
-def eliminarDonador(donadores,eliminar):#cambiar a listas.
+def eliminarDonador(eliminar,jusfificacion):#cambiar a listas.
 # formato: lista=[['cedula','nombreCompleto','fechaNacimiento','sangre','sexo',
 # 'peso',"estado",'telefono', 'correo',"justificación"]]
     """
@@ -291,24 +294,16 @@ def eliminarDonador(donadores,eliminar):#cambiar a listas.
     -eliminar(str): Persona que se eliminará.
     Salida: N/A.
     """
-    if revisarLista(donadores,eliminar)==False:
-        print("El usuario no se encuentra en la lista")#se muestra en inferfaz gráfica
+    donadores=lee("donadores")
+    if revisarLista(eliminar)==False:
         return ""
-    confirmar=1#se hace en interfaz gráfica
-    eliminado=revisarLista(donadores,eliminar)#devuelve tupla con lista de persona y posición.
+    eliminado=revisarLista(eliminar)#devuelve tupla con lista de persona y posición.
     posicion=eliminado[1]#posición de la persona en la lista.
     if eliminado[0][8]==0:
-        #mostar en interfaz gráfica
-        print("Este usuario ya se encuentra inactivo")
-        return ""
-    confirmar=confirmarEliminacion()
-    if confirmar==False:
-        #en interfaz gráfica
-        print("Donador NO eliminado")
-        return ""
-    eliminado[0][8]=0#cambia el estado a 0.
-    eliminado[0][9]="traer texto de interfaz gráfica"
+        return False
+    #eliminado[0][8]=0#cambia el estado a 0.
+    #eliminado[0][9]=jusfificacion
+    donadores[posicion][8]=0
+    donadores[posicion][9]=jusfificacion
     graba("donadores",donadores)#manda a grabar lista
-    print("Usuario eliminado safisfactoriamente.")#debe mostrarse en la interfaz
-    #debe regresar al menu
-    return ""
+    return True

@@ -31,7 +31,9 @@ root.mainloop()
 ###################################################################################################################
 #
 """
-"""
+from tkinter import *
+from funciones import *
+from tkinter import messagebox
 root=Tk()#ventana principal
 root.geometry("600x400")#le da tamaño a la ventana principal
 name_var=StringVar()#almacena el texto que se meta en el cuadro de username
@@ -73,7 +75,7 @@ passw_entry.grid(row=2,column=1)
 sub_btn=Button(root,text = 'Ingresar', command = submit)
 sub_btn.grid(row=3,column=1)
 root.mainloop()#muestra la ventana haciendo un ciclo infinito
-"""
+
 #COMBOBOX OBTIENE VALOR SELECCIONADO
 import tkinter as tk
 from tkinter import StringVar, ttk
@@ -103,8 +105,12 @@ def pruebaCombobox():
         else:
             print(6,x)
         print("PREGUNTAR SI CONFIRMA")
-        confirma=messagebox.askquestion("askquestion", "Are you sure?")
+        confirma=messagebox.askquestion("Confirmar eliminación", "Desea eliminarlo?")
         print(confirma)#retorna yes o no
+        if confirma=="yes":
+            print("entra")
+        else:
+            print("no hace nada")
         return
     labelTop = tk.Label(app,text = "Seleccione provincia")
     labelTop.grid(column=0, row=0,padx=10,pady=10)#ubicación de etiqueta
