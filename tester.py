@@ -226,6 +226,7 @@ pruebaCombobox()
 7.Salir
 """
 
+from enum import auto
 from os import pardir
 from tkinter import *
 from tkinter import StringVar, ttk
@@ -242,6 +243,8 @@ def insertar():
     #ventanaInsertar.resizable(width=False, height=False)
     botonSalirVentanaInsertar=Button(ventanaInsertar,text="Salir",command=ventanaInsertar.destroy)#sale de la ventana insertar
     botonSalirVentanaInsertar.grid(row=5,column=5,padx=10,pady=10)
+
+
 
 def generar():
     ventanaGenerar=Toplevel()
@@ -264,7 +267,6 @@ def eliminar():
     #Etiqueta eliminar
     etiquetaEliminar=Label(ventanaEliminar,text="ELIMINAR")
     etiquetaEliminar.grid(row=1,column=1,padx=10,pady=10)
-
     cedula_var=StringVar()#se declara.
     def submit(cedula_var):#función que se llama cuando se le da el boton submit.
         cedula=(cedula_var.get())#convierte el parametro class 'tkinter.StringVar a str
@@ -272,9 +274,8 @@ def eliminar():
             #NECESITAMOS BLOQUAR EL CUADRO DE TEXTO APENAS SE VALIDE.
             if revisarLista(cedula):#si está en la lista
                 prueba=StringVar()#manda a pedir el valor seleccionado en el combobox
-                
-                def funcion(recibe):#para clasificar su justificació´n
-                    cuadroSeleccion=Frame(ventanaEliminar)
+                def funcion(recibe):#para clasificar su justificación
+                    #cuadroSeleccion=Frame(ventanaEliminar)
                     listaJustificaciones=["Su peso bajó a menos de 50 kgms.",
             "No se puede donar sangre si la persona ha sido trasplantada, es decir, ha recibido un trasplante de órgano.",
             "Enfermedades como: tuberculosis, cáncer o cualquier enfermedad coronaria.",
@@ -298,21 +299,21 @@ def eliminar():
                         if eliminarDonador(cedula,x):
                             messagebox.showinfo("Usuario eliminado","Donador eliminado satisfactoriamente")
                         else:
-                            messagebox.showinfo("Usuario eliminado","Este usuario está inactivo")
+                            messagebox.showinfo("Usuario inactivo","Este usuario está inactivo")
                     else:
                         messagebox.showinfo("Usuario NO eliminado","Donador NO eliminado")
                     
                 labelTop = Label(ventanaEliminar,text = "Seleccione provincia")
                 labelTop.grid(column=1, row=4,padx=10,pady=10)#ubicación de etiqueta
 
-                comboExample = ttk.Combobox(ventanaEliminar,textvariable=prueba,values=["Su peso bajó a menos de 50 kgms."
+                comboExample = ttk.Combobox(ventanaEliminar,width=50,textvariable=prueba,values=["Su peso bajó a menos de 50 kgms."
     ,"No se puede donar sangre si la persona ha sido trasplantada, es decir, ha recibido un trasplante de órgano.",
     "Enfermedades como: tuberculosis, cáncer o cualquier enfermedad coronaria.",
     "Si el donante esadicto a ningún tipo de droga.","Padecióhepatitis B o C.",
     "Si has padecido de mal de Chagas no puedes donar."])#
                 comboExample.grid(column=1, row=4,padx=10,pady=10)
                 
-                comboExample.current(0)#pone como determinado alguno de la lista.
+                #comboExample.current(0)#pone como determinado alguno de la lista.
                 comboExample.bind("<<ComboboxSelected>>", funcion)
                 pass
             else:
@@ -320,6 +321,7 @@ def eliminar():
         else:
             messagebox.showerror("Error", "Cédula inválida")
         cedula_var.set("")#reinicia el cuadro
+        print(cedula)
     #Etiqueta del cedula
     cedula_label = Label(ventanaEliminar, text = 'Cedula')
     cedula_label.grid(row=2,column=0)
@@ -332,17 +334,14 @@ def eliminar():
 
     botonSalirVentanaEliminar=Button(ventanaEliminar,text="Salir",command=ventanaEliminar.destroy)
     botonSalirVentanaEliminar.grid(row=5,column=5,padx=10,pady=10)
-
-
 def insertarLugar():
     ventanaInsertarLugar=Toplevel()
 
     etiquetaInsertarLugar=Label(ventanaInsertarLugar,text="INSERTAR LUGAR")
-    etiquetaInsertarLugar.grid(row=1,column=5,padx=10,pady=10)
+    etiquetaInsertarLugar.grid(row=1,column=5)
 
     botonSalirVentanaInsertarLugar=Button(ventanaInsertarLugar,text="Salir",command=ventanaInsertarLugar.destroy)
-    botonSalirVentanaInsertarLugar.grid(row=5,column=5,padx=10,pady=10)
-
+    botonSalirVentanaInsertarLugar.grid(row=5,column=5)
 def reportes():
     ventanaReportes=Toplevel()
 
@@ -351,7 +350,6 @@ def reportes():
 
     botonSalirReportes=Button(ventanaReportes,text="Salir",command=ventanaReportes.destroy)
     botonSalirReportes.grid(row=5,column=5,padx=10,pady=10)
-
 def menu():#NO TOCAR, YA ESTÁ LISTO.
     principal=Tk()#menu principal
     principal.title("Donadores de Sangre Costa Rica")
@@ -360,7 +358,7 @@ def menu():#NO TOCAR, YA ESTÁ LISTO.
     #principal.minsize(300, 200)#tamaño mínimo que se puede mofificar
     #principal.maxsize(500,250)#tamaño máximo que se puede mofificar
     
-    #Llama a la función insertar.
+    #1. Insertar donador
     botonInsertar=Button(principal,text="Insertar",command=insertar)
     botonInsertar.grid(row=0,column=1,padx=10,pady=10)
     #Llama a la función generar.
