@@ -232,6 +232,7 @@ from tkinter import *
 from tkinter import StringVar, ttk
 from tkinter.constants import COMMAND
 from tkinter import messagebox
+from typing import Literal
 from funciones import *
 #def cerrar():
     #nombreVentana.destoy()
@@ -372,76 +373,84 @@ def actualizar():
     botonSalirVentanaActualizar.grid(row=5,column=5,padx=10,pady=10)
 def eliminar():
     ventanaEliminar=Toplevel()
-    #Etiqueta eliminar
-    etiquetaEliminar=Label(ventanaEliminar,text="ELIMINAR")
-    etiquetaEliminar.grid(row=1,column=1,padx=10,pady=10)
-    cedula_var=StringVar()#se declara.
-    def submit(cedula_var):#función que se llama cuando se le da el boton submit.
-        cedula=(cedula_var.get())#convierte el parametro class 'tkinter.StringVar a str
-        if validarCedula(cedula):#valida la cédula
-            #NECESITAMOS BLOQUAR EL CUADRO DE TEXTO APENAS SE VALIDE.
-            if revisarLista(cedula):#si está en la lista
-                prueba=StringVar()#manda a pedir el valor seleccionado en el combobox
-                def funcion(recibe):#para clasificar su justificación
-                    #cuadroSeleccion=Frame(ventanaEliminar)
-                    listaJustificaciones=["Su peso bajó a menos de 50 kgms.",
-            "No se puede donar sangre si la persona ha sido trasplantada, es decir, ha recibido un trasplante de órgano.",
-            "Enfermedades como: tuberculosis, cáncer o cualquier enfermedad coronaria.",
-            "Si el donante esadicto a ningún tipo de droga.","Padecióhepatitis B o C.",
-            "Si has padecido de mal de Chagas no puedes donar."]
-                    x=prueba.get()#manda a pedir el valor seleccionado que está en prueba.
-                    if x==listaJustificaciones[0]:
-                        x=1
-                    elif x==listaJustificaciones[1]:
-                        x=2
-                    elif x==listaJustificaciones[2]:
-                        x=3
-                    elif x==listaJustificaciones[3]:
-                        x=4
-                    elif x==listaJustificaciones[4]:
-                        x=5
-                    else:
-                        x=6
-                    confirma=messagebox.askquestion("Confirmar eliminación", "Desea eliminarlo?")
-                    if confirma=="yes":
-                        if eliminarDonador(cedula,x):
-                            messagebox.showinfo("Usuario eliminado","Donador eliminado satisfactoriamente")
-                        else:
-                            messagebox.showinfo("Usuario inactivo","Este usuario está inactivo")
-                    else:
-                        messagebox.showinfo("Usuario NO eliminado","Donador NO eliminado")
-                    
-                labelTop = Label(ventanaEliminar,text = "Seleccione provincia")
-                labelTop.grid(column=1, row=4,padx=10,pady=10)#ubicación de etiqueta
+    ventanaEliminar.title("Eliminar Donadores")
+    cedula_var=StringVar()
+    justi=StringVar()
 
-                comboExample = ttk.Combobox(ventanaEliminar,width=50,textvariable=prueba,values=["Su peso bajó a menos de 50 kgms."
-    ,"No se puede donar sangre si la persona ha sido trasplantada, es decir, ha recibido un trasplante de órgano.",
+    def validarJustificacion():
+        if validarCedula(cedula_var.get())==False:
+            messagebox.showerror("Error cédula","Cédula inválida, intente de nuevo.")
+            cedula_var.set("")
+            return ""
+        lista=["Su peso bajó a menos de 50 kgms.",
+    "No se puede donar sangre si la persona ha sido trasplantada, es decir, ha recibido un trasplante de órgano.",
     "Enfermedades como: tuberculosis, cáncer o cualquier enfermedad coronaria.",
     "Si el donante esadicto a ningún tipo de droga.","Padecióhepatitis B o C.",
-    "Si has padecido de mal de Chagas no puedes donar."])#
-                comboExample.grid(column=1, row=4,padx=10,pady=10)
-                
-                #comboExample.current(0)#pone como determinado alguno de la lista.
-                comboExample.bind("<<ComboboxSelected>>", funcion)
-                pass
-            else:
-                messagebox.showinfo("Error","La persona con el número de cédula "+str(cedula)+" no está registrada en la base de datos del Banco de Sangre.")
+    "Si has padecido de mal de Chagas no puedes donar."]
+        if justi.get()==lista[0]:
+            seleccion=1
+        elif justi.get()==lista[1]:
+            seleccion=2
+        elif justi.get()==lista[2]:
+            seleccion=3
+        elif justi.get()==lista[3]:
+            seleccion=4
+        elif justi.get()==lista[4]:
+            seleccion=5
+        elif justi.get()==lista[5]:
+            seleccion=6
         else:
-            messagebox.showerror("Error", "Cédula inválida")
-        cedula_var.set("")#reinicia el cuadro
-        print(cedula)
-    #Etiqueta del cedula
-    cedula_label = Label(ventanaEliminar, text = 'Cedula')
-    cedula_label.grid(row=2,column=0)
-    #cuadro de entrada de dato cedula
-    cedula_entry = Entry(ventanaEliminar,textvariable = cedula_var)#entrada.
-    cedula_entry.grid(row=2,column=1)
-    #boton eliminar
-    botonEliminar=Button(ventanaEliminar,text = 'Eliminar', command=lambda:submit(cedula_var))
-    botonEliminar.grid(row=3,column=1)
+            messagebox.showerror("Error de justificación","Debe ingresar una justificación válida.")
+            cedula_var.set("")
+            justi.set("")
+            return 
+        
+        confirma=messagebox.askquestion("Eliminar","Desea eliminar permantente a este donador?")
+        if confirma=="yes":
+            eliminar=eliminarDonador(cedula_var.get(),justi.get())
+            if eliminar==False:
+                messagebox.showerror("Error al eliminar","Este donador ya se encuentra inactivo")
+                cedula_var.set("")
+                justi.set("")
+                return
+            if eliminar=="":
+                messagebox.showerror("Error de donador","El donador no se encuentra registrado.")
+                cedula_var.set("")
+                justi.set("")
+                return
+            else:
+                messagebox.showinfo("Eliminado","Donador eliminado satisfactoriamente.")
+                cedula_var.set("")
+                justi.set("")
+                return
+        else:
+            messagebox.showinfo("Eliminación cancelada","No se ha eliminado el donador")
+            cedula_var.set("")
+            justi.set("")
+        return 
 
-    botonSalirVentanaEliminar=Button(ventanaEliminar,text="Salir",command=ventanaEliminar.destroy)
-    botonSalirVentanaEliminar.grid(row=5,column=5,padx=10,pady=10)
+    etiquetaEliminar=Label(ventanaEliminar,text="ELIMINAR")
+    cedula_label = Label(ventanaEliminar, text = 'Cedula')
+    
+    cedula_entry = Entry(ventanaEliminar,textvariable = cedula_var)#entrada
+    botonSalirVentanaEliminar=Button(ventanaEliminar,text="Salir",font=("BiauKai","21", "bold"),width=7,command=ventanaEliminar.destroy)
+    lista=["Su peso bajó a menos de 50 kgms.",
+    "No se puede donar sangre si la persona ha sido trasplantada, es decir, ha recibido un trasplante de órgano.",
+    "Enfermedades como: tuberculosis, cáncer o cualquier enfermedad coronaria.",
+    "Si el donante esadicto a ningún tipo de droga.","Padecióhepatitis B o C.",
+    "Si has padecido de mal de Chagas no puedes donar."]
+    desplegableJustificaciones = ttk.Combobox(ventanaEliminar,width=50,textvariable=justi,values=lista)
+    botonEliminar=Button(ventanaEliminar,text = 'Eliminar',font=("BiauKai","21", "bold"),width=7,command=validarJustificacion)#, command=lambda:submit(cedula_var)
+    
+
+    etiquetaEliminar.grid(row=1,column=1,padx=10,pady=10)
+    cedula_label.grid(row=2,column=0,padx=10,pady=10)
+    cedula_entry.grid(row=2,column=1,columnspan=1,padx=10,pady=10)
+    desplegableJustificaciones.grid(row=3,column=0,columnspan=5,padx=10,pady=10)
+    #desplegableJustificaciones.bind("<<ComboboxSelected>>")meter parámetro que llama a funcion.
+    botonEliminar.grid(row=4,column=1,padx=10,pady=10)
+    botonSalirVentanaEliminar.grid(row=5,column=1,padx=10,pady=10)
+
 def insertarLugar():
     ventanaInsertarLugar=Toplevel()
 

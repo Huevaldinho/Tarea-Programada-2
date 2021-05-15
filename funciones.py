@@ -297,5 +297,6 @@ def eliminarDonador(eliminar,jusfificacion):#cambiar a listas.
     donadores[posicion][9]=jusfificacion#agrega justificación.
     graba("donadores",donadores)#manda a grabar lista
     return True
-#graba("donadores",generarDonadores(3))
+#graba("donadores",generarDonadores(5))
 print("DONADORES:",lee("donadores"))
+#print(eliminarDonador("2-8925-1439","HOLA"))
