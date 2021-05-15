@@ -134,42 +134,6 @@ def validarFecha(fecha):
             return False
     except:
         return False
-def provinciaYlugarDeDonacion(cedula): #Punto 1.1
-    """
-    Función: Lugares donde se puede donar según su provicia de nacimiento.
-    Entrada:
-    -cedula(str): Cédula de persona.
-    Salida:
-    -lugarAsignado(str): Lugar de votación según provincia de nacimiento.
-    """
-    provincia=[["1","San José"],["2","Alajuela"],["3","Cartago"],["4","Heredia"],["5","Guanacaste"],["6","Puntarenas"],["7","Limón"]]
-    lugares={"San José":["El Banco Nacional de sangre", "Hospital México","Hospital San Juan de Dios"],"Alajuela":["Hospital San Rafael de Alajuela","Hospital de \
-San Ramón", "Hospital del Cantón Norteño"],"Cartago":["Hospital Max Peralta"],"Heredia":["Hospital San Vicente de Paúl"],"Guanacaste":["Hospital La \
-Anexión en Nicoya", "Hospital Enrique Baltodano de Liberia."],"Puntarenas":["Hospital Monseñor Sanabria"],"Limón":["Hospital Tony Facio","Hospital de \
-Guápiles"]}
-    lugarAsignado=None #para los que son cedula 8 y 9
-    for sublista in provincia: #recorre la lista
-        if str(cedula)[0]==sublista[0]:
-            lugarAsignado=sublista[1]
-    if lugarAsignado==None:
-        lugarAsignado="San José"
-    return "Dado que usted nació en la provincia de: "+lugarAsignado+" usted podría donar en: \n"+"\n".join(lugares[lugarAsignado])
-#07/05/2021 / 1 hora.
-def graba(nombreArchivo,lista):
-    """
-    Función: Grabar/crear un archivo(base de datos).
-    Entradas:
-    -nombreArchivo(str): Nombre del archivo en el que se va a grabar/crear.
-    -lista(list): Lista que se va a guardar en el archivo.
-    Salida: N/A.
-    """
-    try:
-        f=open(nombreArchivo,"wb")
-        pickle.dump(lista,f)
-        f.close()
-    except:
-        print("Error al grabar el archivo: ", nombreArchivo)
-    return ""
 #Función que lee un archivo con una lista de estudiantes
 def lee (nomArchLeer):
     """
@@ -186,6 +150,41 @@ def lee (nomArchLeer):
     except:
         print("Error al leer el archivo: ", nomArchLeer)
     return lista
+def provinciaYlugarDeDonacion(cedula): #Punto 1.1
+    """
+    Función: Lugares donde se puede donar según su provicia de nacimiento.
+    Entrada:
+    -cedula(str): Cédula de persona.
+    Salida:
+    -lugarAsignado(str): Lugar de votación según provincia de nacimiento.
+    """
+    provincia=[["1","San José"],["2","Alajuela"],["3","Cartago"],["4","Heredia"],["5","Guanacaste"],["6","Puntarenas"],["7","Limón"]]
+    lugares=lee("lugaresDonacion.txt")#ahora la lista está en disco duro.
+    lugarAsignado=None #para los que son cedula 8 y 9
+    for sublista in provincia: #recorre la lista
+        if str(cedula)[0]==sublista[0]:
+            lugarAsignado=sublista[1]
+    if lugarAsignado==None:
+        lugarAsignado="San José"
+    return "Dado que usted nació en la provincia de: "+lugarAsignado+" usted podría donar en: \n"+"\n".join(lugares[lugarAsignado])
+#print(provinciaYlugarDeDonacion("9-0139-00105"))
+#07/05/2021 / 1 hora.
+def graba(nombreArchivo,lista):
+    """
+    Función: Grabar/crear un archivo(base de datos).
+    Entradas:
+    -nombreArchivo(str): Nombre del archivo en el que se va a grabar/crear.
+    -lista(list): Lista que se va a guardar en el archivo.
+    Salida: N/A.
+    """
+    try:
+        f=open(nombreArchivo,"wb")
+        pickle.dump(lista,f)
+        f.close()
+    except:
+        print("Error al grabar el archivo: ", nombreArchivo)
+    return ""
+
 #######################
 #######################
 #2. Generar Donador
@@ -240,25 +239,6 @@ def generarDonadores(cantidad):
         persona.append(0)#justificación para activos.
         matriz.append(persona)
     return matriz
-"""
-def revisarLista(usuario):
-    #Función: Validar que un usuario esté registrado.
-    #Entradas:
-    #-lista(list): Lista de personas registradas.
-    #-usuario(str): Cédula de persona que se busca en la lista.
-    #Salida:
-    #-True(bool): Si el usuario está en la lista.
-    #-False(bool): Si el usuario NO está en la lista.
-    lista=lee("donadores")#manda a traer lista de disco duro
-    for i,filas in enumerate(lista):#saca las filas(donadores).
-        for j,columna in enumerate(filas):#saca los datos de las filas(donadores).
-            print("filas",filas,"columnas:",columna)
-            if usuario==columna:#si el usuario(cédula) es igual a alguna de las columnas.
-                return filas,i#Retorna la fila(usuario) y la posición de la fila en las lista.
-            else:
-                break
-    return False
-"""
 def revisarLista(usuario):
     lista=lee("donadores")#manda a traer lista de disco duro
     for i,filas in enumerate(lista):#saca las filas(donadores).
@@ -297,6 +277,43 @@ def eliminarDonador(eliminar,jusfificacion):#cambiar a listas.
     donadores[posicion][9]=jusfificacion#agrega justificación.
     graba("donadores",donadores)#manda a grabar lista
     return True
-#graba("donadores",generarDonadores(5))
-print("DONADORES:",lee("donadores"))
-#print(eliminarDonador("2-8925-1439","HOLA"))
+#######################
+#5.Insertar lugar de donación según provincia.
+#######################
+def validarLugarDonacion(clave,nuevo):
+    """
+    Función: Validar si nuevo ya existe en clave.
+    Entradas:
+    -clave(str): Nombre de provincia.
+    -nuevo(str): Lugar de donación.
+    Salida:
+    -True(bool): Si nuevo no está en clave.
+    -False(bool): Si nuevo ya está en clave.
+    """
+    lugares=lee("lugaresDonacion.txt")
+    listaProvincia=lugares[clave]
+    if nuevo in listaProvincia:
+        return False#ya está registrado en esa provincia.
+    return True#No está registrado en esa provincia.
+def agregarLugarDonacion(clave,valor):
+    """
+    Función: Agregar un lugar de donación nuevo a una provincia.
+    Entradas:
+    -clave(str): Nombre de provincia.
+    -valor(str): Nombre de lugar de donación.
+    Salida:
+    -True(bool): Si agregó el lugar al diccionario "lugaresDonacion.txt".
+    -False(bool): Si no agregó el lugar(porque ya está registrado en la provincia en el archivo "lugaresDonacion.txt").
+    """
+    lugares=lee("lugaresDonacion.txt")
+    provincia=lugares[clave]#saca la lista que tiene los lugares de la provincia (clave)
+    provincia+=[valor.lower()]#le pega el nuevo lugar(valor)
+    if validarLugarDonacion(clave,valor):
+        graba("lugaresDonacion.txt",lugares)#manda a grabar los cambios
+        print("NUEVO:",lee("lugaresDonacion.txt"))
+        return True#grabó el dic con el nuevo lugar.
+    return False#no grabó nada
+"""x={'San José': ['el banco nacional de sangre', 'hospital méxico', 'hospital san juan de dios'], 'Alajuela': ['hospital san rafael de alajuela', 'hospital de san ramón', 
+'hospital del cantón norteño'], 'Cartago': ["hospital max peralta"], 'Heredia': ['hospital san vicente de paúl'], 'Guanacaste': ['hospital la anexión en nicoya', 'hospital enrique baltodano de liberia.'], 'Puntarenas': ['hospital monseñor sanabria'], 'Limón': ['hospital tony facio', 'hospital de guápiles']}
+graba("lugaresDonacion.txt",x)#Diccionario original
+print(lee("lugaresDonacion.txt"))"""

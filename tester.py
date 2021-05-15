@@ -228,11 +228,12 @@ pruebaCombobox()
 
 from enum import auto
 from os import pardir
+from re import T
 from tkinter import *
 from tkinter import StringVar, ttk
 from tkinter.constants import COMMAND
 from tkinter import messagebox
-from typing import Literal
+from typing import Collection, Literal
 from funciones import *
 #def cerrar():
     #nombreVentana.destoy()
@@ -442,7 +443,6 @@ def eliminar():
     desplegableJustificaciones = ttk.Combobox(ventanaEliminar,width=50,textvariable=justi,values=lista)
     botonEliminar=Button(ventanaEliminar,text = 'Eliminar',font=("BiauKai","21", "bold"),width=7,command=validarJustificacion)#, command=lambda:submit(cedula_var)
     
-
     etiquetaEliminar.grid(row=1,column=1,padx=10,pady=10)
     cedula_label.grid(row=2,column=0,padx=10,pady=10)
     cedula_entry.grid(row=2,column=1,columnspan=1,padx=10,pady=10)
@@ -453,12 +453,49 @@ def eliminar():
 
 def insertarLugar():
     ventanaInsertarLugar=Toplevel()
+    ventanaInsertarLugar.title("Insertar lugar de donación")
+    
+    clave_var=StringVar()
+    valor_var=StringVar()
+    def insetarLugarNuevo():
+        lista=["San José","Alajuela","Cartago","Heredia","Guanacaste","Puntarenas","Limón"]
+        if not clave_var.get().capitalize() in lista:
+            messagebox.showerror("Error al seleccionar provincia","Ha ingresado una pronvicia incorrecta.")
+            clave_var.set("")
+            valor_var.set("")
+            return 
+        if not valor_var.get():
+            messagebox.showerror("Error al ingresar nuevo lugar","Debe ingresar un nuevo lugar en el cuadro de texto.")
+            clave_var.set("")
+            valor_var.set("")
+            return
+        if agregarLugarDonacion(clave_var.get(),valor_var.get()):   
+            messagebox.showinfo("Nuevo lugar agregado","Se ha agregado correctamente el nuevo lugar de donación.")
+        else:
+            messagebox.showerror("Error al insertar lugar","Este lugar ya está registrado en esta provincia.")
+        clave_var.set("")
+        valor_var.set("")
+        return ""
+    etiquetaInsertarLugar=Label(ventanaInsertarLugar,text="Insertar lugar de donación")
+    etiquetaProvincia=Label(ventanaInsertarLugar,text="Seleccione provincia")
+    etiquetaNuevoLugar=Label(ventanaInsertarLugar,text="Nuevo lugar de donación")
 
-    etiquetaInsertarLugar=Label(ventanaInsertarLugar,text="INSERTAR LUGAR")
-    etiquetaInsertarLugar.grid(row=1,column=5)
-
+    listaProvincias=["San José","Alajuela","Cartago","Heredia","Guanacaste","Puntarenas","Limón"]
+    provincias=ttk.Combobox(ventanaInsertarLugar,textvariable=clave_var,values=listaProvincias)
+    entradaLugarNuevo=Entry(ventanaInsertarLugar,textvariable=valor_var)
+    botonInsertarNuevoLugar=Button(ventanaInsertarLugar,text="Insertar",command=insetarLugarNuevo)
     botonSalirVentanaInsertarLugar=Button(ventanaInsertarLugar,text="Salir",command=ventanaInsertarLugar.destroy)
-    botonSalirVentanaInsertarLugar.grid(row=5,column=5)
+    
+
+    etiquetaInsertarLugar.grid(row=1,column=1,columnspan=2,padx=10,pady=10)
+    etiquetaProvincia.grid(row=2,column=0,padx=10,pady=10)
+    provincias.grid(row=2,column=1,columnspan=4,padx=10,pady=10)
+    etiquetaNuevoLugar.grid(row=3,column=0,padx=10,pady=10)
+    entradaLugarNuevo.grid(row=3,column=1,columnspan=6,padx=10,pady=10)
+    botonInsertarNuevoLugar.grid(row=4,column=1,columnspan=3,padx=10,pady=10)
+
+    botonSalirVentanaInsertarLugar.grid(row=5,column=1,columnspan=3,padx=10,pady=10)
+
 def reportes():
     ventanaReportes=Toplevel()
 
