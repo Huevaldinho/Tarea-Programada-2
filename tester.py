@@ -407,7 +407,7 @@ def eliminar():
         
         confirma=messagebox.askquestion("Eliminar","Desea eliminar permantente a este donador?")
         if confirma=="yes":
-            eliminar=eliminarDonador(cedula_var.get(),justi.get())
+            eliminar=eliminarDonador(cedula_var.get(),seleccion)
             if eliminar==False:
                 messagebox.showerror("Error al eliminar","Este donador ya se encuentra inactivo")
                 cedula_var.set("")
