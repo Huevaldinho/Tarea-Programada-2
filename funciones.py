@@ -16,15 +16,6 @@ import pickle
 import random
 import names
 import string
-def solicitarCedula():
-    """
-    Función: Solicitar un string que contenga el número de cédula.
-    Entrada: N/A.
-    Salida: 
-    -cedula(str): Cedula ingresada.
-    """
-    cedula=input("Ingrese número de cédula: ")
-    return cedula
 def validarCedula(cedula):
     """
     Función: Validar número de cédula con formato #-####-####.
@@ -34,10 +25,11 @@ def validarCedula(cedula):
     -True: Si la cédula es válida.
     -False: La cédula no es válida.
     """
+    if type(cedula)!=str:
+        return False
     if re.match("^[1-9]{1}[-]{1}[0-9]{4}[-]{1}[0-9]{4}$",cedula):
         return True
-    else:
-        return False
+    return False
 #07/05/2021 2:00 pm / 5 minutos haciendose.
 def validarNombreCompleto(nombre): #NO HAY QUE HACER FUNCION DE ENTRADA, ENTRA EN TKINTER
     """
@@ -51,22 +43,6 @@ def validarNombreCompleto(nombre): #NO HAY QUE HACER FUNCION DE ENTRADA, ENTRA E
     if re.match('[A-Za-z]{2,25}( [A-Za-z]{2,25}){2}',nombre):
         return True
     return False
-def validarFecha(fecha):
-    """
-    Función: Validar fecha y formato.
-    Entrada:
-    -fecha(str): Fecha a validar.
-    Salida:
-    -True: Si está bien.
-    -False: Si no está bien.
-    """
-    try:
-        strptime(fecha, '%d/%m/%Y')#valida usando libreria. además sabe los años bisiestos
-        print("Fecha válida")
-        return True
-    except ValueError:
-        print("Fecha inválida")
-        return False
 #07/05/2021 2:05 pm / 10 minutos haciendose.
 def validarCorreo(correo):
     """
@@ -79,11 +55,8 @@ def validarCorreo(correo):
     """
     correo=correo.lower()
     if re.match("^([a-z0-9_\.-]+)@(ccss|racsa|costarricense|gmail)\.([a-z\.]{2,6})$",correo):
-        print("Correo ingresado satisfactoriamente")
         return True
-    else:
-        print("Correo invalido.")
-        return False 
+    return False 
 #07/05/2021 2:25 pm / 30 minutos
 def validarTelefono(telefono):
     """
@@ -95,11 +68,8 @@ def validarTelefono(telefono):
     -False: Si no es válido.
     """
     if re.match("^(2|6|7|8){1}[0-9]{3}[\-]{1}[0-9]{4}$",telefono):
-        print("Telefono ingresado satisfactoriamente.")
         return True
-    else:
-        print("Telefono inválido.")
-        return False
+    return False
 #07/05/2021 2:55 pm / 5 minutos.
 def validarPeso(peso):
     """
@@ -112,9 +82,7 @@ def validarPeso(peso):
     -False: Si no puede donar.
     """
     if peso<50:
-        print("Bajo peso")
         return False
-    print("Peso ingresado correctamente.")
     return True
 #Falta meter en función que reciba fecha de nacimiento CORREGIR
 def validarMayorEdad(fechaNacimiento):
@@ -148,6 +116,23 @@ def validarMayorEdad(fechaNacimiento):
     elif annoActual-annoNacimiento>18: 
         return True
     else:
+        return False
+def validarFecha(fecha):
+    """
+    Función: Validar fecha y formato.
+    Entrada:
+    -fecha(str): Fecha a validar.
+    Salida:
+    -True: Si está bien.
+    -False: Si no está bien.
+    """
+    try:
+        if validarMayorEdad(fecha):
+            datetime.strptime(fecha, '%d/%m/%Y')#valida usando libreria. además sabe los años bisiestos
+            return True
+        else:
+            return False
+    except:
         return False
 def provinciaYlugarDeDonacion(cedula): #Punto 1.1
     """
@@ -184,7 +169,7 @@ def graba(nombreArchivo,lista):
         f.close()
     except:
         print("Error al grabar el archivo: ", nombreArchivo)
-    return
+    return ""
 #Función que lee un archivo con una lista de estudiantes
 def lee (nomArchLeer):
     """
@@ -214,14 +199,18 @@ def generarDonadores(cantidad):
     Salida:
     -matriz(list): Matriz con personas creadas.
     """
+    #[nombreCompleto(str), cédula(str), tipoSangre(str), sexo(bool), fechaNacimiento(str), peso(int), correo(str), telefono(str), estado(int), justificacion(int)]
     matriz=[] #base de datos donde se guarda la info de cada persona
     tipoSangre=["O+","O-", "A+", "A-", "B+", "B-", "AB+", "AB-"]
     sexo=[True, False]
     extensionCorreo=["@costarricense.cr","@racsa.go.cr","@ccss.sa.cr","@gmail.com"]
-#lista=[['cedula','nombreCompleto','fechaNacimiento','sangre','sexo',
-# 'peso','telefono', 'correo',"estado","justificación"]]
     for i in range(cantidad):
         persona=[] #lista de cada persona
+        sexoEleccion=random.choice(sexo)#elige el sexo pero solo para evaluar, si es mujer nombre de mujer o viceversa con hombre
+        if sexoEleccion==False:
+            persona.append(names.get_first_name(gender='female')+" "+names.get_last_name()+" "+names.get_last_name()) #mete nombre mujer
+        elif sexoEleccion==True:
+            persona.append(names.get_first_name(gender='male')+" "+names.get_last_name()+" "+names.get_last_name()) #mete nombre mujer
         provincia=random.randint(1,9) #inicia cedula
         tomo=""
         asiento=""
@@ -231,26 +220,22 @@ def generarDonadores(cantidad):
             tomo+=str(random.randint(0,9))
             asiento+=str(random.randint(0,9))
             numero1+=str(random.randint(0,9)) #para el numero de telefono
-            numero2+=str(random.randint(0,9)) #para el numero de telefono
         persona.append(f"{provincia}-{tomo}-{asiento}") #termina cedula
-        sexoEleccion=random.choice(sexo)#elige el sexo pero solo para evaluar, si es mujer nombre de mujer o viceversa con hombre
-        if sexoEleccion==False:
-            persona.append(names.get_first_name(gender='female')+" "+names.get_last_name()+" "+names.get_last_name()) #mete nombre mujer
-        elif sexoEleccion==True:
-            persona.append(names.get_first_name(gender='male')+" "+names.get_last_name()+" "+names.get_last_name()) #mete nombre mujer
+        persona.append(random.choice(tipoSangre)) #mete tipo de sangre
+        persona.append(sexoEleccion) #mete sexo
         start_date = date(1961, 1, 1) #inica fecha de nacimiento
         end_date = date(2003, 5, 25)
         time_between_dates = end_date - start_date
         random_number_of_days = random.randrange(time_between_dates.days)
         fechaFinal=str(start_date + timedelta(days=random_number_of_days)).split("-")
         persona.append(fechaFinal[2]+"/"+fechaFinal[1]+"/"+fechaFinal[0]) #termina fecha de nacimiento
-        persona.append(random.choice(tipoSangre)) #mete tipo de sangre
-        persona.append(sexoEleccion) #mete sexo
         persona.append(random.randint(50,120)) #mete peso
-        primerNumero=random.choice([2,4,6,7,8,9]) #primer numero de telefono
-        persona.append(f"{primerNumero}{numero1}-{numero2}") #mete numero de telefono
         primeroCorreo = ''.join(random.choice(string.ascii_letters+string.digits+".") for i in range(random.randint(6,30))) #inicia correo
         persona.append(primeroCorreo+random.choice(extensionCorreo)) #mete correo
+        primerNumero=random.choice([2,4,6,7,8,9]) #primer numero de telefono
+        for k in range(3):
+            numero2+=str(random.randint(0,9)) #para el numero de telefono
+        persona.append(f"{primerNumero}{numero2}-{numero1}") #mete numero de telefono
         persona.append(1)#estado predeterminado(activo)
         persona.append(0)#justificación para activos.
         matriz.append(persona)
@@ -308,4 +293,4 @@ def eliminarDonador(eliminar,jusfificacion):#cambiar a listas.
     graba("donadores",donadores)#manda a grabar lista
     return True
 #graba("donadores",generarDonadores(5))
-print(lee("donadores"))
+#print(lee("donadores"))

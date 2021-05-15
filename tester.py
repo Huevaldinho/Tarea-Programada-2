@@ -238,14 +238,122 @@ from funciones import *
 def insertar():
     #usar toplevel() en secundarias en vez de Tk, para no consumir tanto recurso o algo así XD.
     ventanaInsertar=Toplevel()
+    ventanaInsertar.resizable(width=False, height=False)
+    
+    ventanaInsertar.title("Insertar Donador")
 
-    ventanaInsertar.geometry("280x350")#le da tamaño a la ventana principal
-    #ventanaInsertar.resizable(width=False, height=False)
-    botonSalirVentanaInsertar=Button(ventanaInsertar,text="Salir",command=ventanaInsertar.destroy)#sale de la ventana insertar
-    botonSalirVentanaInsertar.grid(row=5,column=5,padx=10,pady=10)
+    cedulaAlmacen=StringVar()
+    nombreAlmacen=StringVar()
+    fechaNacimientoAlmacen=StringVar()
+    sangreAlmacen=StringVar()
+    sexoAlmacen=BooleanVar()
+    pesoAlmacen=IntVar()
+    telefonoAlmacen=StringVar()
+    correoAlmacen=StringVar()
 
+    cedula_label=Label(ventanaInsertar,text="Cédula:")
+    nombre_label=Label(ventanaInsertar,text="Nombre Completo:")
+    fechaNacimiento_label=Label(ventanaInsertar,text="Fecha de Nacimiento")
+    sangre_label=Label(ventanaInsertar,text="Tipo de Sangre")
+    sexo_label=Label(ventanaInsertar,text="Sexo")
+    peso_label=Label(ventanaInsertar,text="Peso (kg)")
+    telefono_label=Label(ventanaInsertar,text="Teléfono")
+    correo_label=Label(ventanaInsertar,text="Correo Electrónico")
 
+    cedula_entry=Entry(ventanaInsertar,textvariable=cedulaAlmacen,width=30 ,bd=5)
+    nombre_entry=Entry(ventanaInsertar,textvariable=nombreAlmacen,width=30 ,bd=5)
+    fechaNacimiento_entry=Entry(ventanaInsertar,textvariable=fechaNacimientoAlmacen,width=30 ,bd=5)
+    sangre_entry=ttk.Combobox(ventanaInsertar,textvariable=sangreAlmacen,values=["O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"])
+    sexo_masculino=Radiobutton(ventanaInsertar, text='Masculino', variable=sexoAlmacen, value=True,width=30 ,bd=5)
+    sexo_femenino=Radiobutton(ventanaInsertar, text='Femenino', variable=sexoAlmacen, value=False,width=30 ,bd=5)
+    peso_entry=Entry(ventanaInsertar,textvariable=pesoAlmacen,width=30 ,bd=5)
+    telefono_entry=Entry(ventanaInsertar,textvariable=telefonoAlmacen,width=30 ,bd=5)
+    correo_entry=Entry(ventanaInsertar,textvariable=correoAlmacen,width=30 ,bd=5)
 
+    cedula_label.grid(row=0,column=0,padx=5,pady=5)
+    nombre_label.grid(row=1,column=0,padx=5,pady=5)
+    fechaNacimiento_label.grid(row=2,column=0,padx=5,pady=5)
+    sangre_label.grid(row=3,column=0,padx=5,pady=5)
+    sexo_label.grid(row=4,column=0,padx=5,pady=5)
+    peso_label.grid(row=6,column=0,padx=5,pady=5)
+    telefono_label.grid(row=7,column=0,padx=5,pady=5)
+    correo_label.grid(row=8,column=0,padx=5,pady=5)
+
+    cedula_entry.grid(row=0,column=1,columnspan=4,padx=5,pady=5)
+    nombre_entry.grid(row=1,column=1,columnspan=4,padx=5,pady=5)
+    fechaNacimiento_entry.grid(row=2,column=1,columnspan=4,padx=5,pady=5)
+    sangre_entry.grid(row=3,column=1,columnspan=4,padx=5,pady=5)
+    sexo_masculino.grid(row=4,column=1,columnspan=4,padx=5,pady=5)
+    sexo_femenino.grid(row=5,column=1,columnspan=4,padx=5,pady=5)
+    peso_entry.grid(row=6,column=1,columnspan=4,padx=5,pady=5)
+    telefono_entry.grid(row=7,column=1,columnspan=4,padx=5,pady=5)
+    correo_entry.grid(row=8,column=1,columnspan=4,padx=5,pady=5)
+
+    def limpiar():
+        cedulaAlmacen.set("")
+        nombreAlmacen.set("")
+        fechaNacimientoAlmacen.set("")
+        sangreAlmacen.set("")
+        sexoAlmacen.set(False)
+        pesoAlmacen.set(0)
+        telefonoAlmacen.set("")
+        correoAlmacen.set("")
+
+    def validarTodo():
+        try:
+            if validarCedula(cedulaAlmacen.get()):
+                if revisarLista(cedulaAlmacen.get())==False:
+                    if validarNombreCompleto(nombreAlmacen.get()):
+                        if validarFecha(fechaNacimientoAlmacen.get()):
+                            if validarPeso(pesoAlmacen.get()):
+                                if validarTelefono(telefonoAlmacen.get()):
+                                    if validarCorreo(correoAlmacen.get()):
+                                        lista=[nombreAlmacen.get(),
+                                        cedulaAlmacen.get(),
+                                        sangreAlmacen.get(),
+                                        sexoAlmacen.get(),
+                                        fechaNacimientoAlmacen.get(),
+                                        pesoAlmacen.get(),
+                                        correoAlmacen.get(),
+                                        telefonoAlmacen.get(),
+                                        1,
+                                        0]
+                                        matriz=lee("donadores")
+                                        matriz.append(lista)
+                                        graba("donadores",matriz)
+                                        messagebox.showinfo("Donador Registrado","Donador Registrado con Éxito")
+                                        limpiar()
+                                    else:
+                                        messagebox.showerror("Error de Formato","El correo electrónico contiene un formato incorrecto.")
+                                        limpiar()
+                                else:
+                                    messagebox.showerror("Error de Formato","El número de teléfono contiene un formato incorrecto.")
+                                    limpiar()
+                            else:
+                                messagebox.showerror("Error de Formato","El peso contiene un formato incorrecto. Debe ser mayor a 50 kg.")
+                                limpiar()
+                        else:
+                            messagebox.showerror("Error de Formato","La fecha de nacimiento contiene un formato incorrecto.")
+                            limpiar()
+                    else:
+                        messagebox.showerror("Error de Formato","El nombre contiene un formato incorrecto.")
+                        limpiar()
+                else:
+                    messagebox.showerror("Error de datos","La persona que ha ingresado ya se encuentra como donante.")
+                    limpiar()
+            else:
+                messagebox.showerror("Cédula Inválida","El formato de la cédula es incorrecto.")
+                limpiar()
+        except:
+            messagebox.showerror("Error de formato","Los datos que ha ingresado son inválidos.")
+    
+    botonSalirVentanaInsertar=Button(ventanaInsertar,text="Regresar",command=ventanaInsertar.destroy)#sale de la ventana insertar
+    botonLimpiarVentanaInsertar=Button(ventanaInsertar,text="Limpiar",command=limpiar)
+    botonRegistrarVentanaInsertar=Button(ventanaInsertar,text="Registrar",command=validarTodo)
+
+    botonSalirVentanaInsertar.grid(row=9,column=0,padx=5,pady=5)
+    botonRegistrarVentanaInsertar.grid(row=9,column=2,padx=5,pady=5)
+    botonLimpiarVentanaInsertar.grid(row=9,column=4,padx=5,pady=5)
 def generar():
     ventanaGenerar=Toplevel()
 
@@ -317,7 +425,7 @@ def eliminar():
                 comboExample.bind("<<ComboboxSelected>>", funcion)
                 pass
             else:
-                messagebox.showinfo("Error","La persona con el número de cédula: "+str(cedula)+" no está registrado en la base de datos del Banco de Sangre aún.")
+                messagebox.showinfo("Error","La persona con el número de cédula "+str(cedula)+" no está registrada en la base de datos del Banco de Sangre.")
         else:
             messagebox.showerror("Error", "Cédula inválida")
         cedula_var.set("")#reinicia el cuadro
@@ -353,31 +461,40 @@ def reportes():
 def menu():#NO TOCAR, YA ESTÁ LISTO.
     principal=Tk()#menu principal
     principal.title("Donadores de Sangre Costa Rica")
-    principal.geometry("280x350")#le da tamaño a la ventana principal
+    principal.geometry("700x740")#le da tamaño a la ventana principal
+    principal.config(bg="OrangeRed3")
     principal.resizable(width=False, height=False)#NO QUITAR PARA QUE NO ESTEN TOCANDO EL TAMAÑO.
-    #principal.minsize(300, 200)#tamaño mínimo que se puede mofificar
-    #principal.maxsize(500,250)#tamaño máximo que se puede mofificar
-    
+    imagen=PhotoImage(file='donacion(1).png')
+    imagen_label=Label(principal,image=imagen)
+    imagen_label.grid(row=8,column=1,padx=10,pady=10)
+    imagen_label.place(relx=0.5, rely=0.29, anchor=CENTER)
     #1. Insertar donador
-    botonInsertar=Button(principal,text="Insertar",command=insertar)
+    botonInsertar=Button(principal,text="Insertar Donadores",font=("BiauKai","21", "bold"),width=43,command=insertar)
     botonInsertar.grid(row=0,column=1,padx=10,pady=10)
+    botonInsertar.place(relx=0.5, rely=0.61, anchor=CENTER)
     #Llama a la función generar.
-    botonGenerar=Button(principal,text="Generar donadores",command=generar)
-    botonGenerar.grid(row=1,column=1,padx=10,pady=10)
+    botonGenerar=Button(principal,text="Generar Donadores",font=("BiauKai","21", "bold"),command=generar,width=43)
+    botonGenerar.grid(row=0,column=1,padx=10,pady=10)
+    botonGenerar.place(relx=0.5, rely=0.67, anchor=CENTER)
     #Llama a la función actualizar.
-    botonActualizar=Button(principal,text="Actualizar datos del donador",command=actualizar)
+    botonActualizar=Button(principal,text="Actualizar Datos Del Donador",font=("BiauKai","21", "bold"),width=43,command=actualizar)
     botonActualizar.grid(row=2,column=1,padx=10,pady=10)
+    botonActualizar.place(relx=0.5, rely=0.73, anchor=CENTER)
     #Llama a la función eliminar.
-    botonEliminar=Button(principal,text="Eliminar donador",command=eliminar)
+    botonEliminar=Button(principal,text="Eliminar Donador",font=("BiauKai","21", "bold"),width=43,command=eliminar)
     botonEliminar.grid(row=3,column=1,padx=10,pady=10)
+    botonEliminar.place(relx=0.5, rely=0.79, anchor=CENTER)
     #Llama a la función insertar lugar.
-    botonInsertarLugar=Button(principal,text="Insertar lugar de donación según provincia",command=insertarLugar)
+    botonInsertarLugar=Button(principal,text="Insertar Lugar de Donación Según Provincia",font=("BiauKai","21", "bold"),width=43,command=insertarLugar)
     botonInsertarLugar.grid(row=4,column=1,padx=10,pady=10)
+    botonInsertarLugar.place(relx=0.5, rely=0.85, anchor=CENTER)
     #Llama a la función reporte.
-    botonReportes=Button(principal,text="Reportes",command=reportes)
+    botonReportes=Button(principal,text="Reportes",font=("BiauKai","21", "bold"),width=43,command=reportes)
     botonReportes.grid(row=5,column=1,padx=10,pady=10)
+    botonReportes.place(relx=0.5, rely=0.91, anchor=CENTER)
     #Llama a la función salir
-    botonSalir=Button(principal,text="Salir",command=quit)
+    botonSalir=Button(principal,text="Salir",font=("BiauKai","21", "bold"),width=43,command=quit)
     botonSalir.grid(row=7,column=1,padx=10,pady=10)#termina la ventana
+    botonSalir.place(relx=0.5, rely=0.97, anchor=CENTER)
     principal.mainloop()
 menu()
