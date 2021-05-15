@@ -240,32 +240,37 @@ def generarDonadores(cantidad):
         persona.append(0)#justificación para activos.
         matriz.append(persona)
     return matriz
+"""
 def revisarLista(usuario):
-    """
-    Función: Validar que un usuario esté registrado.
-    Entradas:
-    -lista(list): Lista de personas registradas.
-    -usuario(str): Cédula de persona que se busca en la lista.
-    Salida:
-    -True(bool): Si el usuario está en la lista.
-    -False(bool): Si el usuario NO está en la lista.
-    """
-    lista=lee("donadores")
-    for i,filas in enumerate(lista):
-        for j,columna in enumerate(filas):
-            if usuario==columna:
-                return filas,i
+    #Función: Validar que un usuario esté registrado.
+    #Entradas:
+    #-lista(list): Lista de personas registradas.
+    #-usuario(str): Cédula de persona que se busca en la lista.
+    #Salida:
+    #-True(bool): Si el usuario está en la lista.
+    #-False(bool): Si el usuario NO está en la lista.
+    lista=lee("donadores")#manda a traer lista de disco duro
+    for i,filas in enumerate(lista):#saca las filas(donadores).
+        for j,columna in enumerate(filas):#saca los datos de las filas(donadores).
+            print("filas",filas,"columnas:",columna)
+            if usuario==columna:#si el usuario(cédula) es igual a alguna de las columnas.
+                return filas,i#Retorna la fila(usuario) y la posición de la fila en las lista.
             else:
                 break
     return False
-
+"""
+def revisarLista(usuario):
+    lista=lee("donadores")#manda a traer lista de disco duro
+    for i,filas in enumerate(lista):#saca las filas(donadores).
+        if usuario==filas[1]:
+            return filas,i
+    return False
 def confirmarEliminacion():
     #boton en interfaz gráfica
     boton=int(input("Ingrese 1 para confirmar: "))
     if boton==1:
         return True
     return False
-
 #######################
 #4.ELIMINAR DONADOR
 #######################
@@ -284,13 +289,13 @@ def eliminarDonador(eliminar,jusfificacion):#cambiar a listas.
         return ""
     eliminado=revisarLista(eliminar)#devuelve tupla con lista de persona y posición.
     posicion=eliminado[1]#posición de la persona en la lista.
-    if eliminado[0][8]==0:
-        return False
+    if eliminado[0][8]==0:#si ya está inactivo 
+        return False#retorna falso
     #eliminado[0][8]=0#cambia el estado a 0.
-    #eliminado[0][9]=jusfificacion
-    donadores[posicion][8]=0
-    donadores[posicion][9]=jusfificacion
+    #eliminado[0][9]=jusfificacion#pone justificación
+    donadores[posicion][8]=0#cambia estado del donador a 0.
+    donadores[posicion][9]=jusfificacion#agrega justificación.
     graba("donadores",donadores)#manda a grabar lista
     return True
-#graba("donadores",generarDonadores(5))
-#print(lee("donadores"))
+#graba("donadores",generarDonadores(3))
+print("DONADORES:",lee("donadores"))
