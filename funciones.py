@@ -326,21 +326,35 @@ def generarReporte(nombreReporte):
         selector="6"
     else:
         selector="7"
-    donadoresProvinciaSeleccionada=[]
+    #Se va a guardar: ["Nombre del reporte,fecha de creación,listas de donadores según la provincia"]
+    donadoresProvinciaSeleccionada=["Reporte provincia: "+nombreReporte,datetime.now().strftime('%d-%m-%y %H:%M:%S')]
     for i in range(len(listaProvincias)):
         if listaProvincias[i][1][0]=="9" or listaProvincias[i][1][0]=="8":
             if selector=="1":
                 if listaProvincias[i][8]==1:
-                    donadoresProvinciaSeleccionada.append(listaProvincias[i])
+                    cedula=listaProvincias[i][1]
+                    nombre=listaProvincias[i][0]
+                    fechaN=listaProvincias[i][4]
+                    telefono=listaProvincias[i][7]
+                    correo=listaProvincias[i][6]
+                    donador=[cedula,nombre,fechaN,telefono,correo]
+                    donadoresProvinciaSeleccionada.append(donador)
         if listaProvincias[i][1][0]==selector:
             if listaProvincias[i][8]==1:
-                donadoresProvinciaSeleccionada.append(listaProvincias[i])
+                cedula=listaProvincias[i][1]
+                nombre=listaProvincias[i][0]
+                fechaN=listaProvincias[i][4]
+                telefono=listaProvincias[i][7]
+                correo=listaProvincias[i][6]
+                donador=[cedula,nombre,fechaN,telefono,correo]
+                donadoresProvinciaSeleccionada.append(donador)
     nombreCrearArchivo="reporte"+nombreReporte+".html"#Le da el nombre al reporte
-    if donadoresProvinciaSeleccionada==[]:#si es vacío es porque no hay donadores activos en esa provincia.
+    if len(donadoresProvinciaSeleccionada)==2:#si es vacío es porque no hay donadores activos en esa provincia.
         return False
     graba(nombreCrearArchivo,donadoresProvinciaSeleccionada)#manda a hacer el reporte
+    print(lee(nombreCrearArchivo))
     return True
-generarReporte("San José")
+print(generarReporte("Limón"))
 """NO LO BORRE
 dic={"San José":["el banco nacional de sangre","hospital méxico","hospital san juan de dios"],
 "Alajuela":["hospital san rafael de alajuela","hospital de san ramón","hospital del cantón norteño"],
