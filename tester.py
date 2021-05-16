@@ -468,7 +468,7 @@ def eliminar():
     
     cedula_label.grid(row=2,column=0,padx=10,pady=10)
     cedula_entry.grid(row=2,column=1,columnspan=5,padx=10,pady=10)
-    desplegableJustificaciones.grid(row=3,column=0,columnspan=5,padx=10,pady=10)
+    desplegableJustificaciones.grid(row=3,column=1,columnspan=5,padx=10,pady=10)
     #desplegableJustificaciones.bind("<<ComboboxSelected>>")meter parámetro que llama a funcion.
     botonEliminar.grid(row=4,column=1,padx=10,pady=10)
     botonEliminar.place(relx=0.5,rely=0.7,anchor=CENTER)
