@@ -235,8 +235,7 @@ from tkinter.constants import COMMAND
 from tkinter import messagebox
 from typing import Collection, Literal
 from funciones import *
-#def cerrar():
-    #nombreVentana.destoy()
+
 def insertar():
     #usar toplevel() en secundarias en vez de Tk, para no consumir tanto recurso o algo así XD.
     ventanaInsertar=Toplevel()
@@ -253,8 +252,8 @@ def insertar():
     telefonoAlmacen=StringVar()
     correoAlmacen=StringVar()
 
-    cedula_label=Label(ventanaInsertar,text="Cédula:")
-    nombre_label=Label(ventanaInsertar,text="Nombre Completo:")
+    cedula_label=Label(ventanaInsertar,text="Cédula")
+    nombre_label=Label(ventanaInsertar,text="Nombre Completo")
     fechaNacimiento_label=Label(ventanaInsertar,text="Fecha de Nacimiento")
     sangre_label=Label(ventanaInsertar,text="Tipo de Sangre")
     sexo_label=Label(ventanaInsertar,text="Sexo")
@@ -358,12 +357,35 @@ def insertar():
     botonLimpiarVentanaInsertar.grid(row=9,column=4,padx=5,pady=5)
 def generar():
     ventanaGenerar=Toplevel()
+    ventanaGenerar.title("Generar Donadores")
+    ventanaGenerar.geometry("450x100")
+    ventanaGenerar.resizable(width=False, height=False)
 
-    etiquetaGenerar=Label(ventanaGenerar,text="GENERAR USUARIOS")
-    etiquetaGenerar.grid(row=1,column=5,padx=10,pady=10)
+    cuantosAlmacen=IntVar()
 
+    cuantos_label=Label(ventanaGenerar,text="¿Cuántos donadores desea generar?")
+    entrada=Entry(ventanaGenerar,textvariable=cuantosAlmacen,width=20,bd=5)
+
+    cuantos_label.grid(row=0,column=0,padx=4,pady=7)
+    entrada.grid(row=0,column=1,columnspan=2,padx=7,pady=7)
+
+    def genera():
+        try:
+            if cuantosAlmacen.get()==0:
+                messagebox.showerror("Lista no generada","Digite un valor mayor a 0")
+            else:
+                graba("donadores",generarDonadores(cuantosAlmacen.get()))
+                messagebox.showinfo("Donadores Generados","Donadores generados con éxito en el archivo de nombre \"donadores\"")
+                cuantosAlmacen.set(0)
+        except:
+            messagebox.showerror("Acción Incompletada","Digite un valor válido")
+
+    botonGenerar=Button(ventanaGenerar,text="Generar",width=8,command=genera)
+    botonGenerar.grid(row=1,column=0,padx=10,pady=10)
+    botonGenerar.place(relx=0.5,rely=0.57,anchor=CENTER)
     botonSalirVentanaGenerar=Button(ventanaGenerar,text="Salir",command=ventanaGenerar.destroy)#sale de la ventana insertar
-    botonSalirVentanaGenerar.grid(row=5,column=5,padx=10,pady=10)
+    botonSalirVentanaGenerar.grid(row=2,column=0,padx=10,pady=10)
+    botonSalirVentanaGenerar.place(relx=0.5,rely=0.86,anchor=CENTER)
 def actualizar():
     ventanaActualizar=Toplevel()
     
@@ -374,6 +396,8 @@ def actualizar():
     botonSalirVentanaActualizar.grid(row=5,column=5,padx=10,pady=10)
 def eliminar():
     ventanaEliminar=Toplevel()
+    ventanaEliminar.geometry("500x170")
+    ventanaEliminar.resizable(width=False, height=False)
     ventanaEliminar.title("Eliminar Donadores")
     cedula_var=StringVar()
     justi=StringVar()
@@ -383,11 +407,11 @@ def eliminar():
             messagebox.showerror("Error cédula","Cédula inválida, intente de nuevo.")
             cedula_var.set("")
             return ""
-        lista=["Su peso bajó a menos de 50 kgms.",
-    "No se puede donar sangre si la persona ha sido trasplantada, es decir, ha recibido un trasplante de órgano.",
-    "Enfermedades como: tuberculosis, cáncer o cualquier enfermedad coronaria.",
-    "Si el donante esadicto a ningún tipo de droga.","Padecióhepatitis B o C.",
-    "Si has padecido de mal de Chagas no puedes donar."]
+        lista=["Peso menor a 50 kgs.",
+    "Persona ha recibido un trasplante de órgano.",
+    "Padece enfermedades como tuberculosis, cáncer o cualquier enfermedad coronaria.",
+    "Donante adicto a alguna droga.","Padeció hepatitis B o C.",
+    "Padece de mal de Chagas."]
         if justi.get()==lista[0]:
             seleccion=1
         elif justi.get()==lista[1]:
@@ -406,7 +430,7 @@ def eliminar():
             justi.set("")
             return 
         
-        confirma=messagebox.askquestion("Eliminar","Desea eliminar permantente a este donador?")
+        confirma=messagebox.askquestion("Eliminar","¿Desea eliminar a este donador?")
         if confirma=="yes":
             eliminar=eliminarDonador(cedula_var.get(),seleccion)
             if eliminar==False:
@@ -430,31 +454,31 @@ def eliminar():
             justi.set("")
         return 
 
-    etiquetaEliminar=Label(ventanaEliminar,text="ELIMINAR")
-    cedula_label = Label(ventanaEliminar, text = 'Cedula')
+    cedula_label = Label(ventanaEliminar, text = 'Cédula del donador')
     
-    cedula_entry = Entry(ventanaEliminar,textvariable = cedula_var)#entrada
-    botonSalirVentanaEliminar=Button(ventanaEliminar,text="Salir",font=("BiauKai","21", "bold"),width=7,command=ventanaEliminar.destroy)
-    lista=["Su peso bajó a menos de 50 kgms.",
-    "No se puede donar sangre si la persona ha sido trasplantada, es decir, ha recibido un trasplante de órgano.",
-    "Enfermedades como: tuberculosis, cáncer o cualquier enfermedad coronaria.",
-    "Si el donante esadicto a ningún tipo de droga.","Padecióhepatitis B o C.",
-    "Si has padecido de mal de Chagas no puedes donar."]
+    cedula_entry = Entry(ventanaEliminar,textvariable = cedula_var,width=33,bd=5)#entrada
+    botonSalirVentanaEliminar=Button(ventanaEliminar,text="Salir",command=ventanaEliminar.destroy)
+    lista=["Peso menor a 50 kgs.",
+    "Persona ha recibido un trasplante de órgano.",
+    "Padece enfermedades como tuberculosis, cáncer o cualquier enfermedad coronaria.",
+    "Donante adicto a alguna droga.","Padeció hepatitis B o C.",
+    "Padece de mal de Chagas."]
     desplegableJustificaciones = ttk.Combobox(ventanaEliminar,width=50,textvariable=justi,values=lista)
-    botonEliminar=Button(ventanaEliminar,text = 'Eliminar',font=("BiauKai","21", "bold"),width=7,command=validarJustificacion)#, command=lambda:submit(cedula_var)
+    botonEliminar=Button(ventanaEliminar,text = 'Eliminar donador',width=15,command=validarJustificacion)#, command=lambda:submit(cedula_var)
     
-    etiquetaEliminar.grid(row=1,column=1,padx=10,pady=10)
     cedula_label.grid(row=2,column=0,padx=10,pady=10)
-    cedula_entry.grid(row=2,column=1,columnspan=1,padx=10,pady=10)
+    cedula_entry.grid(row=2,column=1,columnspan=5,padx=10,pady=10)
     desplegableJustificaciones.grid(row=3,column=0,columnspan=5,padx=10,pady=10)
     #desplegableJustificaciones.bind("<<ComboboxSelected>>")meter parámetro que llama a funcion.
     botonEliminar.grid(row=4,column=1,padx=10,pady=10)
+    botonEliminar.place(relx=0.5,rely=0.7,anchor=CENTER)
     botonSalirVentanaEliminar.grid(row=5,column=1,padx=10,pady=10)
+    botonSalirVentanaEliminar.place(relx=0.5,rely=0.9,anchor=CENTER)
 
 def insertarLugar():
     ventanaInsertarLugar=Toplevel()
     ventanaInsertarLugar.title("Insertar lugar de donación")
-    
+    ventanaInsertarLugar.geometry("410x165")
     clave_var=StringVar()
     valor_var=StringVar()
     def insetarLugarNuevo():
@@ -465,7 +489,7 @@ def insertarLugar():
             valor_var.set("")
             return 
         if not valor_var.get():
-            messagebox.showerror("Error al ingresar nuevo lugar","Debe ingresar un nuevo lugar en el cuadro de texto.")
+            messagebox.showerror("Error al ingresar nuevo lugar","Debe ingresar un nuevo lugar.")
             clave_var.set("")
             valor_var.set("")
             return
@@ -476,25 +500,25 @@ def insertarLugar():
         clave_var.set("")
         valor_var.set("")
         return ""
-    etiquetaInsertarLugar=Label(ventanaInsertarLugar,text="Insertar lugar de donación")
-    etiquetaProvincia=Label(ventanaInsertarLugar,text="Seleccione provincia")
+    etiquetaProvincia=Label(ventanaInsertarLugar,text="Seleccione la provincia")
     etiquetaNuevoLugar=Label(ventanaInsertarLugar,text="Nuevo lugar de donación")
 
     listaProvincias=["San José","Alajuela","Cartago","Heredia","Guanacaste","Puntarenas","Limón"]
     provincias=ttk.Combobox(ventanaInsertarLugar,textvariable=clave_var,values=listaProvincias)
-    entradaLugarNuevo=Entry(ventanaInsertarLugar,textvariable=valor_var)
-    botonInsertarNuevoLugar=Button(ventanaInsertarLugar,text="Insertar",command=insetarLugarNuevo)
+    entradaLugarNuevo=Entry(ventanaInsertarLugar,textvariable=valor_var,width=21,bd=5)
+    botonInsertarNuevoLugar=Button(ventanaInsertarLugar,text="Insertar",width=8,command=insetarLugarNuevo)
     botonSalirVentanaInsertarLugar=Button(ventanaInsertarLugar,text="Salir",command=ventanaInsertarLugar.destroy)
     
 
-    etiquetaInsertarLugar.grid(row=1,column=1,columnspan=2,padx=10,pady=10)
-    etiquetaProvincia.grid(row=2,column=0,padx=10,pady=10)
-    provincias.grid(row=2,column=1,columnspan=4,padx=10,pady=10)
-    etiquetaNuevoLugar.grid(row=3,column=0,padx=10,pady=10)
-    entradaLugarNuevo.grid(row=3,column=1,columnspan=6,padx=10,pady=10)
-    botonInsertarNuevoLugar.grid(row=4,column=1,columnspan=3,padx=10,pady=10)
+    etiquetaProvincia.grid(row=0,column=0,padx=10,pady=10)
+    provincias.grid(row=0,column=1,columnspan=4,padx=10,pady=10)
+    etiquetaNuevoLugar.grid(row=1,column=0,padx=10,pady=10)
+    entradaLugarNuevo.grid(row=1,column=1,columnspan=6,padx=10,pady=10)
 
-    botonSalirVentanaInsertarLugar.grid(row=5,column=1,columnspan=3,padx=10,pady=10)
+    botonInsertarNuevoLugar.grid(row=2,column=1,columnspan=3,padx=10,pady=10)
+    botonInsertarNuevoLugar.place(relx=0.5,rely=0.7,anchor=CENTER)
+    botonSalirVentanaInsertarLugar.grid(row=3,column=1,columnspan=3,padx=10,pady=10)
+    botonSalirVentanaInsertarLugar.place(relx=0.5,rely=0.9,anchor=CENTER)
 
 def reportes():
     ventanaReportes=Toplevel()

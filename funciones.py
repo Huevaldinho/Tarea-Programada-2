@@ -134,6 +134,39 @@ def validarFecha(fecha):
             return False
     except:
         return False
+#07/05/2021 / 1 hora.
+def provinciaYlugarDeDonacion(cedula): #Punto 1.1
+    """
+    Función: Lugares donde se puede donar según su provicia de nacimiento.
+    Entrada:
+    -cedula(str): Cédula de persona.
+    Salida:
+    -lugarAsignado(str): Lugar de votación según provincia de nacimiento.
+    """
+    provincia=[["1","San José"],["2","Alajuela"],["3","Cartago"],["4","Heredia"],["5","Guanacaste"],["6","Puntarenas"],["7","Limón"]]
+    lugares=lee("lugaresDonacion")#ahora la lista está en disco duro.
+    lugarAsignado=None #para los que son cedula 8 y 9
+    for sublista in provincia: #recorre la lista
+        if str(cedula)[0]==sublista[0]:
+            lugarAsignado=sublista[1]
+    if lugarAsignado==None:
+        lugarAsignado="San José"
+    return "Dado que usted nació en la provincia de: "+lugarAsignado+" usted podría donar en: \n"+"\n".join(lugares[lugarAsignado])
+def graba(nombreArchivo,lista):
+    """
+    Función: Grabar/crear un archivo(base de datos).
+    Entradas:
+    -nombreArchivo(str): Nombre del archivo en el que se va a grabar/crear.
+    -lista(list): Lista que se va a guardar en el archivo.
+    Salida: N/A.
+    """
+    try:
+        f=open(nombreArchivo,"wb")
+        pickle.dump(lista,f)
+        f.close()
+    except:
+        print("Error al grabar el archivo: ", nombreArchivo)
+    return ""
 #Función que lee un archivo con una lista de estudiantes
 def lee (nomArchLeer):
     """
@@ -150,41 +183,6 @@ def lee (nomArchLeer):
     except:
         print("Error al leer el archivo: ", nomArchLeer)
     return lista
-def provinciaYlugarDeDonacion(cedula): #Punto 1.1
-    """
-    Función: Lugares donde se puede donar según su provicia de nacimiento.
-    Entrada:
-    -cedula(str): Cédula de persona.
-    Salida:
-    -lugarAsignado(str): Lugar de votación según provincia de nacimiento.
-    """
-    provincia=[["1","San José"],["2","Alajuela"],["3","Cartago"],["4","Heredia"],["5","Guanacaste"],["6","Puntarenas"],["7","Limón"]]
-    lugares=lee("lugaresDonacion.txt")#ahora la lista está en disco duro.
-    lugarAsignado=None #para los que son cedula 8 y 9
-    for sublista in provincia: #recorre la lista
-        if str(cedula)[0]==sublista[0]:
-            lugarAsignado=sublista[1]
-    if lugarAsignado==None:
-        lugarAsignado="San José"
-    return "Dado que usted nació en la provincia de: "+lugarAsignado+" usted podría donar en: \n"+"\n".join(lugares[lugarAsignado])
-#print(provinciaYlugarDeDonacion("9-0139-00105"))
-#07/05/2021 / 1 hora.
-def graba(nombreArchivo,lista):
-    """
-    Función: Grabar/crear un archivo(base de datos).
-    Entradas:
-    -nombreArchivo(str): Nombre del archivo en el que se va a grabar/crear.
-    -lista(list): Lista que se va a guardar en el archivo.
-    Salida: N/A.
-    """
-    try:
-        f=open(nombreArchivo,"wb")
-        pickle.dump(lista,f)
-        f.close()
-    except:
-        print("Error al grabar el archivo: ", nombreArchivo)
-    return ""
-
 #######################
 #######################
 #2. Generar Donador
@@ -290,7 +288,7 @@ def validarLugarDonacion(clave,nuevo):
     -True(bool): Si nuevo no está en clave.
     -False(bool): Si nuevo ya está en clave.
     """
-    lugares=lee("lugaresDonacion.txt")
+    lugares=lee("lugaresDonacion")
     listaProvincia=lugares[clave]
     if nuevo in listaProvincia:
         return False#ya está registrado en esa provincia.
@@ -305,15 +303,10 @@ def agregarLugarDonacion(clave,valor):
     -True(bool): Si agregó el lugar al diccionario "lugaresDonacion.txt".
     -False(bool): Si no agregó el lugar(porque ya está registrado en la provincia en el archivo "lugaresDonacion.txt").
     """
-    lugares=lee("lugaresDonacion.txt")
+    lugares=lee("lugaresDonacion")
     provincia=lugares[clave]#saca la lista que tiene los lugares de la provincia (clave)
     provincia+=[valor.lower()]#le pega el nuevo lugar(valor)
     if validarLugarDonacion(clave,valor):
-        graba("lugaresDonacion.txt",lugares)#manda a grabar los cambios
-        print("NUEVO:",lee("lugaresDonacion.txt"))
+        graba("lugaresDonacion",lugares)#manda a grabar los cambios
         return True#grabó el dic con el nuevo lugar.
     return False#no grabó nada
-"""x={'San José': ['el banco nacional de sangre', 'hospital méxico', 'hospital san juan de dios'], 'Alajuela': ['hospital san rafael de alajuela', 'hospital de san ramón', 
-'hospital del cantón norteño'], 'Cartago': ["hospital max peralta"], 'Heredia': ['hospital san vicente de paúl'], 'Guanacaste': ['hospital la anexión en nicoya', 'hospital enrique baltodano de liberia.'], 'Puntarenas': ['hospital monseñor sanabria'], 'Limón': ['hospital tony facio', 'hospital de guápiles']}
-graba("lugaresDonacion.txt",x)#Diccionario original
-print(lee("lugaresDonacion.txt"))"""
