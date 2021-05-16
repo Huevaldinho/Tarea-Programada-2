@@ -167,7 +167,7 @@ def graba(nombreArchivo,lista):
     except:
         print("Error al grabar el archivo: ", nombreArchivo)
     return ""
-#Función que lee un archivo con una lista de estudiantes
+#Función que lee un archivo
 def lee (nomArchLeer):
     """
     Función: Grabar/crear un archivo(base de datos).
@@ -238,23 +238,23 @@ def generarDonadores(cantidad):
         matriz.append(persona)
     return matriz
 def revisarLista(usuario):
+    """
+    Función: Revisar que una cédula esté en la "base de datos".
+    Entrada:
+    -usuario(str): Número de cédula.
+    Salida:
+    filas,i: Si está registrado devuelve la información de la persona y el número que tiene en la lista.
+    False(bool): Si no está en la base de datos.
+    """
     lista=lee("donadores")#manda a traer lista de disco duro
     for i,filas in enumerate(lista):#saca las filas(donadores).
         if usuario==filas[1]:
             return filas,i
     return False
-def confirmarEliminacion():
-    #boton en interfaz gráfica
-    boton=int(input("Ingrese 1 para confirmar: "))
-    if boton==1:
-        return True
-    return False
 #######################
 #4.ELIMINAR DONADOR
 #######################
-def eliminarDonador(eliminar,jusfificacion):#cambiar a listas.
-# formato: lista=[['cedula','nombreCompleto','fechaNacimiento','sangre','sexo',
-# 'peso',"estado",'telefono', 'correo',"justificación"]]
+def eliminarDonador(eliminar,jusfificacion):
     """
     Función: Eliminar donador de una lista(cambiar estado a 0).
     Entrada:
@@ -300,8 +300,8 @@ def agregarLugarDonacion(clave,valor):
     -clave(str): Nombre de provincia.
     -valor(str): Nombre de lugar de donación.
     Salida:
-    -True(bool): Si agregó el lugar al diccionario "lugaresDonacion.txt".
-    -False(bool): Si no agregó el lugar(porque ya está registrado en la provincia en el archivo "lugaresDonacion.txt").
+    -True(bool): Si agregó el lugar al diccionario "lugaresDonacion".
+    -False(bool): Si no agregó el lugar(porque ya está registrado en la provincia en el archivo "lugaresDonacion").
     """
     lugares=lee("lugaresDonacion")
     provincia=lugares[clave]#saca la lista que tiene los lugares de la provincia (clave)
@@ -310,3 +310,42 @@ def agregarLugarDonacion(clave,valor):
         graba("lugaresDonacion",lugares)#manda a grabar los cambios
         return True#grabó el dic con el nuevo lugar.
     return False#no grabó nada
+def generarReporte(nombreReporte):
+    listaProvincias=lee("donadores")
+    if nombreReporte=="San José":
+        selector="1"
+    elif nombreReporte=="Alajuela":
+        selector="2"
+    elif nombreReporte=="Cartago":
+        selector="3"
+    elif nombreReporte=="Heredia":
+        selector="4"
+    elif nombreReporte=="Guanacaste":
+        selector="5"
+    elif nombreReporte=="Puntarenas":
+        selector="6"
+    else:
+        selector="7"
+    donadoresProvinciaSeleccionada=[]
+    for i in range(len(listaProvincias)):
+        if listaProvincias[i][1][0]=="9" or listaProvincias[i][1][0]=="8":
+            if selector=="1":
+                if listaProvincias[i][8]==1:
+                    donadoresProvinciaSeleccionada.append(listaProvincias[i])
+        if listaProvincias[i][1][0]==selector:
+            if listaProvincias[i][8]==1:
+                donadoresProvinciaSeleccionada.append(listaProvincias[i])
+    nombreCrearArchivo="reporte"+nombreReporte+".html"#Le da el nombre al reporte
+    if donadoresProvinciaSeleccionada==[]:#si es vacío es porque no hay donadores activos en esa provincia.
+        return False
+    graba(nombreCrearArchivo,donadoresProvinciaSeleccionada)#manda a hacer el reporte
+    return True
+generarReporte("San José")
+"""NO LO BORRE
+dic={"San José":["el banco nacional de sangre","hospital méxico","hospital san juan de dios"],
+"Alajuela":["hospital san rafael de alajuela","hospital de san ramón","hospital del cantón norteño"],
+"Cartago":["hospital max peralta"],
+"Heredia":["hospital san vicente de paúl"],
+"Guanacaste":["hospital la anexión en nicoya","hospital enrique baltodano de liberia"],
+"Puntarenas":["hospital monseñor sanabria"],"Limón":["hospital tony facio","hospital de guápiles"]}
+graba("lugaresDonacion",dic)"""

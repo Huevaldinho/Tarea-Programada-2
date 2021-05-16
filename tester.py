@@ -522,12 +522,69 @@ def insertarLugar():
 
 def reportes():
     ventanaReportes=Toplevel()
+    ventanaReportes.geometry("320x500")
+    ventanaReportes.title("Reportes")
+    def donadoresxProvincia():
+        ventanaDonadoresxProvincia=Toplevel()
+        ventanaDonadoresxProvincia.title("Reporte: Donadores por provincia")
+        provinciaSeleccionada=StringVar()
+        lista=["San José","Alajuela","Cartago","Heredia","Guanacaste","Puntarenas","Limón"]
 
-    etiquetaReportes=Label(ventanaReportes,text="REPORTES")
-    etiquetaReportes.grid(row=1,column=5,padx=10,pady=10)
+        def validarProvinciaSeleccionada():
+            lista=["San José","Alajuela","Cartago","Heredia","Guanacaste","Puntarenas","Limón"]
+            if provinciaSeleccionada.get() in lista:#Si escogió una opción del desplegable.
+                if generarReporte(provinciaSeleccionada.get()):
+                    messagebox.showinfo("Reporte generado","Reporte generado correctamente.")
+                else:
+                    messagebox.showerror("Error al crear reporte","No se ha creado reporte.")
+            else:
+                messagebox.showerror("Error al seleccionar provincia","Debe seleccionar una provincia válida.")
+            provinciaSeleccionada.set("")
+            return 
+        etiquetaDonadores=Label(ventanaDonadoresxProvincia,text="Seleccione una provincia")
+        provincia=ttk.Combobox(ventanaDonadoresxProvincia,textvariable=provinciaSeleccionada,values=lista)
+        botonReporte=Button(ventanaDonadoresxProvincia,text="Generar reporte",command=validarProvinciaSeleccionada)
 
-    botonSalirReportes=Button(ventanaReportes,text="Salir",command=ventanaReportes.destroy)
-    botonSalirReportes.grid(row=5,column=5,padx=10,pady=10)
+        botonSalirDonadoresxPronvcia=Button(ventanaDonadoresxProvincia,text="Regresar",command=ventanaDonadoresxProvincia.destroy)
+
+        etiquetaDonadores.grid(row=0,column=1,padx=10,pady=10)
+        provincia.grid(row=1,column=1,columnspan=3,padx=10,pady=10)
+        botonReporte.grid(row=2,column=1,columnspan=2,padx=10,pady=10)
+
+        botonSalirDonadoresxPronvcia.grid(row=4,column=2,padx=10,pady=10)
+        return
+
+    etiquetaDonadoresActivos=Label(ventanaReportes,text="Donadores activos")
+
+    botonDonantesProvincia=Button(ventanaReportes,text="Donantes por provincia",command=donadoresxProvincia)
+    botonRangoEdad=Button(ventanaReportes,text="Rango de edad")
+    botonTipoSangre=Button(ventanaReportes,text="Tipo de sangre")
+    botonListaCompleta=Button(ventanaReportes,text="Lista completa de donadores")
+    botonMujeresO=Button(ventanaReportes,text="Mujeres donantes O-")
+    botonDonar=Button(ventanaReportes,text="¿A quién le puedo donar?")
+    botonRecibir=Button(ventanaReportes,text="¿De quién puedo recibir?")
+
+    etiquetaDonadoresNoActivos=Label(ventanaReportes,text="Donadores NO activos")
+    botonDonadoresNoActivos=Button(ventanaReportes,text="Donantes NO activos")
+
+    botonSalirReportes=Button(ventanaReportes,text="Regresar",command=ventanaReportes.destroy)
+
+    etiquetaDonadoresActivos.grid(row=0,column=3,padx=10,pady=10)
+
+    botonDonantesProvincia.grid(row=1,column=3,padx=10,pady=10)
+    botonRangoEdad.grid(row=2,column=3,padx=10,pady=10)
+    botonTipoSangre.grid(row=3,column=3,padx=10,pady=10)
+    botonListaCompleta.grid(row=4,column=3,padx=10,pady=10)
+    botonMujeresO.grid(row=5,column=3,padx=10,pady=10)
+    botonDonar.grid(row=6,column=3,padx=10,pady=10)
+    botonRecibir.grid(row=7,column=3,padx=10,pady=10)
+
+    etiquetaDonadoresNoActivos.grid(row=8,column=3,padx=10,pady=10)
+    botonDonadoresNoActivos.grid(row=9,column=3,padx=10,pady=10)
+
+
+    botonSalirReportes.grid(row=10,column=2,padx=10,pady=10)
+
 def menu():#NO TOCAR, YA ESTÁ LISTO.
     principal=Tk()#menu principal
     principal.title("Donadores de Sangre Costa Rica")
