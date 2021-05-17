@@ -354,12 +354,13 @@ def generarReporte(nombreReporte):
     graba(nombreCrearArchivo,donadoresProvinciaSeleccionada)#manda a hacer el reporte
     print(lee(nombreCrearArchivo))
     return True
-print(generarReporte("Limón"))
-"""NO LO BORRE
-dic={"San José":["el banco nacional de sangre","hospital méxico","hospital san juan de dios"],
+#print(generarReporte("Limón"))
+#NO LO BORRE
+"""dic={"San José":["el banco nacional de sangre","hospital méxico","hospital san juan de dios"],
 "Alajuela":["hospital san rafael de alajuela","hospital de san ramón","hospital del cantón norteño"],
 "Cartago":["hospital max peralta"],
 "Heredia":["hospital san vicente de paúl"],
 "Guanacaste":["hospital la anexión en nicoya","hospital enrique baltodano de liberia"],
 "Puntarenas":["hospital monseñor sanabria"],"Limón":["hospital tony facio","hospital de guápiles"]}
-graba("lugaresDonacion",dic)"""
+graba("lugaresDonacion",dic)
+print(lee("lugaresDonacion"))"""
