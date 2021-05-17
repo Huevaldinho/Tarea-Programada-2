@@ -1,10 +1,3 @@
-#prueba conexión con base de datos local.
-#import mysql.connector
-#cnn=mysql.connector.connect(host="localhost",user="root",passwd="",database="prueba")
-#print(cnn)#se conecta a la base de datos.
-
-
-
 ####################
 #VALIDACIONES
 ####################
@@ -16,6 +9,7 @@ import pickle
 import random
 import names
 import string
+import time
 def validarCedula(cedula):
     """
     Función: Validar número de cédula con formato #-####-####.
@@ -354,7 +348,61 @@ def generarReporte(nombreReporte):
     graba(nombreCrearArchivo,donadoresProvinciaSeleccionada)#manda a hacer el reporte
     print(lee(nombreCrearArchivo))
     return True
-#print(generarReporte("Limón"))
+#Reporte de rango de edad
+def validarInicioMayorFin(inicio,fin=None):
+    if fin!="":
+        try:
+            inicio=int(inicio)
+            fin=int(fin)
+        except:
+            return False
+        if inicio<18 or fin<18:
+            return False 
+        if inicio>fin:
+            return False
+        return [True,2]#inicio y fin
+    try:
+        inicio=int(inicio)
+    except:
+        return False
+    if inicio>=18:
+        return [True,1]#solo inicio
+    return False
+def revisarRango(inicio,fin=None):
+    donadores=lee("donadores")
+    rangoxEdad=["Reporte por rango de edad",datetime.now().strftime('%d-%m-%y %H:%M:%S')]
+    hoy=datetime.now()
+    #print(hoy)
+    persona=[]
+    if fin=="":
+        for personas in donadores:
+            nacimientoFecha=datetime.strptime(personas[4], "%d/%m/%Y")
+            diferencia=hoy-nacimientoFecha
+            if int(str((diferencia/365))[0:3])>=int(inicio):
+                persona.append(personas[1])
+                persona.append(personas[0])
+                persona.append(personas[4])
+                persona.append(personas[7])
+                persona.append(personas[5])
+                rangoxEdad.append(persona)
+                persona=[]
+    else:
+        for personas in donadores:
+            nacimientoFecha=datetime.strptime(personas[4], "%d/%m/%Y")
+            diferencia=hoy-nacimientoFecha
+            #edad>=inicio y edad<fin
+            if int(str((diferencia/365))[0:3])>=int(inicio) and int(str((diferencia/365))[0:3])<=int(fin):
+                persona.append(personas[1])
+                persona.append(personas[0])
+                persona.append(personas[4])
+                persona.append(personas[7])
+                persona.append(personas[5])
+                rangoxEdad.append(persona)
+                persona=[]
+    #Graba: "reporteRangoEdad"+edad de inicio+edad final
+    graba("reporteRangoEdad"+inicio+fin,rangoxEdad)
+    #print(lee("reporteRangoEdad"+inicio+fin))
+    return
 #NO LO BORRE
 """dic={"San José":["el banco nacional de sangre","hospital méxico","hospital san juan de dios"],
 "Alajuela":["hospital san rafael de alajuela","hospital de san ramón","hospital del cantón norteño"],

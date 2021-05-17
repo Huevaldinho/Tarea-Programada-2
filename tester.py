@@ -1,12 +1,3 @@
-
-#CONJUNTO DE PRUEBAS TKINTER
-
-#AL FINAL HAY VARIAS POSIBILIDADES DE MANEJO DE TKINTER
-    #ES DECIR, COMO USAR, SCROLLBARS, CAJAS DE TEXTO, ETC...
-#RECORDAR LA CALCULADORA QUE TAMBIÉN ESTÁ EN EL REPOSITORIO
-
-
-
 #"""
 
 #PROGRAMA PRUEBA
@@ -525,6 +516,7 @@ def reportes():
     ventanaReportes.geometry("320x500")
     ventanaReportes.title("Reportes")
     def donadoresxProvincia():
+        #DONADORES POR PROVINCIA
         ventanaDonadoresxProvincia=Toplevel()
         ventanaDonadoresxProvincia.title("Reporte: Donadores por provincia")
         provinciaSeleccionada=StringVar()
@@ -553,11 +545,61 @@ def reportes():
 
         botonSalirDonadoresxPronvcia.grid(row=4,column=2,padx=10,pady=10)
         return
+    def rangoEdad():
+        #DONADORES POR RANGO DE EDAD.
+        ventanaDonadoresxProvincia=Toplevel()
+        ventanaDonadoresxProvincia.title("Reporte: Donadores por rango de edad")
+        inicio_var=StringVar()
+        fin_var=StringVar()
+        def validarInicioFin():
+            if not inicio_var.get():#debe tener fecha de incicio obligatoriamente.
+                messagebox.showerror("Error al ingresar rango","Debe ingresar una edad de inicio.")
+                inicio_var.set("")
+                fin_var.set("")
+                return
+            #no tiene sentido decir reporte NO creado cuando haya algo malo porque antes de mandar a 
+            #hacer el reporte se valida y muestra un error.
+            validado=validarInicioMayorFin(inicio_var.get(),fin_var.get())#manda a validar las edades.
+            if validado[0]:#obtiene True|False de la validación
+                if validado[1]==1:#saca el valor 1 de la tupla, 1. Es solo inicio, 2. inicio y fin.
+                    revisarRango(inicio_var.get(),fin_var.get())#manda a hacer el reporte.
+                else:
+                    revisarRango(inicio_var.get(),fin_var.get())
+                messagebox.showinfo("Reporte generado","Reporte creado satisfactoriamente.")  
+            else:
+                messagebox.showerror("Error al ingresar fecha","Rango inválido.")
+            inicio_var.set("")
+            fin_var.set("")
+            return
+
+        etiquetaRangoEdad=Label(ventanaDonadoresxProvincia,text="Ingresar rango")
+        etiquetaInicio=Label(ventanaDonadoresxProvincia,text="Edad inicial")
+        etiquetaFin=Label(ventanaDonadoresxProvincia,text="Edad final")
+
+        entradaInicio=Entry(ventanaDonadoresxProvincia,textvariable=inicio_var)
+        entradaFin=Entry(ventanaDonadoresxProvincia,textvariable=fin_var)
+
+        botonGenerar=Button(ventanaDonadoresxProvincia,text="Generar",command=validarInicioFin)
+        botonSalirDonadoresxProvincia=Button(ventanaDonadoresxProvincia,text="Regresar",command=ventanaDonadoresxProvincia.destroy)
+
+
+
+        etiquetaRangoEdad.grid(row=0,column=1,padx=10,pady=10)
+        etiquetaInicio.grid(row=1,column=0,padx=10,pady=10)
+        etiquetaFin.grid(row=2,column=0,padx=10,pady=10)
+        entradaInicio.grid(row=1,column=1,columnspan=3,padx=10,pady=10)
+        entradaFin.grid(row=2,column=1,columnspan=3,padx=10,pady=10)
+        botonGenerar.grid(row=3,column=1,padx=10,pady=10)
+
+        botonSalirDonadoresxProvincia.grid(row=5,column=1,columnspan=4,padx=10,pady=10)
+        
+
+        return 
 
     etiquetaDonadoresActivos=Label(ventanaReportes,text="Donadores activos")
 
     botonDonantesProvincia=Button(ventanaReportes,text="Donantes por provincia",command=donadoresxProvincia)
-    botonRangoEdad=Button(ventanaReportes,text="Rango de edad")
+    botonRangoEdad=Button(ventanaReportes,text="Rango de edad",command=rangoEdad)
     botonTipoSangre=Button(ventanaReportes,text="Tipo de sangre")
     botonListaCompleta=Button(ventanaReportes,text="Lista completa de donadores")
     botonMujeresO=Button(ventanaReportes,text="Mujeres donantes O-")
