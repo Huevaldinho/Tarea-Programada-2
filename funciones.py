@@ -372,7 +372,6 @@ def revisarRango(inicio,fin=None):
     donadores=lee("donadores")
     rangoxEdad=["Reporte por rango de edad",datetime.now().strftime('%d-%m-%y %H:%M:%S')]
     hoy=datetime.now()
-    #print(hoy)
     persona=[]
     if fin=="":
         for personas in donadores:
@@ -412,3 +411,8 @@ def revisarRango(inicio,fin=None):
 "Puntarenas":["hospital monseñor sanabria"],"Limón":["hospital tony facio","hospital de guápiles"]}
 graba("lugaresDonacion",dic)
 print(lee("lugaresDonacion"))"""
+
+print(lee("donadores"))
+
+
+
