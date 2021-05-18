@@ -1,1 +1,0 @@
-INSERT INTO cartago (nombreCompleto,cedula,tipoSangre) VALUES ("Felipe Obando","901390105","O+")

@@ -325,22 +325,18 @@ def generarReporte(nombreReporte):
     for i in range(len(listaProvincias)):
         if listaProvincias[i][1][0]=="9" or listaProvincias[i][1][0]=="8":
             if selector=="1":
-                if listaProvincias[i][8]==1:
-                    cedula=listaProvincias[i][1]
-                    nombre=listaProvincias[i][0]
-                    fechaN=listaProvincias[i][4]
-                    telefono=listaProvincias[i][7]
-                    correo=listaProvincias[i][6]
-                    donador=[cedula,nombre,fechaN,telefono,correo]
+                if listaProvincias[i][8]==1:#si el estado es activo
+                    donador=[listaProvincias[i][1],
+                    listaProvincias[i][0],
+                    listaProvincias[i][4],listaProvincias[i][7],
+                    listaProvincias[i][6]]
                     donadoresProvinciaSeleccionada.append(donador)
         if listaProvincias[i][1][0]==selector:
             if listaProvincias[i][8]==1:
-                cedula=listaProvincias[i][1]
-                nombre=listaProvincias[i][0]
-                fechaN=listaProvincias[i][4]
-                telefono=listaProvincias[i][7]
-                correo=listaProvincias[i][6]
-                donador=[cedula,nombre,fechaN,telefono,correo]
+                donador=[listaProvincias[i][1],
+                    listaProvincias[i][0],
+                    listaProvincias[i][4],listaProvincias[i][7],
+                    listaProvincias[i][6]]
                 donadoresProvinciaSeleccionada.append(donador)
     nombreCrearArchivo="reporte"+nombreReporte+".html"#Le da el nombre al reporte
     if len(donadoresProvinciaSeleccionada)==2:#si es vacío es porque no hay donadores activos en esa provincia.
@@ -400,7 +396,7 @@ def revisarRango(inicio,fin=None):
                 persona=[]
     #Graba: "reporteRangoEdad"+edad de inicio+edad final
     graba("reporteRangoEdad"+inicio+fin,rangoxEdad)
-    #print(lee("reporteRangoEdad"+inicio+fin))
+    #print(lee("reporteRangoEdad"+inicio+fin))#así está guardado el archivo.
     return
 #NO LO BORRE
 """dic={"San José":["el banco nacional de sangre","hospital méxico","hospital san juan de dios"],
@@ -412,7 +408,4 @@ def revisarRango(inicio,fin=None):
 graba("lugaresDonacion",dic)
 print(lee("lugaresDonacion"))"""
 
-print(lee("donadores"))
-
-
-
+#print(lee("donadores"))

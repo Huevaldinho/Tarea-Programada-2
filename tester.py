@@ -695,10 +695,8 @@ def reportes():
             #hacer el reporte se valida y muestra un error.
             validado=validarInicioMayorFin(inicio_var.get(),fin_var.get())#manda a validar las edades.
             if validado[0]:#obtiene True|False de la validación
-                if validado[1]==1:#saca el valor 1 de la tupla, 1. Es solo inicio, 2. inicio y fin.
+                if validado[1]==1 or validado[1]==2:#saca el valor 1 de la tupla, 1. Es solo inicio, 2. inicio y fin.
                     revisarRango(inicio_var.get(),fin_var.get())#manda a hacer el reporte.
-                else:
-                    revisarRango(inicio_var.get(),fin_var.get())
                 messagebox.showinfo("Reporte generado","Reporte creado satisfactoriamente.")  
             else:
                 messagebox.showerror("Error al ingresar fecha","Rango inválido.")
