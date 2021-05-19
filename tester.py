@@ -379,12 +379,146 @@ def generar():
     botonSalirVentanaGenerar.place(relx=0.5,rely=0.86,anchor=CENTER)
 def actualizar():
     ventanaActualizar=Toplevel()
-    
-    etiquetaActualizar=Label(ventanaActualizar,text="ACTUALIZAR")
-    etiquetaActualizar.grid(row=1,column=5,padx=10,pady=10)
+    ventanaActualizar.title("Actualizar Donadores")
+    ventanaActualizar.geometry("350x100")
+    ventanaActualizar.resizable(width=False, height=False)
 
+    cedulaAlmacen=StringVar()
+
+    cuantos_label=Label(ventanaActualizar,text="Cédula del donador")
+    entrada=Entry(ventanaActualizar,textvariable=cedulaAlmacen,width=20,bd=5)
+    cuantos_label.grid(row=0,column=0,padx=4,pady=7)
+    entrada.grid(row=0,column=1,columnspan=2,padx=7,pady=7)
+
+    def verificarActualizacion():
+        if cedulaAlmacen.get()=="":
+            messagebox.showerror("Cédula Inválida","Ingrese una cédula")
+        else:
+            if validarCedula(cedulaAlmacen.get()):
+                for i in lee("donadores"):
+                    if cedulaAlmacen.get()==i[1]:
+                        condicion=True
+                        break
+                    else:
+                        condicion=False
+                if condicion==False:
+                    messagebox.showerror("Datos Erróneos","La persona con el número de cédula "+cedulaAlmacen.get()+" no está registrada en la base de datos del \
+Banco de Sangre aún.")
+                else:
+                    ventanaInsertar=Toplevel()
+                    ventanaInsertar.resizable(width=False, height=False)
+                    ventanaInsertar.title("Insertar Donador")
+
+                    nombreAlmacen=StringVar()
+                    fechaNacimientoAlmacen=StringVar()
+                    sangreAlmacen=StringVar()
+                    sexoAlmacen=BooleanVar()
+                    pesoAlmacen=IntVar()
+                    telefonoAlmacen=StringVar()
+                    correoAlmacen=StringVar()
+
+                    nombre_label=Label(ventanaInsertar,text="Nombre Completo")
+                    fechaNacimiento_label=Label(ventanaInsertar,text="Fecha de Nacimiento")
+                    sangre_label=Label(ventanaInsertar,text="Tipo de Sangre")
+                    sexo_label=Label(ventanaInsertar,text="Sexo")
+                    peso_label=Label(ventanaInsertar,text="Peso (kg)")
+                    telefono_label=Label(ventanaInsertar,text="Teléfono")
+                    correo_label=Label(ventanaInsertar,text="Correo Electrónico")
+
+                    nombre_entry=Entry(ventanaInsertar,textvariable=nombreAlmacen,width=30 ,bd=5)
+                    fechaNacimiento_entry=Entry(ventanaInsertar,textvariable=fechaNacimientoAlmacen,width=30 ,bd=5)
+                    sangre_entry=ttk.Combobox(ventanaInsertar,textvariable=sangreAlmacen,values=["O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"])
+                    sexo_masculino=Radiobutton(ventanaInsertar, text='Masculino', variable=sexoAlmacen, value=True,width=30 ,bd=5)
+                    sexo_femenino=Radiobutton(ventanaInsertar, text='Femenino', variable=sexoAlmacen, value=False,width=30 ,bd=5)
+                    peso_entry=Entry(ventanaInsertar,textvariable=pesoAlmacen,width=30 ,bd=5)
+                    telefono_entry=Entry(ventanaInsertar,textvariable=telefonoAlmacen,width=30 ,bd=5)
+                    correo_entry=Entry(ventanaInsertar,textvariable=correoAlmacen,width=30 ,bd=5)
+
+                    nombre_label.grid(row=0,column=0,padx=5,pady=5)
+                    fechaNacimiento_label.grid(row=1,column=0,padx=5,pady=5)
+                    sangre_label.grid(row=2,column=0,padx=5,pady=5)
+                    sexo_label.grid(row=3,column=0,padx=5,pady=5)
+                    peso_label.grid(row=5,column=0,padx=5,pady=5)
+                    telefono_label.grid(row=6,column=0,padx=5,pady=5)
+                    correo_label.grid(row=7,column=0,padx=5,pady=5)
+
+                    nombre_entry.grid(row=0,column=1,columnspan=4,padx=5,pady=5)
+                    fechaNacimiento_entry.grid(row=1,column=1,columnspan=4,padx=5,pady=5)
+                    sangre_entry.grid(row=2,column=1,columnspan=4,padx=5,pady=5)
+                    sexo_masculino.grid(row=3,column=1,columnspan=4,padx=5,pady=5)
+                    sexo_femenino.grid(row=4,column=1,columnspan=4,padx=5,pady=5)
+                    peso_entry.grid(row=5,column=1,columnspan=4,padx=5,pady=5)
+                    telefono_entry.grid(row=6,column=1,columnspan=4,padx=5,pady=5)
+                    correo_entry.grid(row=7,column=1,columnspan=4,padx=5,pady=5)
+                    def limpiar():
+                        nombreAlmacen.set("")
+                        fechaNacimientoAlmacen.set("")
+                        sangreAlmacen.set("")
+                        sexoAlmacen.set(False)
+                        pesoAlmacen.set(0)
+                        telefonoAlmacen.set("")
+                        correoAlmacen.set("")
+                    
+                    def verificarActualizacionValido():
+                        try:
+                            if validarCedula(cedulaAlmacen.get()):
+                                if validarNombreCompleto(nombreAlmacen.get()):
+                                    if validarFecha(fechaNacimientoAlmacen.get()):
+                                        if validarPeso(pesoAlmacen.get()):
+                                            if validarTelefono(telefonoAlmacen.get()):
+                                                if validarCorreo(correoAlmacen.get()):
+                                                    lista=[nombreAlmacen.get(),
+                                                    cedulaAlmacen.get(),
+                                                    sangreAlmacen.get(),
+                                                    sexoAlmacen.get(),
+                                                    fechaNacimientoAlmacen.get(),
+                                                    pesoAlmacen.get(),
+                                                    correoAlmacen.get(),
+                                                    telefonoAlmacen.get(),
+                                                    1,
+                                                    0]
+                                                    matriz=lee("donadores")
+                                                    matriz.append(lista)
+                                                    graba("donadores",matriz)
+                                                    messagebox.showinfo("Cambios Registrados","Datos actualizados correctamente.")
+                                                    limpiar()
+                                                else:
+                                                    messagebox.showerror("Error de Formato","El correo electrónico contiene un formato incorrecto.")
+                                                    limpiar()
+                                            else:
+                                                messagebox.showerror("Error de Formato","El número de teléfono contiene un formato incorrecto.")
+                                                limpiar()
+                                        else:
+                                            messagebox.showerror("Error de Formato","El peso contiene un formato incorrecto. Debe ser mayor a 50 kg.")
+                                            limpiar()
+                                    else:
+                                        messagebox.showerror("Error de Formato","La fecha de nacimiento contiene un formato incorrecto.")
+                                        limpiar()
+                                else:
+                                    messagebox.showerror("Error de Formato","El nombre contiene un formato incorrecto.")
+                                    limpiar()
+                            else:
+                                messagebox.showerror("Cédula Inválida","El formato de la cédula es incorrecto.")
+                                limpiar()
+                        except:
+                            messagebox.showerror("Error de formato","Los datos que ha ingresado son inválidos.")
+                        ventanaInsertar.destroy
+
+                    botonSalirVentanaInsertar=Button(ventanaInsertar,text="Regresar",command=ventanaInsertar.destroy)#sale de la ventana insertar
+                    botonLimpiarVentanaInsertar=Button(ventanaInsertar,text="Limpiar",command=limpiar)
+                    botonRegistrarVentanaInsertar=Button(ventanaInsertar,text="Registrar",command=verificarActualizacionValido)
+                    botonSalirVentanaInsertar.grid(row=9,column=0,padx=5,pady=5)
+                    botonRegistrarVentanaInsertar.grid(row=9,column=2,padx=5,pady=5)
+                    botonLimpiarVentanaInsertar.grid(row=9,column=4,padx=5,pady=5)
+            else:
+                messagebox.showerror("Cédula Inválida","La cédula "+cedulaAlmacen.get()+" no cumple con el formato correcto.")
+
+    botonDeCambios=Button(ventanaActualizar,text="Actualizar",width=8,command=verificarActualizacion)
+    botonDeCambios.grid(row=1,column=0,padx=10,pady=10)
+    botonDeCambios.place(relx=0.5,rely=0.57,anchor=CENTER)
     botonSalirVentanaActualizar=Button(ventanaActualizar,text="Salir",command=ventanaActualizar.destroy)
-    botonSalirVentanaActualizar.grid(row=5,column=5,padx=10,pady=10)
+    botonSalirVentanaActualizar.grid(row=2,column=0,padx=10,pady=10)
+    botonSalirVentanaActualizar.place(relx=0.5,rely=0.86,anchor=CENTER)
 def eliminar():
     ventanaEliminar=Toplevel()
     ventanaEliminar.geometry("500x170")
