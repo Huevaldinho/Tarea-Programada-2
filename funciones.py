@@ -401,7 +401,7 @@ def revisarRango(inicio,fin=None):
     graba("reporteRangoEdad"+inicio+fin,rangoxEdad)
     return
 def reporteTipodeSangre(tipoSangre): #Reporte Tipo Sangre
-    listaReporte=["Reporte de tipo de sangre "+tipoSangre+" "+datetime.now().strftime('%d-%m-%y %H:%M:%S')]
+    listaReporte=["Reporte de tipo de sangre "+tipoSangre,datetime.now().strftime('%d-%m-%y %H:%M:%S')]
     for persona in lee("donadores"):
         listaPersona=[]
         if persona[8]==1:
@@ -445,7 +445,7 @@ def reporteDonadoreNOactivos():
 graba("lugaresDonacion",dic)
 print(lee("lugaresDonacion"))"""
 def mujeresDonantesO():
-    listaReporte=["Reporte de mujeres donantes O-  "+datetime.now().strftime('%d-%m-%y %H:%M:%S')]
+    listaReporte=["Reporte de mujeres donantes O-  ",datetime.now().strftime('%d-%m-%y %H:%M:%S')]
     for persona in lee("donadores"):
         listaPersona=[]
         if persona[8]==1:
@@ -462,7 +462,7 @@ def mujeresDonantesO():
     graba("ReporteMujeresO-.html",listaReporte)#manda a hacer el reporte
     return True
 def reporteTodo():
-    listaReporte=["Reporte de Donadores Totales  "+datetime.now().strftime('%d-%m-%y %H:%M:%S')]
+    listaReporte=["Reporte de Donadores Totales  ",datetime.now().strftime('%d-%m-%y %H:%M:%S')]
     for persona in lee("donadores"):
         listaPersona=[]
         if persona[8]==1:
@@ -482,5 +482,34 @@ def reporteTodo():
         return False
     graba("ReporteDonantesTotales.html",listaReporte)#manda a hacer el reporte
     return True
-
-print(lee("donadores"))
+def quienDonar(tipoSangre):
+    listaReporte=["Reporte de recibidores posibles del tipo "+tipoSangre,datetime.now().strftime('%d-%m-%y %H:%M:%S')]
+    if tipoSangre=="O+":
+        listaReporte.append("O+, A+, B+, AB+")
+    elif tipoSangre=="O-":
+        listaReporte.append("O+, O-, A+, A-, B+, B-, AB+, AB-")
+    elif tipoSangre=="A+":
+        listaReporte.append("A+, AB+")
+    elif tipoSangre=="A-":
+        listaReporte.append("A-, A+, AB-, AB+")
+    elif tipoSangre=="B+":
+        listaReporte.append("B+, AB+")
+    elif tipoSangre=="B-":
+        listaReporte.append("B-, B+, AB-, AB+")
+    elif tipoSangre=="AB+":
+        listaReporte.append("AB+")
+    elif tipoSangre=="AB-":
+        listaReporte.append("AB-, AB+")
+    for persona in lee("donadores"):
+        listaPersona=[]
+        if persona[8]==1:
+            if persona[2]==tipoSangre:
+                listaPersona.append(persona[1]) #cedula
+                listaPersona.append(persona[0]) #nombre
+                listaPersona.append(persona[7]) #telefono
+                listaPersona.append(persona[6]) #correo
+                listaReporte.append(listaPersona)
+    if len(listaReporte)==2:#si es vacío es porque no hay donadores activos en esa provincia.
+        return False
+    graba("ReporteRecibidoresPosiblesDe"+tipoSangre+".html",listaReporte)#manda a hacer el reporte
+    return True

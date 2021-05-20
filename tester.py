@@ -764,6 +764,36 @@ def reportes():
             messagebox.showinfo("Reporte generado","Reporte generado correctamente.")
         else:
             messagebox.showerror("Reporte no generado","Error al generar el reporte.")
+    def aQuienPuedeDonar():
+        ventanaAquienDonar=Toplevel()
+        ventanaAquienDonar.title("Reporte por tipo de sangre")
+        ventanaAquienDonar.geometry("420x100")
+        ventanaAquienDonar.resizable(width=False, height=False)
+        sangreAlmacen=StringVar()
+        
+        sangreLabel=Label(ventanaAquienDonar,text="Seleccione el tipo de sangre")
+        opcionesSangre=ttk.Combobox(ventanaAquienDonar,textvariable=sangreAlmacen,values=["O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"])
+
+        def validarAquienDonar():
+            if sangreAlmacen.get() in ["O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"]:
+                if quienDonar(sangreAlmacen.get()):
+                    messagebox.showinfo("Reporte generado","Reporte de los recibidores posibles del tipo "+sangreAlmacen.get()+" creado satisfactoriamente.")
+                    sangreAlmacen.set("")
+                else:
+                    messagebox.showinfo("Reporte no generado","Error al generar el reporte.")
+                    sangreAlmacen.set("")
+            else:
+                messagebox.showerror("Reporte no generado","Seleccione una opción válida.")
+                sangreAlmacen.set("")
+        sangreLabel.grid(row=0,column=0,padx=8,pady=8)
+        opcionesSangre.grid(row=0,column=1,padx=8,pady=8)
+        generarBoton=Button(ventanaAquienDonar,text="Generar Reporte",command=validarAquienDonar)
+        salirBoton=Button(ventanaAquienDonar,text="Salir",command=ventanaAquienDonar.destroy)
+        generarBoton.grid(row=1,column=1,padx=8,pady=8)
+        salirBoton.grid(row=2,column=1,padx=8,pady=8)
+        salirBoton.place(relx=0.5,rely=0.86,anchor=CENTER)
+        generarBoton.place(relx=0.5,rely=0.57,anchor=CENTER)
+
     #ULTIMO REPORTE DONADORES NO ACTIVOS.
     def donadoresNOactivos():
         if reporteDonadoreNOactivos():
@@ -779,7 +809,7 @@ def reportes():
     botonTipoSangre=Button(ventanaReportes,text="Tipo de sangre",command=tipoSangre)
     botonListaCompleta=Button(ventanaReportes,text="Lista completa de donadores",command=totalDonadores)
     botonMujeresO=Button(ventanaReportes,text="Mujeres donantes O-",command=mujerO)
-    botonDonar=Button(ventanaReportes,text="¿A quién le puedo donar?")
+    botonDonar=Button(ventanaReportes,text="¿A quién le puedo donar?",command=aQuienPuedeDonar)
     botonRecibir=Button(ventanaReportes,text="¿De quién puedo recibir?")
 
     etiquetaDonadoresNoActivos=Label(ventanaReportes,text="Donadores NO activos")
