@@ -1,6 +1,9 @@
-####################
-#VALIDACIONES
-####################
+#Elaborado por: Felipe Obando y Sebastián Bermúdez.
+#Fecha elaboración: 
+#Última modificación: 
+#Versión: 3.9.2
+
+#Importación de librerias
 from datetime import datetime
 import enum
 from os.path import supports_unicode_filenames
@@ -11,6 +14,8 @@ import random
 import names
 import string
 import time
+from reportes import *
+#Validaciones
 def validarCedula(cedula):
     """
     Función: Validar número de cédula con formato #-####-####.
@@ -26,7 +31,7 @@ def validarCedula(cedula):
         return True
     return False
 #07/05/2021 2:00 pm / 5 minutos haciendose.
-def validarNombreCompleto(nombre): #NO HAY QUE HACER FUNCION DE ENTRADA, ENTRA EN TKINTER
+def validarNombreCompleto(nombre):
     """
     Función: Validar nombre completo.
     Entrada:
@@ -79,7 +84,6 @@ def validarPeso(peso):
     if peso<50:
         return False
     return True
-#Falta meter en función que reciba fecha de nacimiento CORREGIR
 def validarMayorEdad(fechaNacimiento):
     """
     Función: Determinar si una persona es mayor de edad según su fecha de nacimiento (dd/mm/aaaa).
@@ -147,6 +151,7 @@ def provinciaYlugarDeDonacion(cedula): #Punto 1.1
     if lugarAsignado==None:
         lugarAsignado="San José"
     return "Dado que usted nació en la provincia de: "+lugarAsignado+" usted podría donar en: \n"+"\n".join(lugares[lugarAsignado])
+#Función que graba el archivo.
 def graba(nombreArchivo,lista):
     """
     Función: Grabar/crear un archivo(base de datos).
@@ -178,11 +183,7 @@ def lee (nomArchLeer):
     except:
         print("Error al leer el archivo: ", nomArchLeer)
     return lista
-#######################
-#######################
-#2. Generar Donador
-#######################
-#######################
+#Generar donadores.
 def generarDonadores(cantidad):
     """
     Función: Generar donadores aleatorios.
@@ -246,9 +247,7 @@ def revisarLista(usuario):
         if usuario==filas[1]:
             return filas,i
     return False
-#######################
-#4.ELIMINAR DONADOR
-#######################
+#Eliminar donador.
 def eliminarDonador(eliminar,jusfificacion):
     """
     Función: Eliminar donador de una lista(cambiar estado a 0).
@@ -270,9 +269,6 @@ def eliminarDonador(eliminar,jusfificacion):
     donadores[posicion][9]=jusfificacion#agrega justificación.
     graba("donadores",donadores)#manda a grabar lista
     return True
-#######################
-#5.Insertar lugar de donación según provincia.
-#######################
 def validarLugarDonacion(clave,nuevo):
     """
     Función: Validar si nuevo ya existe en clave.
@@ -288,6 +284,7 @@ def validarLugarDonacion(clave,nuevo):
     if nuevo in listaProvincia:
         return False#ya está registrado en esa provincia.
     return True#No está registrado en esa provincia.
+#Insertar lugar de donacion
 def agregarLugarDonacion(clave,valor):
     """
     Función: Agregar un lugar de donación nuevo a una provincia.
@@ -305,7 +302,16 @@ def agregarLugarDonacion(clave,valor):
         graba("lugaresDonacion",lugares)#manda a grabar los cambios
         return True#grabó el dic con el nuevo lugar.
     return False#no grabó nada
+#Reporte donadores por provincia.
 def generarReporte(nombreReporte):
+    """
+    Función: Crear lista de donadores activos en provincia seleccionada.
+    Entrada: 
+    -nombreReporte(str): Provincia seleccionada.
+    Salida:
+    -True(bool): Si guardó con exito el html
+    -False(bool): Si hubo algún inconveniente.
+    """
     listaProvincias=lee("donadores")
     if nombreReporte=="San José":
         selector="1"
@@ -321,8 +327,8 @@ def generarReporte(nombreReporte):
         selector="6"
     else:
         selector="7"
-    #Se va a guardar: ["Nombre del reporte,fecha de creación,listas de donadores según la provincia"]
-    donadoresProvinciaSeleccionada=["Reporte provincia: "+nombreReporte,datetime.now().strftime('%d-%m-%y %H:%M:%S')]
+    #Se va a guardar: ["Nombre del reporte,fecha de creación,listas de donadores según la provincia"
+    donadoresProvinciaSeleccionada=["Reporte Provincia "+nombreReporte,str(datetime.now().strftime('%d-%m-%y %H:%M:%S'))]
     for i in range(len(listaProvincias)):
         if listaProvincias[i][1][0]=="9" or listaProvincias[i][1][0]=="8":
             if selector=="1":
@@ -343,11 +349,9 @@ def generarReporte(nombreReporte):
                 correo=listaProvincias[i][6]
                 donador=[cedula,nombre,fechaN,telefono,correo]
                 donadoresProvinciaSeleccionada.append(donador)
-    nombreCrearArchivo="reporte"+nombreReporte+".html"#Le da el nombre al reporte
     if len(donadoresProvinciaSeleccionada)==2:#si es vacío es porque no hay donadores activos en esa provincia.
         return False
-    graba(nombreCrearArchivo,donadoresProvinciaSeleccionada)#manda a hacer el reporte
-    print(lee(nombreCrearArchivo))
+    reportes1235(donadoresProvinciaSeleccionada)
     return True
 #Reporte de rango de edad
 def validarInicioMayorFin(inicio,fin=None):
@@ -371,10 +375,10 @@ def validarInicioMayorFin(inicio,fin=None):
     return False
 def revisarRango(inicio,fin=None):
     donadores=lee("donadores")
-    rangoxEdad=["Reporte por rango de edad",datetime.now().strftime('%d-%m-%y %H:%M:%S')]
     hoy=datetime.now()
     persona=[]
     if fin=="":
+        rangoxEdad=["Reporte Rango Edad "+str(inicio),str(datetime.now().strftime('%d-%m-%y %H:%M:%S'))]
         for personas in donadores:
             nacimientoFecha=datetime.strptime(personas[4], "%d/%m/%Y")
             diferencia=hoy-nacimientoFecha
@@ -383,25 +387,27 @@ def revisarRango(inicio,fin=None):
                 persona.append(personas[0])
                 persona.append(personas[4])
                 persona.append(personas[7])
-                persona.append(personas[5])
+                persona.append(personas[6])
                 rangoxEdad.append(persona)
                 persona=[]
     else:
+        rangoxEdad=["Reporte Rango Edad "+str(inicio)+"-"+str(fin),str(datetime.now().strftime('%d-%m-%y %H:%M:%S'))]
         for personas in donadores:
             nacimientoFecha=datetime.strptime(personas[4], "%d/%m/%Y")
             diferencia=hoy-nacimientoFecha
+            #edad>=inicio y edad<fin
             if int(str((diferencia/365))[0:3])>=int(inicio) and int(str((diferencia/365))[0:3])<=int(fin):
                 persona.append(personas[1])
                 persona.append(personas[0])
                 persona.append(personas[4])
                 persona.append(personas[7])
-                persona.append(personas[5])
+                persona.append(personas[6])
                 rangoxEdad.append(persona)
                 persona=[]
-    graba("reporteRangoEdad"+inicio+fin,rangoxEdad)
+    reportes1235(rangoxEdad)#manda a hacer el archivo.
     return
 def reporteTipodeSangre(tipoSangre): #Reporte Tipo Sangre
-    listaReporte=["Reporte de tipo de sangre "+tipoSangre,datetime.now().strftime('%d-%m-%y %H:%M:%S')]
+    listaReporte=["Reporte de Tipo de Sangre "+tipoSangre,datetime.now().strftime('%d-%m-%y %H:%M:%S')]
     for persona in lee("donadores"):
         listaPersona=[]
         if persona[8]==1:
@@ -412,40 +418,12 @@ def reporteTipodeSangre(tipoSangre): #Reporte Tipo Sangre
                 listaPersona.append(persona[7]) #telefono
                 listaPersona.append(persona[6]) #correo
                 listaReporte.append(listaPersona)
-    if len(listaReporte)==2:#si es vacío es porque no hay donadores activos en esa provincia.
+    if len(listaReporte)==2:
         return False
-    nombreArchivo="ReporteSangre"+tipoSangre+".html"
-    graba(nombreArchivo,listaReporte)#manda a hacer el reporte
+    reportes1235(listaReporte)
     return True
-def reporteDonadoreNOactivos():
-    donadores=lee("donadores")
-    justi={1:"Peso menor a 50 kgs.",2:"Persona ha recibido un trasplante de órgano.",
-    3:"Padece enfermedades como tuberculosis, cáncer o cualquier enfermedad coronaria.",
-    4:"Donante adicto a alguna droga.",5:"Padeció hepatitis B o C.",
-    6:"Padece de mal de Chagas."}
-    donadoreNoactivos=["Reporte donadores NO activos",datetime.now().strftime('%d-%m-%y %H:%M:%S')]
-    nombreArchivo="reporteDonadoresNOactivos"+str(donadoreNoactivos[1][0:8])
-    for persona in donadores:
-        if persona[8]==0:
-            donadoreNoactivos.append([justi[persona[9]],persona[1],persona[0],persona[2],persona[4],persona[5],
-            persona[3],persona[7],persona[6]])
-    try:
-        graba(nombreArchivo,donadoreNoactivos)
-        print(lee(nombreArchivo))
-    except:
-        return False
-    return True
-#NO LO BORRE
-"""dic={"San José":["el banco nacional de sangre","hospital méxico","hospital san juan de dios"],
-"Alajuela":["hospital san rafael de alajuela","hospital de san ramón","hospital del cantón norteño"],
-"Cartago":["hospital max peralta"],
-"Heredia":["hospital san vicente de paúl"],
-"Guanacaste":["hospital la anexión en nicoya","hospital enrique baltodano de liberia"],
-"Puntarenas":["hospital monseñor sanabria"],"Limón":["hospital tony facio","hospital de guápiles"]}
-graba("lugaresDonacion",dic)
-print(lee("lugaresDonacion"))"""
 def mujeresDonantesO():
-    listaReporte=["Reporte de mujeres donantes O-  ",datetime.now().strftime('%d-%m-%y %H:%M:%S')]
+    listaReporte=["Reporte de Mujeres Donantes O-",datetime.now().strftime('%d-%m-%y %H:%M:%S')]
     for persona in lee("donadores"):
         listaPersona=[]
         if persona[8]==1:
@@ -459,10 +437,10 @@ def mujeresDonantesO():
                     listaReporte.append(listaPersona)
     if len(listaReporte)==2:#si es vacío es porque no hay donadores activos en esa provincia.
         return False
-    graba("ReporteMujeresO-.html",listaReporte)#manda a hacer el reporte
+    reportes1235(listaReporte)
     return True
-def reporteTodo():
-    listaReporte=["Reporte de Donadores Totales  ",datetime.now().strftime('%d-%m-%y %H:%M:%S')]
+def reporteTodo():#Reporte Lista completa de donadores.
+    listaReporte=["Reporte de Donadores Totales",datetime.now().strftime('%d-%m-%y %H:%M:%S')]
     for persona in lee("donadores"):
         listaPersona=[]
         if persona[8]==1:
@@ -480,7 +458,7 @@ def reporteTodo():
             listaReporte.append(listaPersona)
     if len(listaReporte)==2:#si es vacío es porque no hay donadores activos en esa provincia.
         return False
-    graba("ReporteDonantesTotales.html",listaReporte)#manda a hacer el reporte
+    reporte4(listaReporte)
     return True
 def quienDonar(tipoSangre):
     listaReporte=["Reporte de recibidores posibles del tipo "+tipoSangre,datetime.now().strftime('%d-%m-%y %H:%M:%S')]
@@ -511,5 +489,31 @@ def quienDonar(tipoSangre):
                 listaReporte.append(listaPersona)
     if len(listaReporte)==2:#si es vacío es porque no hay donadores activos en esa provincia.
         return False
-    graba("ReporteRecibidoresPosiblesDe"+tipoSangre+".html",listaReporte)#manda a hacer el reporte
+    #mandar a grabar
     return True
+def reporteDonadoreNOactivos():
+    donadores=lee("donadores")
+    justi={1:"Peso menor a 50 kgs.",2:"Persona ha recibido un trasplante de órgano.",
+    3:"Padece enfermedades como tuberculosis, cáncer o cualquier enfermedad coronaria.",
+    4:"Donante adicto a alguna droga.",5:"Padeció hepatitis B o C.",
+    6:"Padece de mal de Chagas."}
+    donadoreNoactivos=["Reporte donadores NO activos",datetime.now().strftime('%d-%m-%y %H:%M:%S')]
+    nombreArchivo="reporteDonadoresNOactivos"+str(donadoreNoactivos[1][0:8])
+    for persona in donadores:
+        if persona[8]==0:
+            donadoreNoactivos.append([justi[persona[9]],persona[1],persona[0],persona[2],persona[4],persona[5],
+            persona[3],persona[7],persona[6]])
+    try:
+        reporteDonadoresNOactivos(donadoreNoactivos)
+    except:
+        return False
+    return True
+#NO LO BORRE
+"""dic={"San José":["el banco nacional de sangre","hospital méxico","hospital san juan de dios"],
+"Alajuela":["hospital san rafael de alajuela","hospital de san ramón","hospital del cantón norteño"],
+"Cartago":["hospital max peralta"],
+"Heredia":["hospital san vicente de paúl"],
+"Guanacaste":["hospital la anexión en nicoya","hospital enrique baltodano de liberia"],
+"Puntarenas":["hospital monseñor sanabria"],"Limón":["hospital tony facio","hospital de guápiles"]}
+graba("lugaresDonacion",dic)
+print(lee("lugaresDonacion"))"""
