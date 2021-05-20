@@ -741,7 +741,7 @@ def reportes():
                     messagebox.showinfo("Reporte generado","Reporte creado satisfactoriamente.")
                     sangreAlmacen.set("")
                 else:
-                    messagebox.showinfo("Reporte no generado","Error al generar el archivo.")
+                    messagebox.showinfo("Reporte no generado","Error al generar el reporte.")
                     sangreAlmacen.set("")
             else:
                 messagebox.showerror("Reporte no generado","Seleccione una opción válida.")
@@ -754,12 +754,22 @@ def reportes():
         salirBoton.grid(row=2,column=1,padx=8,pady=8)
         salirBoton.place(relx=0.5,rely=0.86,anchor=CENTER)
         generarBoton.place(relx=0.5,rely=0.57,anchor=CENTER)
+    def totalDonadores():
+        if reporteTodo():
+            messagebox.showinfo("Reporte generado","Reporte generado correctamente.")
+        else:
+            messagebox.showerror("Reporte no generado","Error al generar el reporte.")
+    def mujerO():
+        if mujeresDonantesO():
+            messagebox.showinfo("Reporte generado","Reporte generado correctamente.")
+        else:
+            messagebox.showerror("Reporte no generado","Error al generar el reporte.")
     #ULTIMO REPORTE DONADORES NO ACTIVOS.
     def donadoresNOactivos():
         if reporteDonadoreNOactivos():
             messagebox.showinfo("Reporte generado","Reporte generado correctamente.")
         else:
-            messagebox.showerror("Reporte generado","Reporte no creado.")
+            messagebox.showerror("Reporte no generado","Reporte no creado.")
         return 
 
     etiquetaDonadoresActivos=Label(ventanaReportes,text="Donadores activos")
@@ -767,8 +777,8 @@ def reportes():
     botonDonantesProvincia=Button(ventanaReportes,text="Donantes por provincia",command=donadoresxProvincia)
     botonRangoEdad=Button(ventanaReportes,text="Rango de edad",command=rangoEdad)
     botonTipoSangre=Button(ventanaReportes,text="Tipo de sangre",command=tipoSangre)
-    botonListaCompleta=Button(ventanaReportes,text="Lista completa de donadores")
-    botonMujeresO=Button(ventanaReportes,text="Mujeres donantes O-")
+    botonListaCompleta=Button(ventanaReportes,text="Lista completa de donadores",command=totalDonadores)
+    botonMujeresO=Button(ventanaReportes,text="Mujeres donantes O-",command=mujerO)
     botonDonar=Button(ventanaReportes,text="¿A quién le puedo donar?")
     botonRecibir=Button(ventanaReportes,text="¿De quién puedo recibir?")
 
