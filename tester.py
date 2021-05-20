@@ -724,9 +724,36 @@ def reportes():
         botonGenerar.grid(row=3,column=1,padx=10,pady=10)
 
         botonSalirDonadoresxProvincia.grid(row=5,column=1,columnspan=4,padx=10,pady=10)
-        
         return 
-    
+    def tipoSangre():
+        ventanaSangre=Toplevel()
+        ventanaSangre.title("Reporte por tipo de sangre")
+        ventanaSangre.geometry("420x100")
+        ventanaSangre.resizable(width=False, height=False)
+        sangreAlmacen=StringVar()
+        
+        sangreLabel=Label(ventanaSangre,text="Seleccione el tipo de sangre")
+        opcionesSangre=ttk.Combobox(ventanaSangre,textvariable=sangreAlmacen,values=["O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"])
+
+        def validarTipoSangre():
+            if sangreAlmacen.get() in ["O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"]:
+                if reporteTipodeSangre(sangreAlmacen.get()):
+                    messagebox.showinfo("Reporte generado","Reporte creado satisfactoriamente.")
+                    sangreAlmacen.set("")
+                else:
+                    messagebox.showinfo("Reporte no generado","Error al generar el archivo.")
+                    sangreAlmacen.set("")
+            else:
+                messagebox.showerror("Reporte no generado","Seleccione una opción válida.")
+                sangreAlmacen.set("")
+        sangreLabel.grid(row=0,column=0,padx=8,pady=8)
+        opcionesSangre.grid(row=0,column=1,padx=8,pady=8)
+        generarBoton=Button(ventanaSangre,text="Generar Reporte",command=validarTipoSangre)
+        salirBoton=Button(ventanaSangre,text="Salir",command=ventanaSangre.destroy)
+        generarBoton.grid(row=1,column=1,padx=8,pady=8)
+        salirBoton.grid(row=2,column=1,padx=8,pady=8)
+        salirBoton.place(relx=0.5,rely=0.86,anchor=CENTER)
+        generarBoton.place(relx=0.5,rely=0.57,anchor=CENTER)
     #ULTIMO REPORTE DONADORES NO ACTIVOS.
     def donadoresNOactivos():
         if reporteDonadoreNOactivos():
@@ -739,7 +766,7 @@ def reportes():
 
     botonDonantesProvincia=Button(ventanaReportes,text="Donantes por provincia",command=donadoresxProvincia)
     botonRangoEdad=Button(ventanaReportes,text="Rango de edad",command=rangoEdad)
-    botonTipoSangre=Button(ventanaReportes,text="Tipo de sangre")
+    botonTipoSangre=Button(ventanaReportes,text="Tipo de sangre",command=tipoSangre)
     botonListaCompleta=Button(ventanaReportes,text="Lista completa de donadores")
     botonMujeresO=Button(ventanaReportes,text="Mujeres donantes O-")
     botonDonar=Button(ventanaReportes,text="¿A quién le puedo donar?")
@@ -762,7 +789,6 @@ def reportes():
 
     etiquetaDonadoresNoActivos.grid(row=8,column=3,padx=10,pady=10)
     botonDonadoresNoActivos.grid(row=9,column=3,padx=10,pady=10)
-
 
     botonSalirReportes.grid(row=10,column=2,padx=10,pady=10)
 

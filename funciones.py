@@ -373,7 +373,6 @@ def revisarRango(inicio,fin=None):
     donadores=lee("donadores")
     rangoxEdad=["Reporte por rango de edad",datetime.now().strftime('%d-%m-%y %H:%M:%S')]
     hoy=datetime.now()
-    #print(hoy)
     persona=[]
     if fin=="":
         for personas in donadores:
@@ -391,7 +390,6 @@ def revisarRango(inicio,fin=None):
         for personas in donadores:
             nacimientoFecha=datetime.strptime(personas[4], "%d/%m/%Y")
             diferencia=hoy-nacimientoFecha
-            #edad>=inicio y edad<fin
             if int(str((diferencia/365))[0:3])>=int(inicio) and int(str((diferencia/365))[0:3])<=int(fin):
                 persona.append(personas[1])
                 persona.append(personas[0])
@@ -400,9 +398,7 @@ def revisarRango(inicio,fin=None):
                 persona.append(personas[5])
                 rangoxEdad.append(persona)
                 persona=[]
-    #Graba: "reporteRangoEdad"+edad de inicio+edad final
     graba("reporteRangoEdad"+inicio+fin,rangoxEdad)
-    #print(lee("reporteRangoEdad"+inicio+fin))
     return
 def reporteDonadoreNOactivos():
     donadores=lee("donadores")
@@ -412,7 +408,6 @@ def reporteDonadoreNOactivos():
     6:"Padece de mal de Chagas."}
     donadoreNoactivos=["Reporte donadores NO activos",datetime.now().strftime('%d-%m-%y %H:%M:%S')]
     nombreArchivo="reporteDonadoresNOactivos"+str(donadoreNoactivos[1][0:8])
-    print(nombreArchivo)
     for persona in donadores:
         if persona[8]==0:
             donadoreNoactivos.append([justi[persona[9]],persona[1],persona[0],persona[2],persona[4],persona[5],
@@ -432,3 +427,20 @@ def reporteDonadoreNOactivos():
 "Puntarenas":["hospital monseñor sanabria"],"Limón":["hospital tony facio","hospital de guápiles"]}
 graba("lugaresDonacion",dic)
 print(lee("lugaresDonacion"))"""
+#Reporte por tipo de sangre
+def reporteTipodeSangre(tipoSangre):
+    listaReporte=["Reporte de tipo de sangre "+tipoSangre+" "+datetime.now().strftime('%d-%m-%y %H:%M:%S')]
+    for persona in lee("donadores"):
+        listaPersona=[]
+        if persona[2]==tipoSangre:
+            listaPersona.append(persona[1]) #cedula
+            listaPersona.append(persona[0]) #nombre 
+            listaPersona.append(persona[4]) #fecha
+            listaPersona.append(persona[7]) #telefono
+            listaPersona.append(persona[6]) #correo
+            listaReporte.append(listaPersona)
+    if len(listaReporte)==2:#si es vacío es porque no hay donadores activos en esa provincia.
+        return False
+    nombreArchivo="ReporteSangre"+tipoSangre+".html"
+    graba(nombreArchivo,listaReporte)#manda a hacer el reporte
+    return True
