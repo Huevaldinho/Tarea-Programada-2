@@ -359,12 +359,12 @@ def reportes():#Reportes.
             inicio_var.set("")
             fin_var.set("")
             return
-        etiquetaRangoEdad=Label(ventanaDonadoresxProvincia,text="Ingresar rango")
+        etiquetaRangoEdad=Label(ventanaDonadoresxProvincia,text="Ingrese el rango de edad deseado")
         etiquetaInicio=Label(ventanaDonadoresxProvincia,text="Edad inicial")
         etiquetaFin=Label(ventanaDonadoresxProvincia,text="Edad final")
 
-        entradaInicio=Entry(ventanaDonadoresxProvincia,textvariable=inicio_var)
-        entradaFin=Entry(ventanaDonadoresxProvincia,textvariable=fin_var)
+        entradaInicio=Entry(ventanaDonadoresxProvincia,textvariable=inicio_var,bd=5)
+        entradaFin=Entry(ventanaDonadoresxProvincia,textvariable=fin_var,bd=5)
 
         botonGenerar=Button(ventanaDonadoresxProvincia,text="Generar",command=validarInicioFin)
         botonSalirDonadoresxProvincia=Button(ventanaDonadoresxProvincia,text="Regresar",command=ventanaDonadoresxProvincia.destroy)
@@ -375,8 +375,7 @@ def reportes():#Reportes.
         entradaInicio.grid(row=1,column=1,columnspan=3,padx=10,pady=10)
         entradaFin.grid(row=2,column=1,columnspan=3,padx=10,pady=10)
         botonGenerar.grid(row=3,column=1,padx=10,pady=10)
-
-        botonSalirDonadoresxProvincia.grid(row=5,column=1,columnspan=4,padx=10,pady=10)
+        botonSalirDonadoresxProvincia.grid(row=4,column=1,padx=10,pady=10)
         return 
     def tipoSangre():
         ventanaSangre=Toplevel()
@@ -419,7 +418,7 @@ def reportes():#Reportes.
             messagebox.showerror("Reporte no generado","Error al generar el reporte.")
     def aQuienPuedeDonar():
         ventanaAquienDonar=Toplevel()
-        ventanaAquienDonar.title("Reporte por tipo de sangre")
+        ventanaAquienDonar.title("¿A quién puede donar?")
         ventanaAquienDonar.geometry("420x100")
         ventanaAquienDonar.resizable(width=False, height=False)
         sangreAlmacen=StringVar()
@@ -449,7 +448,7 @@ def reportes():#Reportes.
 
     def deQuienPuedeRecibir():
         ventanaDeQuienRecibir=Toplevel()
-        ventanaDeQuienRecibir.title("¿De quién puedo recibir?")
+        ventanaDeQuienRecibir.title("¿De quién puede recibir?")
         ventanaDeQuienRecibir.geometry("420x100")
         ventanaDeQuienRecibir.resizable(width=False, height=False)
         sangreAlmacen=StringVar()
