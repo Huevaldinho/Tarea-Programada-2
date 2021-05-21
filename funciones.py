@@ -437,7 +437,6 @@ def mujeresDonantesO():
                     listaReporte.append(listaPersona)
     if len(listaReporte)==2:#si es vacío es porque no hay donadores activos en esa provincia.
         return False
-    reportes1235(listaReporte)
     return True
 def reporteTodo():#Reporte Lista completa de donadores.
     listaReporte=["Reporte de Donadores Totales",datetime.now().strftime('%d-%m-%y %H:%M:%S')]
@@ -487,9 +486,40 @@ def quienDonar(tipoSangre):
                 listaPersona.append(persona[7]) #telefono
                 listaPersona.append(persona[6]) #correo
                 listaReporte.append(listaPersona)
+        if len(listaReporte)==2:#si es vacío es porque no hay donadores activos en esa provincia.
+            return False
+    graba("ReporteRecibidoresPosiblesDe"+tipoSangre+".html",listaReporte)#manda a hacer el reporte
+    return True
+def quienRecibir(tipoSangre):
+    listaReporte=["Reporte de donadores posibles para el tipo "+tipoSangre,datetime.now().strftime('%d-%m-%y %H:%M:%S')]
+    if tipoSangre=="O+":
+        listaReporte.append("O-, O+")
+    elif tipoSangre=="O-":
+        listaReporte.append("O-")
+    elif tipoSangre=="A+":
+        listaReporte.append("O-, O+, A-, A+")
+    elif tipoSangre=="A-":
+        listaReporte.append("O-, A+")
+    elif tipoSangre=="B+":
+        listaReporte.append("O-, O+, B-, B+")
+    elif tipoSangre=="B-":
+        listaReporte.append("O-, B-")
+    elif tipoSangre=="AB+":
+        listaReporte.append("AB+")
+    elif tipoSangre=="AB-":
+        listaReporte.append("O-, O+, A-, A+, B-, B+, AB-, AB+")
+    for persona in lee("donadores"):
+        listaPersona=[]
+        if persona[8]==1:
+            if persona[2]==tipoSangre:
+                listaPersona.append(persona[1]) #cedula
+                listaPersona.append(persona[0]) #nombre
+                listaPersona.append(persona[7]) #telefono
+                listaPersona.append(persona[6]) #correo
+                listaReporte.append(listaPersona)
     if len(listaReporte)==2:#si es vacío es porque no hay donadores activos en esa provincia.
         return False
-    #mandar a grabar
+    graba("ReporteDonadoresPosiblesDe"+tipoSangre+".html",listaReporte)#manda a hacer el reporte
     return True
 def reporteDonadoreNOactivos():
     donadores=lee("donadores")
