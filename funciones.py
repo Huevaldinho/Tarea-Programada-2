@@ -437,6 +437,7 @@ def mujeresDonantesO():
                     listaReporte.append(listaPersona)
     if len(listaReporte)==2:#si es vacío es porque no hay donadores activos en esa provincia.
         return False
+    reportes1235(listaReporte)
     return True
 def reporteTodo():#Reporte Lista completa de donadores.
     listaReporte=["Reporte de Donadores Totales",datetime.now().strftime('%d-%m-%y %H:%M:%S')]
@@ -483,12 +484,14 @@ def quienDonar(tipoSangre):
             if persona[2]==tipoSangre:
                 listaPersona.append(persona[1]) #cedula
                 listaPersona.append(persona[0]) #nombre
+                listaPersona.append(persona[2]) #tipo de sangre
                 listaPersona.append(persona[7]) #telefono
                 listaPersona.append(persona[6]) #correo
                 listaReporte.append(listaPersona)
         if len(listaReporte)==2:#si es vacío es porque no hay donadores activos en esa provincia.
             return False
-    graba("ReporteRecibidoresPosiblesDe"+tipoSangre+".html",listaReporte)#manda a hacer el reporte
+    reportes67(listaReporte)
+    #graba("ReporteRecibidoresPosiblesDe"+tipoSangre+".html",listaReporte)#manda a hacer el reporte
     return True
 def quienRecibir(tipoSangre):
     listaReporte=["Reporte de donadores posibles para el tipo "+tipoSangre,datetime.now().strftime('%d-%m-%y %H:%M:%S')]
@@ -514,12 +517,14 @@ def quienRecibir(tipoSangre):
             if persona[2]==tipoSangre:
                 listaPersona.append(persona[1]) #cedula
                 listaPersona.append(persona[0]) #nombre
+                listaPersona.append(persona[2]) #tipo de sangre
                 listaPersona.append(persona[7]) #telefono
                 listaPersona.append(persona[6]) #correo
                 listaReporte.append(listaPersona)
     if len(listaReporte)==2:#si es vacío es porque no hay donadores activos en esa provincia.
         return False
-    graba("ReporteDonadoresPosiblesDe"+tipoSangre+".html",listaReporte)#manda a hacer el reporte
+    reportes67(listaReporte)
+    #graba("ReporteDonadoresPosiblesDe"+tipoSangre+".html",listaReporte)#manda a hacer el reporte
     return True
 def reporteDonadoreNOactivos():
     donadores=lee("donadores")
