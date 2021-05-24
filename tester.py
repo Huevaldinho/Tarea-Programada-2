@@ -771,7 +771,8 @@ def menu():#NO TOCAR, YA ESTÁ LISTO.
     principal=Tk()#menu principal
     principal.title("Donadores de Sangre Costa Rica")
     principal.geometry("700x740")#le da tamaño a la ventana principal
-    principal.config(bg="OrangeRed3")
+    #principal.config(bg="OrangeRed3")
+    principal.config(bg="blue4")
     principal.resizable(width=False, height=False)
     imagen=PhotoImage(file='donacion(1).png')
     imagen_label=Label(principal,image=imagen)
