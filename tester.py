@@ -1,6 +1,5 @@
-
 #Elaborado por: Felipe Obando y Sebastián Bermúdez.
-#Fecha elaboración: 
+#Fecha elaboración: 04/05/2021
 #Última modificación: 
 #Versión: 3.9.2
 
@@ -16,10 +15,13 @@ from typing import Collection, Literal
 from funciones import *
 
 def insertar():
-    #usar toplevel() en secundarias en vez de Tk, para no consumir tanto recurso o algo así XD.
+    """
+    Función:
+    Entrada:
+    Salida:
+    """
     ventanaInsertar=Toplevel()
     ventanaInsertar.resizable(width=False, height=False)
-    
     ventanaInsertar.title("Insertar Donador")
 
     cedulaAlmacen=StringVar()
@@ -70,6 +72,11 @@ def insertar():
     correo_entry.grid(row=8,column=1,columnspan=4,padx=5,pady=5)
 
     def limpiar():
+        """
+        Función:
+        Entrada:
+        Salida:
+        """
         cedulaAlmacen.set("")
         nombreAlmacen.set("")
         fechaNacimientoAlmacen.set("")
@@ -78,8 +85,12 @@ def insertar():
         pesoAlmacen.set(0)
         telefonoAlmacen.set("")
         correoAlmacen.set("")
-
     def validarTodo():
+        """
+        Función:
+        Entrada:
+        Salida:
+        """
         try:
             if validarCedula(cedulaAlmacen.get()):
                 if revisarLista(cedulaAlmacen.get())==False:
@@ -125,8 +136,7 @@ def insertar():
                 messagebox.showerror("Cédula Inválida","El formato de la cédula es incorrecto.")
                 limpiar()
         except:
-            messagebox.showerror("Error de formato","Los datos que ha ingresado son inválidos.")
-    
+            messagebox.showerror("Error de formato","Los datos que ha ingresado son inválidos.") 
     botonSalirVentanaInsertar=Button(ventanaInsertar,text="Regresar",command=ventanaInsertar.destroy)#sale de la ventana insertar
     botonLimpiarVentanaInsertar=Button(ventanaInsertar,text="Limpiar",command=limpiar)
     botonRegistrarVentanaInsertar=Button(ventanaInsertar,text="Registrar",command=validarTodo)
@@ -135,6 +145,11 @@ def insertar():
     botonRegistrarVentanaInsertar.grid(row=9,column=2,padx=5,pady=5)
     botonLimpiarVentanaInsertar.grid(row=9,column=4,padx=5,pady=5)
 def generar():
+    """
+    Función:
+    Entrada:
+    Salida:
+    """
     ventanaGenerar=Toplevel()
     ventanaGenerar.title("Generar Donadores")
     ventanaGenerar.geometry("450x100")
@@ -149,6 +164,11 @@ def generar():
     entrada.grid(row=0,column=1,columnspan=2,padx=7,pady=7)
 
     def genera():
+        """
+        Función:
+        Entrada:
+        Salida:
+        """
         try:
             if cuantosAlmacen.get()==0:
                 messagebox.showerror("Lista no generada","Digite un valor mayor a 0")
@@ -166,6 +186,11 @@ def generar():
     botonSalirVentanaGenerar.grid(row=2,column=0,padx=10,pady=10)
     botonSalirVentanaGenerar.place(relx=0.5,rely=0.86,anchor=CENTER)
 def actualizar():
+    """
+    Función:
+    Entrada:
+    Salida:
+    """
     ventanaActualizar=Toplevel()
     ventanaActualizar.title("Actualizar Donadores")
     ventanaActualizar.geometry("350x100")
@@ -179,6 +204,11 @@ def actualizar():
     entrada.grid(row=0,column=1,columnspan=2,padx=7,pady=7)
 
     def verificarActualizacion():
+        """
+        Función:
+        Entrada:
+        Salida:
+        """
         if cedulaAlmacen.get()=="":
             messagebox.showerror("Cédula Inválida","Ingrese una cédula")
         else:
@@ -239,6 +269,11 @@ Banco de Sangre aún.")
                     telefono_entry.grid(row=6,column=1,columnspan=4,padx=5,pady=5)
                     correo_entry.grid(row=7,column=1,columnspan=4,padx=5,pady=5)
                     def limpiar():
+                        """
+                        Función:
+                        Entrada:
+                        Salida:
+                        """
                         nombreAlmacen.set("")
                         fechaNacimientoAlmacen.set("")
                         sangreAlmacen.set("")
@@ -248,6 +283,11 @@ Banco de Sangre aún.")
                         correoAlmacen.set("")
                     
                     def verificarActualizacionValido():
+                        """
+                        Función:
+                        Entrada:
+                        Salida:
+                        """
                         try:
                             if validarCedula(cedulaAlmacen.get()):
                                 if validarNombreCompleto(nombreAlmacen.get()):
@@ -308,6 +348,11 @@ Banco de Sangre aún.")
     botonSalirVentanaActualizar.grid(row=2,column=0,padx=10,pady=10)
     botonSalirVentanaActualizar.place(relx=0.5,rely=0.86,anchor=CENTER)
 def eliminar():
+    """
+    Función:
+    Entrada:
+    Salida:
+    """
     ventanaEliminar=Toplevel()
     ventanaEliminar.geometry("500x170")
     ventanaEliminar.resizable(width=False, height=False)
@@ -316,6 +361,11 @@ def eliminar():
     justi=StringVar()
 
     def validarJustificacion():
+        """
+        Función:
+        Entrada:
+        Salida:
+        """
         if validarCedula(cedula_var.get())==False:
             messagebox.showerror("Error cédula","Cédula inválida, intente de nuevo.")
             cedula_var.set("")
@@ -389,12 +439,22 @@ def eliminar():
     botonSalirVentanaEliminar.place(relx=0.5,rely=0.9,anchor=CENTER)
 
 def insertarLugar():
+    """
+    Función:
+    Entrada:
+    Salida:
+    """
     ventanaInsertarLugar=Toplevel()
     ventanaInsertarLugar.title("Insertar lugar de donación")
     ventanaInsertarLugar.geometry("410x165")
     clave_var=StringVar()
     valor_var=StringVar()
     def insetarLugarNuevo():
+        """
+        Función:
+        Entrada:
+        Salida:
+        """
         lista=["San José","Alajuela","Cartago","Heredia","Guanacaste","Puntarenas","Limón"]
         if not clave_var.get().capitalize() in lista:
             messagebox.showerror("Error al seleccionar provincia","Ha ingresado una pronvicia incorrecta.")
@@ -422,7 +482,6 @@ def insertarLugar():
     botonInsertarNuevoLugar=Button(ventanaInsertarLugar,text="Insertar",width=8,command=insetarLugarNuevo)
     botonSalirVentanaInsertarLugar=Button(ventanaInsertarLugar,text="Salir",command=ventanaInsertarLugar.destroy)
     
-
     etiquetaProvincia.grid(row=0,column=0,padx=10,pady=10)
     provincias.grid(row=0,column=1,columnspan=4,padx=10,pady=10)
     etiquetaNuevoLugar.grid(row=1,column=0,padx=10,pady=10)
@@ -434,15 +493,30 @@ def insertarLugar():
     botonSalirVentanaInsertarLugar.place(relx=0.5,rely=0.9,anchor=CENTER)
 
 def reportes():#Reportes.
+    """
+    Función:
+    Entrada:
+    Salida:
+    """
     ventanaReportes=Toplevel()
     ventanaReportes.geometry("320x500")
     ventanaReportes.title("Reportes")
     def donadoresxProvincia():#1. Donadores por provincia.
+        """
+        Función:
+        Entrada:
+        Salida:
+        """
         ventanaDonadoresxProvincia=Toplevel()
         ventanaDonadoresxProvincia.title("Reporte: Donadores por provincia")
         provinciaSeleccionada=StringVar()
         lista=["San José","Alajuela","Cartago","Heredia","Guanacaste","Puntarenas","Limón"]
         def validarProvinciaSeleccionada():
+            """
+            Función:
+            Entrada:
+            Salida:
+            """
             lista=["San José","Alajuela","Cartago","Heredia","Guanacaste","Puntarenas","Limón"]
             if provinciaSeleccionada.get() in lista:#Si escogió una opción del desplegable.
                 if generarReporte(provinciaSeleccionada.get()):
@@ -466,11 +540,21 @@ def reportes():#Reportes.
         botonSalirDonadoresxPronvcia.grid(row=4,column=2,padx=10,pady=10)
         return
     def rangoEdad():#Por rango de edad.
+        """
+        Función:
+        Entrada:
+        Salida:
+        """
         ventanaDonadoresxProvincia=Toplevel()
         ventanaDonadoresxProvincia.title("Reporte: Donadores por rango de edad")
         inicio_var=StringVar()
         fin_var=StringVar()
         def validarInicioFin():
+            """
+            Función:
+            Entrada:
+            Salida:
+            """
             if not inicio_var.get():#debe tener fecha de incicio obligatoriamente.
                 messagebox.showerror("Error al ingresar rango","Debe ingresar una edad de inicio.")
                 inicio_var.set("")
@@ -513,6 +597,11 @@ def reportes():#Reportes.
         botonSalirDonadoresxProvincia.grid(row=4,column=1,padx=10,pady=10)
         return 
     def tipoSangre():
+        """
+        Función:
+        Entrada:
+        Salida:
+        """
         ventanaSangre=Toplevel()
         ventanaSangre.title("Reporte por tipo de sangre")
         ventanaSangre.geometry("420x100")
@@ -523,6 +612,11 @@ def reportes():#Reportes.
         opcionesSangre=ttk.Combobox(ventanaSangre,textvariable=sangreAlmacen,values=["O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"])
 
         def validarTipoSangre():
+            """
+            Función:
+            Entrada:
+            Salida:
+            """
             if sangreAlmacen.get() in ["O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"]:
                 if reporteTipodeSangre(sangreAlmacen.get()):
                     messagebox.showinfo("Reporte generado","Reporte creado satisfactoriamente.")
@@ -542,6 +636,11 @@ def reportes():#Reportes.
         salirBoton.place(relx=0.5,rely=0.86,anchor=CENTER)
         generarBoton.place(relx=0.5,rely=0.57,anchor=CENTER)
     def totalDonadores():
+        """
+        Función:
+        Entrada:
+        Salida:
+        """
         if reporteTodo():
             messagebox.showinfo("Reporte generado","Reporte generado correctamente.")
         else:
@@ -552,6 +651,11 @@ def reportes():#Reportes.
         else:
             messagebox.showerror("Reporte no generado","Error al generar el reporte.")
     def aQuienPuedeDonar():
+        """
+        Función:
+        Entrada:
+        Salida:
+        """
         ventanaAquienDonar=Toplevel()
         ventanaAquienDonar.title("¿A quién puede donar?")
         ventanaAquienDonar.geometry("420x100")
@@ -562,6 +666,11 @@ def reportes():#Reportes.
         opcionesSangre=ttk.Combobox(ventanaAquienDonar,textvariable=sangreAlmacen,values=["O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"])
 
         def validarAquienDonar():
+            """
+            Función:
+            Entrada:
+            Salida:
+            """
             if sangreAlmacen.get() in ["O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"]:
                 if quienDonar(sangreAlmacen.get()):
                     messagebox.showinfo("Reporte generado","Reporte de los recibidores posibles del tipo "+sangreAlmacen.get()+" creado satisfactoriamente.")
@@ -582,6 +691,11 @@ def reportes():#Reportes.
         generarBoton.place(relx=0.5,rely=0.57,anchor=CENTER)
 
     def deQuienPuedeRecibir():
+        """
+        Función:
+        Entrada:
+        Salida:
+        """
         ventanaDeQuienRecibir=Toplevel()
         ventanaDeQuienRecibir.title("¿De quién puede recibir?")
         ventanaDeQuienRecibir.geometry("420x100")
@@ -592,6 +706,11 @@ def reportes():#Reportes.
         opcionesSangre=ttk.Combobox(ventanaDeQuienRecibir,textvariable=sangreAlmacen,values=["O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"])
 
         def validarDeQuienRecibir():
+            """
+            Función:
+            Entrada:
+            Salida:
+            """
             if sangreAlmacen.get() in ["O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"]:
                 if quienRecibir(sangreAlmacen.get()):
                     messagebox.showinfo("Reporte generado","Reporte de los donadores posibles para el tipo "+sangreAlmacen.get()+" creado satisfactoriamente.")
@@ -610,9 +729,12 @@ def reportes():#Reportes.
         salirBoton.grid(row=2,column=1,padx=8,pady=8)
         salirBoton.place(relx=0.5,rely=0.86,anchor=CENTER)
         generarBoton.place(relx=0.5,rely=0.57,anchor=CENTER)
-
-    #ULTIMO REPORTE DONADORES NO ACTIVOS.
-    def donadoresNOactivos():#Donadores NO activos.
+    def donadoresNOactivos():
+        """
+        Función:
+        Entrada:
+        Salida:
+        """
         if reporteDonadoreNOactivos():
             messagebox.showinfo("Reporte generado","Reporte generado correctamente.")
         else:
@@ -631,11 +753,9 @@ def reportes():#Reportes.
 
     etiquetaDonadoresNoActivos=Label(ventanaReportes,text="Donadores NO activos")
     botonDonadoresNoActivos=Button(ventanaReportes,text="Donantes NO activos",command=donadoresNOactivos)
-
     botonSalirReportes=Button(ventanaReportes,text="Regresar",command=ventanaReportes.destroy)
 
     etiquetaDonadoresActivos.grid(row=0,column=3,padx=10,pady=10)
-
     botonDonantesProvincia.grid(row=1,column=3,padx=10,pady=10)
     botonRangoEdad.grid(row=2,column=3,padx=10,pady=10)
     botonTipoSangre.grid(row=3,column=3,padx=10,pady=10)
@@ -646,16 +766,13 @@ def reportes():#Reportes.
 
     etiquetaDonadoresNoActivos.grid(row=8,column=3,padx=10,pady=10)
     botonDonadoresNoActivos.grid(row=9,column=3,padx=10,pady=10)
-
     botonSalirReportes.grid(row=10,column=2,padx=10,pady=10)
-
-
 def menu():#NO TOCAR, YA ESTÁ LISTO.
     principal=Tk()#menu principal
     principal.title("Donadores de Sangre Costa Rica")
     principal.geometry("700x740")#le da tamaño a la ventana principal
     principal.config(bg="OrangeRed3")
-    principal.resizable(width=False, height=False)#NO QUITAR PARA QUE NO ESTEN TOCANDO EL TAMAÑO.
+    principal.resizable(width=False, height=False)
     imagen=PhotoImage(file='donacion(1).png')
     imagen_label=Label(principal,image=imagen)
     imagen_label.grid(row=8,column=1,padx=10,pady=10)
