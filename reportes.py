@@ -1,16 +1,20 @@
 #Elaborado por: Felipe Obando y Sebastián Bermúdez.
-#Fecha elaboración: 
-#Última modificación: 
+#Fecha elaboración:  06/05/2021 8:30 pm
+#Última modificación: 24/05/2021 
 #Versión: 3.9.2
 
-#Reportes FALTANTES
-#6. ¿A quién puede donar?,7. ¿De quién puede recibir?
-#lista debe estar en orden: Cédula, Nombre Completo,Tipo de sangre, Teléfono, Correo.
-
+#Importación de librerias.
 import pickle
 import re
+#HMTL, reportes.
 #Reportes 1,2,3 y 5.
 def reportes1235(matriz):
+    """
+    Función: Crear HTML del reportes 1,2,3 y 5.
+    Entrada: 
+    -matriz(list): Lista con nombre del reporte, hora y usuarios.
+    Salida:N/A. 
+    """
     nombreReporte=matriz[0]#Saca el nombre del archivo de la matriz
     nombreReporte=re.sub(r"\s+","",nombreReporte)#QUITA LOS ESPACIOS  DEL PRIMER ELEMENTO PARA DARLE ESE NOMBRE AL ARCHIVO.
     fechaCreacion=matriz[1]#saca la fecha de la matriz
@@ -27,7 +31,7 @@ def reportes1235(matriz):
     archivo.write('\t<h4>Fecha de creacion: '+ fechaCreacion[0:8]+'</h4>\n\t<h4>Hora: '+ fechaCreacion[9:17]+' </h4>\n')
     archivo.write('\t\t<table class="table table-striped">\n\t\t\t<tr>\n')
     archivo.write('\t\t\t\t<th>C&eacutedula</th>\n\t\t\t\t<th>Nombre completo</th>\n\t\t\t\t<th>Fecha de nacimiento</th>\n\t\t\t\t<th>Tel&eacutefono</th>\n\t\t\t\t<th>Correo</th>\n\t\t\t</tr>\n')
-    matriz=matriz[2:]
+    matriz=matriz[2:]#quita el nombre y la fecha para trabajar solo con los usuario.
     for i in range(len(matriz)):#ciclo para poner a todos los donadores.
         archivo.write('\t\t<tr>\n')
         archivo.write('\t\t\t<td>'+matriz[i][0]+'</td>\n')#Cédula.
@@ -40,6 +44,12 @@ def reportes1235(matriz):
     archivo.close#cierra archivo
     return
 def reporte4(matriz):
+    """
+    Función: Crear HTML del reporte 4. 
+    Entrada: 
+    -matriz(list): Lista con nombre del reporte, hora y usuarios.
+    Salida:N/A. 
+    """
     nombreReporte=matriz[0]#Saca el nombre del archivo de la matriz
     nombreReporte=re.sub(r"\s+","",nombreReporte)#QUITA LOS ESPACIOS  DEL PRIMER ELEMENTO PARA DARLE ESE NOMBRE AL ARCHIVO.
     fechaCreacion=matriz[1]#saca la fecha de la matriz
@@ -72,6 +82,12 @@ def reporte4(matriz):
     archivo.close#cierra archivo
     return
 def reportes67(matriz):
+    """
+    Función: Crear HTML del reporte 6 y 7.
+    Entrada: 
+    -matriz(list): Lista con nombre del reporte, hora y usuarios.
+    Salida:N/A. 
+    """
     nombreReporte=matriz[0]#Saca el nombre del archivo de la matriz
     nombreReporte=re.sub(r"\s+","",nombreReporte)#QUITA LOS ESPACIOS  DEL PRIMER ELEMENTO PARA DARLE ESE NOMBRE AL ARCHIVO.
     fechaCreacion=matriz[1]#saca la fecha de la matriz
@@ -101,6 +117,12 @@ def reportes67(matriz):
     archivo.close#cierra archivo
     return
 def reporteDonadoresNOactivos(matriz):
+    """
+    Función: Crear HTML del reporte de donadores NO activos
+    Entrada: 
+    -matriz(list): Lista con nombre del reporte, hora y usuarios.
+    Salida:N/A. 
+    """
     nombreReporte=matriz[0]#Saca el nombre del archivo de la matriz
     nombreReporte=re.sub(r"\s+","",nombreReporte)#QUITA LOS ESPACIOS  DEL PRIMER ELEMENTO PARA DARLE ESE NOMBRE AL ARCHIVO.
     fechaCreacion=matriz[1]#saca la fecha de la matriz
