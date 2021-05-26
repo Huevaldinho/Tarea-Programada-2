@@ -502,6 +502,7 @@ def reportes():#Reportes.
     ventanaReportes=Toplevel()
     ventanaReportes.geometry("540x500")
     ventanaReportes.title("Reportes")
+    ventanaReportes.resizable(width=False, height=False)
     def donadoresxProvincia():#1. Donadores por provincia.
         """
         Función: Crear reporete de donador por provincia.
