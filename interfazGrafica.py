@@ -500,7 +500,7 @@ def reportes():#Reportes.
     Salida: N/A.
     """
     ventanaReportes=Toplevel()
-    ventanaReportes.geometry("320x500")
+    ventanaReportes.geometry("540x500")
     ventanaReportes.title("Reportes")
     def donadoresxProvincia():#1. Donadores por provincia.
         """
@@ -747,33 +747,42 @@ def reportes():#Reportes.
             messagebox.showerror("Reporte generado","Reporte no creado.")
         return 
 
-    etiquetaDonadoresActivos=Label(ventanaReportes,text="Donadores activos")
+    etiquetaDonadoresActivos=Label(ventanaReportes,text="Reporte de Donadores",font=("BiauKai","21","bold"))
 
-    botonDonantesProvincia=Button(ventanaReportes,text="Donantes por provincia",command=donadoresxProvincia)
-    botonRangoEdad=Button(ventanaReportes,text="Rango de edad",command=rangoEdad)
-    botonTipoSangre=Button(ventanaReportes,text="Tipo de sangre",command=tipoSangre)
-    botonListaCompleta=Button(ventanaReportes,text="Lista completa de donadores",command=totalDonadores)
-    botonMujeresO=Button(ventanaReportes,text="Mujeres donantes O-",command=mujerO)
-    botonDonar=Button(ventanaReportes,text="¿A quién le puedo donar?",command=aQuienPuedeDonar)
-    botonRecibir=Button(ventanaReportes,text="¿De quién puedo recibir?",command=deQuienPuedeRecibir)
+    botonDonantesProvincia=Button(ventanaReportes,text="Donantes por provincia",command=donadoresxProvincia,font=("BiauKai","16"),height=3, width=20)
+    botonRangoEdad=Button(ventanaReportes,text="Rango de edad",command=rangoEdad,font=("BiauKai","16"),height=3, width=20)
+    botonTipoSangre=Button(ventanaReportes,text="Tipo de sangre",command=tipoSangre,font=("BiauKai","16"),height=3, width=20)
+    botonListaCompleta=Button(ventanaReportes,text="Lista completa de donadores",command=totalDonadores,font=("BiauKai","16"),height=3, width=20)
+    botonMujeresO=Button(ventanaReportes,text="Mujeres donantes O-",command=mujerO,font=("BiauKai","16"),height=3, width=20)
+    botonDonar=Button(ventanaReportes,text="¿A quién le puedo donar?",command=aQuienPuedeDonar,font=("BiauKai","16"),height=3, width=20)
+    botonRecibir=Button(ventanaReportes,text="¿De quién puedo recibir?",command=deQuienPuedeRecibir,font=("BiauKai","16"),height=3, width=20)
+    botonDonadoresNoActivos=Button(ventanaReportes,text="Donantes NO activos",command=donadoresNOactivos,font=("BiauKai","16"),height=3, width=20)
 
-    etiquetaDonadoresNoActivos=Label(ventanaReportes,text="Donadores NO activos")
-    botonDonadoresNoActivos=Button(ventanaReportes,text="Donantes NO activos",command=donadoresNOactivos)
     botonSalirReportes=Button(ventanaReportes,text="Regresar",command=ventanaReportes.destroy)
 
-    etiquetaDonadoresActivos.grid(row=0,column=3,padx=10,pady=10)
-    botonDonantesProvincia.grid(row=1,column=3,padx=10,pady=10)
-    botonRangoEdad.grid(row=2,column=3,padx=10,pady=10)
-    botonTipoSangre.grid(row=3,column=3,padx=10,pady=10)
-    botonListaCompleta.grid(row=4,column=3,padx=10,pady=10)
-    botonMujeresO.grid(row=5,column=3,padx=10,pady=10)
-    botonDonar.grid(row=6,column=3,padx=10,pady=10)
-    botonRecibir.grid(row=7,column=3,padx=10,pady=10)
+    etiquetaDonadoresActivos.grid(row=0,columnspan=2,rowspan=2,column=1)
+    etiquetaDonadoresActivos.place(relx=0.5,rely=0.07,anchor=CENTER)
+    botonDonantesProvincia.grid(row=2,column=0,padx=10,pady=10)
+    botonDonantesProvincia.place(relx=0.25,rely=0.20,anchor=CENTER)
+    botonRangoEdad.grid(row=3,column=0,padx=10,pady=10)
+    botonRangoEdad.place(relx=0.25,rely=0.40,anchor=CENTER)
+    botonTipoSangre.grid(row=4,column=0,padx=10,pady=10)
+    botonTipoSangre.place(relx=0.25,rely=0.60,anchor=CENTER)
+    botonListaCompleta.grid(row=5,column=0,padx=10,pady=10)
+    botonListaCompleta.place(relx=0.25,rely=0.80,anchor=CENTER)
+    botonMujeresO.grid(row=2,column=1,padx=10,pady=10)
+    botonMujeresO.place(relx=0.75,rely=0.20,anchor=CENTER)
+    botonDonar.grid(row=3,column=1,padx=10,pady=10)
+    botonDonar.place(relx=0.75,rely=0.40,anchor=CENTER)
+    botonRecibir.grid(row=4,column=1,padx=10,pady=10)
+    botonRecibir.place(relx=0.75,rely=0.60,anchor=CENTER)
+    botonDonadoresNoActivos.grid(row=5,column=1,padx=10,pady=10)
+    botonDonadoresNoActivos.place(relx=0.75,rely=0.80,anchor=CENTER)
 
-    etiquetaDonadoresNoActivos.grid(row=8,column=3,padx=10,pady=10)
-    botonDonadoresNoActivos.grid(row=9,column=3,padx=10,pady=10)
-    botonSalirReportes.grid(row=10,column=2,padx=10,pady=10)
-def menu():#NO TOCAR, YA ESTÁ LISTO.
+    botonSalirReportes.grid(row=7,column=2,padx=10,pady=10)
+    botonSalirReportes.place(relx=0.5,rely=0.93,anchor=CENTER)
+
+def menu():
     """
     Función: Crear interfaz gráfica de menú.
     Entrada: N/A.
@@ -782,7 +791,6 @@ def menu():#NO TOCAR, YA ESTÁ LISTO.
     principal=Tk()#menu principal
     principal.title("Donadores de Sangre Costa Rica")
     principal.geometry("700x740")#le da tamaño a la ventana principal
-    #principal.config(bg="OrangeRed3")
     principal.config(bg="blue4")
     principal.resizable(width=False, height=False)
     imagen=PhotoImage(file='donacion(1).png')
