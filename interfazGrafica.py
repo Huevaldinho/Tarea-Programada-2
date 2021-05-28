@@ -753,7 +753,7 @@ def reportes():#Reportes.
     botonDonantesProvincia=Button(ventanaReportes,text="Donantes por provincia",command=donadoresxProvincia,font=("BiauKai","16"),height=3, width=20)
     botonRangoEdad=Button(ventanaReportes,text="Rango de edad",command=rangoEdad,font=("BiauKai","16"),height=3, width=20)
     botonTipoSangre=Button(ventanaReportes,text="Tipo de sangre",command=tipoSangre,font=("BiauKai","16"),height=3, width=20)
-    botonListaCompleta=Button(ventanaReportes,text="Lista completa de donadores",command=totalDonadores,font=("BiauKai","16"),height=3, width=20)
+    botonListaCompleta=Button(ventanaReportes,text="Lista de donadores",command=totalDonadores,font=("BiauKai","16"),height=3, width=20)
     botonMujeresO=Button(ventanaReportes,text="Mujeres donantes O-",command=mujerO,font=("BiauKai","16"),height=3, width=20)
     botonDonar=Button(ventanaReportes,text="¿A quién le puedo donar?",command=aQuienPuedeDonar,font=("BiauKai","16"),height=3, width=20)
     botonRecibir=Button(ventanaReportes,text="¿De quién puedo recibir?",command=deQuienPuedeRecibir,font=("BiauKai","16"),height=3, width=20)
